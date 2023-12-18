@@ -1,4 +1,4 @@
-if game.PlaceId == 14433762945 then
+
     local Mercury = loadstring(game:HttpGet("https://raw.githubusercontent.com/RaCc0oN1/RobloxObf/main/ReworkMercury"))()
     --- GUI create
     local GUI = Mercury:Create{
@@ -207,4 +207,3 @@ if game.PlaceId == 14433762945 then
             end
         end
     }
-end
