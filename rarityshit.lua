@@ -196,14 +196,19 @@
         Callback = function(state)
             clover = state
             while clover do
-                for _,v in pairs(worskpace.clova:GetChildren()) do
+                for _,v in pairs(workspace.clova:GetChildren()) do
                     if not clover then break end
-                    pcall(function()
-                        v.CanCollide = false
-                        v:PivotTo(game.Players.LocalPlayer:GetPivot())
-                    end)
+                    v:PivotTo(game.Players.LocalPlayer.Character:GetPivot())
                 end
                 task.wait()      
             end
+        end
+    }
+    Main:Toggle{
+        Name = "Toggle AutoRoll",
+        StartingState = false,
+        Description = nil,
+        Callback = function(state)
+            game.Players.LocalPlayer.PlayerData.ToggleAutoRoll.Value = state
         end
     }
