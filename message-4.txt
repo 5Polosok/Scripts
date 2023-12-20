@@ -204,3 +204,11 @@
             end
         end
     }
+    Main:Toggle{
+        Name = "Toggle AutoRoll",
+        StartingState = false,
+        Description = nil,
+        Callback = function(state)
+            game.Players.LocalPlayer.PlayerData.ToggleAutoRoll.Value = state
+        end
+    }
