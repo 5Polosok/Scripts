@@ -205,10 +205,17 @@
         end
     }
     Main:Toggle{
-        Name = "Toggle AutoRoll",
+        Name = "AutoClover",
         StartingState = false,
         Description = nil,
         Callback = function(state)
-            game.Players.LocalPlayer.PlayerData.ToggleAutoRoll.Value = state
+            clover = state
+            while clover do
+                for _,v in pairs(workspace.clova:GetChildren()) do
+                    if not clover then break end
+                    v:PivotTo(game.Players.LocalPlayer.Character:GetPivot())
+                end
+                task.wait()      
+            end
         end
     }
