@@ -63,7 +63,7 @@ misc:Toggle{
                             plyr.Character.HumanoidRootPart.CFrame = v.CFrame * CFrame.new(0, 0, -4)
                             fireproximityprompt(v.ProximityAttachment.Interaction)
                             task.wait()
-                        until v.Parent == nil
+                        until v.Parent ~= nil
                     end
                 end)
             end 
