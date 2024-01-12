@@ -46,6 +46,7 @@ local ismobile = game:GetService("UserInputService").TouchEnabled
         end)
     end
 local ItemFarm
+local plyr = game.Players.LocalPlayer
 misc:Toggle{
     Name = "AutoPick Items",
     StartingState = false,
@@ -55,8 +56,10 @@ misc:Toggle{
         while ItemFarm do
             for _,v in pairs(workspace.ItemSpawns.StandardItems:GetDescendants()) do
                 repeat
-                    task.wait()
+                    if not ItemFarm then break end
+                    plyr.Character.HumanoidRootPart.CFrame = v.CFrame * CFrame.new(0, 0, -4)
                     fireproximityprompt(v.ProximityAttachment.Interaction)
+                    task.wait()
                 until v.Parent ~= nil
             end 
             task.wait()      
