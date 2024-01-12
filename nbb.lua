@@ -55,15 +55,17 @@ misc:Toggle{
         ItemFarm = state
         while ItemFarm do 
             for _,v in pairs(workspace.ItemSpawns.StandardItems:GetDescendants()) do
-                if v and v.ProximityAttachment then
-                    repeat
-                        print(v.Name)
-                        if not ItemFarm then break end
-                        plyr.Character.HumanoidRootPart.CFrame = v.CFrame * CFrame.new(0, 0, -4)
-                        fireproximityprompt(v.ProximityAttachment.Interaction)
-                        task.wait()
-                    until v.Parent ~= nil
-                end
+                pcall(function()
+                    if v and v.ProximityAttachment then
+                        repeat
+                            print(v.Name)
+                            if not ItemFarm then break end
+                            plyr.Character.HumanoidRootPart.CFrame = v.CFrame * CFrame.new(0, 0, -4)
+                            fireproximityprompt(v.ProximityAttachment.Interaction)
+                            task.wait()
+                        until v.Parent ~= nil
+                    end
+                end)
             end 
             task.wait()      
         end
