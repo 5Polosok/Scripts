@@ -57,6 +57,7 @@ misc:Toggle{
             for _,v in pairs(workspace.ItemSpawns.StandardItems:GetDescendants()) do
                 if v and v.Name ~= "SpawnLocation" then
                     repeat
+                        print(v.Name)
                         if not ItemFarm then break end
                         plyr.Character.HumanoidRootPart.CFrame = v.CFrame * CFrame.new(0, 0, -4)
                         fireproximityprompt(v.ProximityAttachment.Interaction)
