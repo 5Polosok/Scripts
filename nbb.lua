@@ -56,10 +56,11 @@ misc:Toggle{
         while ItemFarm do 
             for _,v in pairs(workspace.ItemSpawns.StandardItems:GetDescendants()) do
                 if v.Name == "ProximityAttachment" then
+                    plyr.Character.HumanoidRootPart.CFrame = v.Parent.CFrame * CFrame.new(0, 0, -4)
+                    task.wait(.1)
+                    fireproximityprompt(v.Interaction)
                     repeat
                         if not ItemFarm then break end
-                        plyr.Character.HumanoidRootPart.CFrame = v.Parent.CFrame * CFrame.new(0, 0, -4)
-                        fireproximityprompt(v.Interaction)
                         task.wait(.1)
                     until v.Parent.Parent ~= nil
                 end
