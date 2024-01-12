@@ -13,7 +13,7 @@ local misc = GUI:Tab{
 	Icon = "rbxassetid://8569322835"
 }
 local ismobile = game:GetService("UserInputService").TouchEnabled
-    if ismobile then
+    if ismobile and not game.CoreGui.RaCc0oNScrGUI then
         local RaCc0oNScrGUI = Instance.new("ScreenGui")
         local RaCc0oNImg = Instance.new("ImageButton")
         local UICorner = Instance.new("UICorner")
