@@ -55,7 +55,7 @@ misc:Toggle{
         ItemFarm = state
         while ItemFarm do 
             for _,v in pairs(workspace.ItemSpawns.StandardItems:GetDescendants()) do
-                if v then
+                if v and v.Name ~= "SpawnLocation" then
                     repeat
                         if not ItemFarm then break end
                         plyr.Character.HumanoidRootPart.CFrame = v.CFrame * CFrame.new(0, 0, -4)
