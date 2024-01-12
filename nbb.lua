@@ -55,7 +55,7 @@ misc:Toggle{
         ItemFarm = state
         while ItemFarm do 
             for _,v in pairs(workspace.ItemSpawns.StandardItems:GetDescendants()) do
-                if v and v.Name ~= "SpawnLocation" then
+                if v and v.ProximityAttachment then
                     repeat
                         print(v.Name)
                         if not ItemFarm then break end
