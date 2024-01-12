@@ -58,11 +58,10 @@ misc:Toggle{
                 pcall(function()
                     if v and v.ProximityAttachment then
                         repeat
-                            print(v.Name)
                             if not ItemFarm then break end
                             plyr.Character.HumanoidRootPart.CFrame = v.CFrame * CFrame.new(0, 0, -4)
                             fireproximityprompt(v.ProximityAttachment.Interaction)
-                            task.wait()
+                            task.wait(1.2)
                         until v.Parent ~= nil
                     end
                 end)
