@@ -60,7 +60,7 @@ misc:Toggle{
                         if not ItemFarm then break end
                         plyr.Character.HumanoidRootPart.CFrame = v.Parent.CFrame * CFrame.new(0, 0, -4)
                         fireproximityprompt(v.Interaction)
-                        task.wait(1.2)
+                        task.wait(.1)
                     until v.Parent ~= nil
                 end
             end 
