@@ -199,10 +199,15 @@ misc:Toggle{
             for _,v in pairs(workspace.ItemSpawns.StandardItems:GetChildren()) do
                 if v:GetChildren()[1] ~= nil then
                     if not ItemFarm then break end
-                    plyr.Character.HumanoidRootPart.CFrame = v:GetChildren()[1].CFrame
+                    plyr.Character.HumanoidRootPart.CFrame = v:GetChildren()[1].CFrame * CFrame.new(0, 0.5, 0)
                     repeat
                         if not ItemFarm then break end
                         task.wait()
+                        if v:GetChildren()[1].ProximityAttachment.Interaction then 
+                            print("yes")
+                        else 
+                            print("nuh uh")
+                        end
                     until v:GetChildren()[1].ProximityAttachment.Interaction
                     task.wait(0.5)
                     fireproximityprompt(v:GetChildren()[1].ProximityAttachment.Interaction)
