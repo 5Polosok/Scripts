@@ -364,7 +364,7 @@ Main:Toggle{
     Description = nil,
     Callback = function(state)
         AFarm = state
-        plyr.Character.HumanoidRootPart.CFrame = CFrame.new(2100, 930, -1450)
+        plyr.Character.HumanoidRootPart.Position = CFrame.new(2006,942,-1443)
         while AFarm do
             for _,v in pairs(workspace.NPCSpawns.Living:GetChildren()) do
                 if v:IsA("Model") then
