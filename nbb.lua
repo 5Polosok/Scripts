@@ -300,7 +300,7 @@ local Main = GUI:Tab{
 	Icon = "rbxassetid://8569322835"
 }
 local choosen_zone
-local zones_table
+local zones_table = {}
 local zone = Main:Dropdown{
 	Name = "Zone DropDowns",
 	StartingText = "Select...",
@@ -337,12 +337,13 @@ Main:Toggle{
     Description = nil,
     Callback = function(state)
         AFarm = state
-        plyr.Character.HumanoidRootPart.CFrame = workspace.MappedRegions:GetChildren()
+        plyr.Character.HumanoidRootPart.CFrame = workspace.MappedRegions:GetChildren()[choosen_zone].CFrame
         while AFarm do
             for _,v in pairs(workspace.NPCSpawns.Living:GetChildren()) do
                 if v:IsA("Model") then
                     pcall(function()
                         repeat
+                            if not AFarm then break end
                             plyr.Character.HumanoidRootPart.CFrame = v.CFrame() * CFrame.new(0, 0, -4)
                             local args = {
                                 [1] = "MOUSEBUTTON1"
