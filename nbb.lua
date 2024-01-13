@@ -329,7 +329,34 @@ table.sort(zones_table)
 for _,v in pairs(zones_table) do
     zone:AddItems({v})
 end
-
+misc:Button{
+    Name = "Refresh DD",
+    Description = nil,
+    Callback = function()
+            for _,v in pairs(zones_table) do
+                pcall(function()
+                    zone:RemoveItems({v})
+                end)
+            end
+            zones_table = {}
+            for _,v in pairs(workspace.MappedRegions:GetChildren()) do
+                local state = true
+                for _, z in pairs(zones_table) do
+                    if z == v.Name then
+                        state = false
+                        break
+                    end
+                end
+                if state then
+                    table.insert(zones_table, v.Name)
+                end
+            end
+            table.sort(zones_table)
+            for _,v in pairs(zones_table) do
+                zone:AddItems({v})
+            end
+    end
+}
 local AFarm
 Main:Toggle{
     Name = "AutoFarm Selected Zone",
@@ -337,6 +364,7 @@ Main:Toggle{
     Description = nil,
     Callback = function(state)
         AFarm = state
+        print(workspace.MappedRegions:GetChildren()[choosen_zone].Name)
         plyr.Character.HumanoidRootPart.CFrame = workspace.MappedRegions:GetChildren()[choosen_zone].CFrame
         while AFarm do
             for _,v in pairs(workspace.NPCSpawns.Living:GetChildren()) do
