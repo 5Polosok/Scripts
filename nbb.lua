@@ -364,8 +364,7 @@ Main:Toggle{
     Description = nil,
     Callback = function(state)
         AFarm = state
-        print(workspace.MappedRegions:GetChildren()[choosen_zone].Name)
-        plyr.Character.HumanoidRootPart.CFrame = workspace.MappedRegions:GetChildren()[choosen_zone].CFrame
+        plyr.Character.HumanoidRootPart.CFrame = CFrame.new(2100, 930, -1450)
         while AFarm do
             for _,v in pairs(workspace.NPCSpawns.Living:GetChildren()) do
                 if v:IsA("Model") then
@@ -381,6 +380,8 @@ Main:Toggle{
                             task.wait()
                         until not v
                     end)
+                elseif v == nil then
+                    plyr.Character.HumanoidRootPart.CFrame = CFrame.new(2100, 930, -1450)
                 end
             end
             task.wait()      
