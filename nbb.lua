@@ -364,7 +364,7 @@ Main:Toggle{
     Description = nil,
     Callback = function(state)
         AFarm = state
-        plyr.Character.HumanoidRootPart.Position = CFrame.new(2006,942,-1443)
+        plyr.Character.HumanoidRootPart.CFrame = CFrame.new(2006,942,-1443)
         while AFarm do
             for _,v in pairs(workspace.Living:GetChildren()) do
                 if v:IsA("Model") and (v:GetPivot().p-game.Players.LocalPlayer.Character:GetPivot().p).Magnitude <= 200 then
