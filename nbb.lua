@@ -201,10 +201,12 @@ misc:Toggle{
                     if not ItemFarm then break end
                     plyr.Character.HumanoidRootPart.CFrame = v:GetChildren()[1].CFrame
                     repeat
+                        if not ItemFarm then break end
                         task.wait()
-                    until not v:GetChildren()[1].ProximityAttachment.Interaction
+                    until v:GetChildren()[1].ProximityAttachment.Interaction
                     fireproximityprompt(v:GetChildren()[1].ProximityAttachment.Interaction)
                     repeat
+                        if not ItemFarm then break end
                         task.wait()
                     until v:GetChildren()[1] ~= nil
                     -- task.wait(3)
