@@ -198,14 +198,12 @@ misc:Toggle{
         while ItemFarm do 
             for _,v in pairs(workspace.ItemSpawns.StandardItems:GetChildren()) do
                 if v:GetChildren()[1] ~= nil then
-                    pcall(function()
                         repeat
                             if not ItemFarm then break end
                             plyr.Character.HumanoidRootPart.CFrame = v:GetChildren()[1].CFrame * CFrame.new(0, 0, -4)
                             fireproximityprompt(v:GetChildren()[1].ProximityAttachment.Interaction)
                             task.wait()
                         until v:GetChildren()[1] ~= nil
-                    end)
                 end
             end 
             task.wait()      
