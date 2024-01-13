@@ -62,6 +62,8 @@ misc:Toggle{
                     repeat
                         task.wait()
                     until v:GetChildren()[1] ~= nil
+                else
+                    print("nil")
                 end
             end 
             task.wait()      
