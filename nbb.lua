@@ -368,17 +368,18 @@ Main:Toggle{
         while AFarm do
             for _,v in pairs(workspace.Living:GetChildren()) do
                 if (v:GetPivot().p-game.Players.LocalPlayer.Character:GetPivot().p).Magnitude <= 400 then
-                        repeat
-                            if not AFarm then break end
-                            plyr.Character.HumanoidRootPart.CFrame = v.CFrame() * CFrame.new(0, 0, -4)
-                            local args = {
-                                [1] = "MOUSEBUTTON1"
-                            }
+                    repeat
+                        if not AFarm then break end
+                        plyr.Character.HumanoidRootPart.CFrame = v.CFrame() * CFrame.new(0, 0, -4)
+                        local args = {
+                            [1] = "MOUSEBUTTON1"
+                        }
                             
-                            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
-                            task.wait()
-                        until not v
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        task.wait()
+                    until not v
                 else
+                    print('nasdzxc')
                     plyr.Character.HumanoidRootPart.CFrame = CFrame.new(2006,942,-1443)
                 end
             end
