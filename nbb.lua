@@ -61,7 +61,7 @@ misc:Toggle{
                         fireproximityprompt(v.Interaction)
                         repeat
                             task.wait()
-                        until v.Parent ~= nil
+                        until v.Parent.Parent ~= nil
                     end)
                 end
             end 
