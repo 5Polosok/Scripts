@@ -149,6 +149,7 @@ PlayerTab:Slider{
         game.Players.LocalPlayer.Character.Humanoid.JumpHeight = JumpHeightSlider
     end
 }
+local Notif = loadstring(game:HttpGet("https://api-sirclub.onrender.com/scripts/raw/notifybottom.lua"))()
 ---
 local misc = GUI:Tab{
 	Name = "Misc Functions",
@@ -205,14 +206,83 @@ misc:Toggle{
                             task.wait()
                         until v:GetChildren()[1].ProximityAttachment.Interaction
                         task.wait(0.5)
-                        fireproximityprompt(v:GetChildren()[1].ProximityAttachment.Interaction)
                         repeat
                             if not ItemFarm then break end
+                            fireproximityprompt(v:GetChildren()[1].ProximityAttachment.Interaction)
                             task.wait()
                         until not v:GetChildren()[1]
                     end)
                 end
             end 
+            task.wait()      
+        end
+    end
+}
+local AutoStore_Selected = {}
+misc:Dropdown{
+    Name = "Items To Store",
+    StartingText = "Select...",
+    Description = nil,
+    Items = {
+        "Bone", "Tales Of The Universe", "Watch", "Mysterious Fragment", "Gojo`s Blindfold", "Dragon Ball", "Cursed Orb", "Saint`s Corpse", "Heart", "Corrupted Soul", "Corrupted Arrow"
+    },
+    Callback = function(item)
+        local string = "Current AutoStore:"
+        local state = false
+        for _,v in pairs(AutoStore_Selected) do
+            if v == item then
+                state = true
+                break
+            end
+        end
+        if not state then
+            table.insert(AutoStore_Selected, item)
+        else
+            for k, q in pairs(AutoStore_Selected) do
+                if q == item then
+                    table.remove(AutoStore_Selected, k)
+                end
+            end
+        end
+        for _,v in pairs(AutoStore_Selected) do
+            string = " "..string..v..";"
+        end
+        Notif.New(string)
+    end
+}
+local itemsell
+misc:Toggle{
+    Name = "Sell Items",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        itemsell = state
+        while itemsell do
+            for _,v in pairs(plyr.Backpack:GetChildren()) do
+                if v:IsA("Tool") then
+                    local bulshit = false
+                    for _,q in pairs(AutoStore_Selected) do
+                        if v.Name == q then
+                            bulshit = true
+                            break
+                        end
+                    end
+                    if not bulshit then
+                        local args = {
+                            [1] = "BlackMarketBulkSellItems",
+                            [2] = {
+                                [1] = {
+                                    [1] = tostring(v:GetAttributes()["ItemId"]),
+                                    [2] = tostring(v:GetAttributes()["UUID"]),
+                                    [3] = 1
+                                }
+                            }
+                        }
+                        
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.ShopService.RE.Signal:FireServer(unpack(args))
+                    end
+                end
+            end
             task.wait()      
         end
     end
