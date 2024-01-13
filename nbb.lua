@@ -250,6 +250,13 @@ misc:Dropdown{
         Notif.New(string)
     end
 }
+misc:Button{
+    Name = "Reset Save List",
+    Description = nil,
+    Callback = function()
+        AutoStore_Selected = {}
+    end
+}
 local itemsell
 misc:Toggle{
     Name = "Sell Items",
@@ -281,6 +288,70 @@ misc:Toggle{
                         
                         game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.ShopService.RE.Signal:FireServer(unpack(args))
                     end
+                end
+            end
+            task.wait()      
+        end
+    end
+}
+
+local Main = GUI:Tab{
+	Name = "Main Feauters",
+	Icon = "rbxassetid://8569322835"
+}
+local choosen_zone
+local zones_table
+local zone = Main:Dropdown{
+	Name = "Zone DropDowns",
+	StartingText = "Select...",
+	Description = nil,
+	Items = {
+        
+	},
+	Callback = function(item) 
+        choosen_zone = item
+    end
+} 
+
+for _,v in pairs(workspace.MappedRegions:GetChildren()) do
+    local state = true
+    for _, z in pairs(zones_table) do
+        if z == v.Name then
+            state = false
+            break
+        end
+    end
+    if state then
+        table.insert(zones_table, v.Name)
+    end
+end
+table.sort(zones_table)
+for _,v in pairs(zones_table) do
+    zone:AddItems({v})
+end
+
+local AFarm
+Main:Toggle{
+    Name = "AutoFarm Selected Zone",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AFarm = state
+        plyr.Character.HumanoidRootPart.CFrame = workspace.MappedRegions:GetChildren()
+        while AFarm do
+            for _,v in pairs(workspace.NPCSpawns.Living:GetChildren()) do
+                if v:IsA("Model") then
+                    pcall(function()
+                        repeat
+                            plyr.Character.HumanoidRootPart.CFrame = v.CFrame() * CFrame.new(0, 0, -4)
+                            local args = {
+                                [1] = "MOUSEBUTTON1"
+                            }
+                            
+                            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                            task.wait()
+                        until not v
+                    end)
                 end
             end
             task.wait()      
