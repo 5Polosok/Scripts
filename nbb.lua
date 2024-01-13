@@ -380,7 +380,7 @@ Main:Toggle{
                             task.wait()
                         until not v
                     end)
-                elseif v == nil then
+                else
                     plyr.Character.HumanoidRootPart.CFrame = CFrame.new(2006,942,-1443)
                 end
             end
