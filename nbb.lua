@@ -370,7 +370,7 @@ Main:Toggle{
                 if (v:GetPivot().p-game.Players.LocalPlayer.Character:GetPivot().p).Magnitude <= 400 then
                     repeat
                         if not AFarm then break end
-                        plyr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0, 0, -4)
+                        plyr.Character.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame * CFrame.new(0, 0, -4)
                         local args = {
                             [1] = "MOUSEBUTTON1"
                         }
