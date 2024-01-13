@@ -12,6 +12,7 @@ local misc = GUI:Tab{
 	Name = "Misc Functions",
 	Icon = "rbxassetid://8569322835"
 }
+local Players = game:GetService("Players")
 local ismobile = game:GetService("UserInputService").TouchEnabled
     if ismobile then
         local RaCc0oNScrGUI = Instance.new("ScreenGui")
@@ -54,15 +55,13 @@ misc:Toggle{
     Callback = function(state)
         ItemFarm = state
         while ItemFarm do 
-            for _,v in pairs(workspace.ItemSpawns.StandardItems:GetDescendants()) do
-                if v.Name == "ProximityAttachment" then
-                    plyr.Character.HumanoidRootPart.CFrame = v.Parent.CFrame * CFrame.new(0, 0, -4)
-                    task.wait(.1)
-                    fireproximityprompt(v.Interaction)
+            for _,v in pairs(workspace.ItemSpawns.StandardItems:GetChildren()) do
+                if v:GetChildren()[1] ~= nil then
+                    plyr.Character.HumanoidRootPart.CFrame = v.CFrame * CFrame.new(0, 0, -4)
+                    fireproximityprompt(v:GetChildren()[1].ProximityAttachment.Interaction)
                     repeat
-                        if not ItemFarm then break end
-                        task.wait(.1)
-                    until v.Parent.Parent ~= nil
+                        task.wait()
+                    until v:GetChildren()[1] ~= nil
                 end
             end 
             task.wait()      
