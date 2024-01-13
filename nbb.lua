@@ -58,7 +58,9 @@ misc:Toggle{
             for _,v in pairs(workspace.ItemSpawns.StandardItems:GetChildren()) do
                 if v:GetChildren()[1] ~= nil then
                     pcall(function()
-                        plyr.Character.HumanoidRootPart.CFrame = v:GetChildren()[1].CFrame * CFrame.new(0, 0, -4)
+                        if  (v:GetChildren()[1]:GetPivot().p - game.Players.LocalPlayer.Character:GetPivot().p).Magnitude > 5 then
+                            plyr.Character.HumanoidRootPart.CFrame = v:GetChildren()[1].CFrame * CFrame.new(0, 0, -4)
+                        end
                         fireproximityprompt(v:GetChildren()[1].ProximityAttachment.Interaction)
                         repeat
                             if not ItemFarm then break end
