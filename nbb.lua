@@ -1,5 +1,11 @@
 local Mercury = loadstring(game:HttpGet("https://raw.githubusercontent.com/RaCc0oN1/RobloxObf/main/ReworkMercury"))()
 ---
+local GUI = Mercury:Create{
+    Name = "Mercury",
+    Size = UDim2.fromOffset(600, 400),
+    Theme = Mercury.Themes.Dark,
+    Link = "https://github.com/deeeity/mercury-lib"
+}
 --- GUI create
 local Plugins = GUI:Tab{
     Name = "Plugins",
@@ -142,12 +148,6 @@ PlayerTab:Slider{
     Callback = function(JumpHeightSlider)
         game.Players.LocalPlayer.Character.Humanoid.JumpHeight = JumpHeightSlider
     end
-}
-local GUI = Mercury:Create{
-    Name = "Mercury",
-    Size = UDim2.fromOffset(600, 400),
-    Theme = Mercury.Themes.Dark,
-    Link = "https://github.com/deeeity/mercury-lib"
 }
 ---
 local misc = GUI:Tab{
