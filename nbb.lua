@@ -204,11 +204,12 @@ misc:Toggle{
                         if not ItemFarm then break end
                         task.wait()
                     until v:GetChildren()[1].ProximityAttachment.Interaction
+                    task.wait(0.5)
                     fireproximityprompt(v:GetChildren()[1].ProximityAttachment.Interaction)
                     repeat
                         if not ItemFarm then break end
                         task.wait()
-                    until v:GetChildren()[1] ~= nil
+                    until not v:GetChildren()[1].ProximityAttachment.Interaction
                     -- task.wait(3)
                 end
             end 
