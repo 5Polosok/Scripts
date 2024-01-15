@@ -259,10 +259,9 @@ Main:Toggle{
                 game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
             end
             for _,v in pairs(workspace.Server.Raid.Enemies:GetChildren()) do
-                pcall(function()
                     repeat
                         if not autoraid then break end
-                        HRT.CFrame = v.CFrame + Vector3.new(0, 0.5, 0)
+                        HRT.CFrame = v.CFrame + Vector3.new(0, 1, 0)
                         print(v:GetFullName())
                         local args = {
                             [1] = "Attack",
@@ -276,7 +275,6 @@ Main:Toggle{
                         game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                         task.wait()
                     until not v
-                end)
             end
             task.wait()
         end
