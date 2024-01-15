@@ -261,7 +261,7 @@ Main:Toggle{
             for _,v in pairs(workspace.Server.Raid.Enemies:GetChildren()) do
                     repeat
                         if not autoraid then break end
-                        HRT.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.lookVector * -4
+                        HRT.CFrame = v.CFrame + v.CFrame.lookVector * -4
                         print(v:GetFullName())
                         local args = {
                             [1] = "Attack",
