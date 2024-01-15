@@ -262,6 +262,7 @@ Main:Toggle{
                     repeat
                         if not autoraid then break end
                         HRT.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.lookVector * -4
+                        print(v:GetFullName())
                         local args = {
                             [1] = "Attack",
                             [2] = "Click",
