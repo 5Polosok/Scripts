@@ -264,7 +264,7 @@ Main:Toggle{
                         if not autoraid then break end
                         HRT.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.lookVector * -5
                         task.wait()
-                    until v == nil
+                    until not v
                 end)
             end
             task.wait()
