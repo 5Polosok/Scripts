@@ -258,7 +258,7 @@ Main:Toggle{
                 
                 game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
             end
-            for _,v in pairs(workspace.Client.Enemies.Raid:GetChildren()) do
+            for _,v in pairs(workspace.Server.Raid.Enemies:GetChildren()) do
                 pcall(function()
                     repeat
                         if not autoraid then break end
