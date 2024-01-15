@@ -258,7 +258,7 @@ Main:Toggle{
                 if v:GetAttributes()["Health"] ~= 0 then
                     repeat
                         if not autoraid then break end
-                        -- HRT.CFrame = v.CFrame
+                        HRT.CFrame = v.CFrame
                         local args = {
                             [1] = "Attack",
                             [2] = "Click",
