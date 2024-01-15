@@ -276,6 +276,36 @@ Main:Toggle{
         end
     end
 }
+local autoraid2
+Main:Toggle{
+    Name = "AutoRaidStealer",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        autoraid2 = state
+        while autoraid2 do
+            for _,v in pairs(workspace.Server.Raid.Enemies:GetChildren()) do
+                if v:GetAttributes()["Health"] > 0 then
+                    repeat
+                        if not autoraid2 then break end
+                        local args = {
+                            [1] = "Attack",
+                            [2] = "Click",
+                            [3] = {
+                                ["Enemy"] = v,
+                                ["Type"] = "Raid"
+                            }
+                        }
+                        
+                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                        task.wait()
+                    until v:GetAttributes()["Health"] ~= 0 or not v
+                end
+            end
+            task.wait()
+        end
+    end
+}
 local AutoInvasion
 Main:Toggle{
     Name = "AutoInvasion",
