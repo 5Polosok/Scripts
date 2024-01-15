@@ -151,10 +151,6 @@ PlayerTab:Slider{
 }
 local Notif = loadstring(game:HttpGet("https://api-sirclub.onrender.com/scripts/raw/notifybottom.lua"))()
 ---
-local misc = GUI:Tab{
-	Name = "Misc Functions",
-	Icon = "rbxassetid://8569322835"
-}
 local ismobile = game:GetService("UserInputService").TouchEnabled
 if ismobile then
     local RaCc0oNScrGUI = Instance.new("ScreenGui")
@@ -262,7 +258,7 @@ Main:Toggle{
                 if v:GetAttributes()["Health"] ~= 0 then
                     repeat
                         if not autoraid then break end
-                        HRT.CFrame = v.CFrame + Vector3.new(0, 1.2, 0)
+                        -- HRT.CFrame = v.CFrame
                         local args = {
                             [1] = "Attack",
                             [2] = "Click",
