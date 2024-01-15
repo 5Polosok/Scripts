@@ -262,7 +262,7 @@ Main:Toggle{
                 pcall(function()
                     repeat
                         if not autoraid then break end
-                        HRT.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.lookVector * -5
+                        HRT.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.lookVector * -4
                         task.wait()
                     until not v
                 end)
