@@ -263,6 +263,16 @@ Main:Toggle{
                     repeat
                         if not autoraid then break end
                         HRT.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.lookVector * -4
+                        local args = {
+                            [1] = "Attack",
+                            [2] = "Click",
+                            [3] = {
+                                ["Enemy"] = workspace.Server.Raid.Enemies.Chese,
+                                ["Type"] = "Raid"
+                            }
+                        }
+                        
+                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                         task.wait()
                     until not v
                 end)
