@@ -227,12 +227,12 @@ Main:Toggle{
         AutoCollect = state
         while AutoCollect do
             for _,v in pairs(workspace.Debris:GetChildren()) do
-                if v.Name ~= "Smoke" then
+                pcall(function()
                     v.CFrame = HRT.CFrame
                     v.CanCollide = false
-                end
+                end)
             end
-            task.wait()      
+            task.wait(1)      
         end
     end
 }
