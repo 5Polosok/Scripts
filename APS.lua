@@ -255,7 +255,7 @@ Main:Toggle{
                 game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
             end
             for _,v in pairs(workspace.Server.Raid.Enemies:GetChildren()) do
-                if v:GetAttributes()["Health"] ~= 0 then
+                if v:GetAttributes()["Health"] > 0 then
                     repeat
                         if not autoraid then break end
                         HRT.CFrame = v.CFrame
@@ -270,7 +270,7 @@ Main:Toggle{
                         
                         game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                         task.wait()
-                    until v:GetAttributes()["Health"] <= 0
+                    until v:GetAttributes()["Health"] ~= 0 or not v
                 end
             end
             task.wait()
