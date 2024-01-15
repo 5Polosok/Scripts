@@ -274,7 +274,7 @@ Main:Toggle{
                         
                         game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                         task.wait()
-                    until v:GetAttributes()["Health"] ~= 0
+                    until v:GetAttributes()["Health"] == 0
                 end
             end
             task.wait()
