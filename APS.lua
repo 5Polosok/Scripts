@@ -284,7 +284,7 @@ Main:Toggle{
     Callback = function(state)
         AutoInvasion = state
         while AutoInvasion do
-            if (workspace.Server.InvasionShip.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+            if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
                 --tp to invasion
               local args = {
                    [1] = "Enemies",
