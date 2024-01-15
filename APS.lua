@@ -267,7 +267,7 @@ Main:Toggle{
                             [1] = "Attack",
                             [2] = "Click",
                             [3] = {
-                                ["Enemy"] = workspace.Server.Raid.Enemies.Chese,
+                                ["Enemy"] = v,
                                 ["Type"] = "Raid"
                             }
                         }
