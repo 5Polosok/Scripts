@@ -248,7 +248,7 @@ Main:Toggle{
                     [3] = {
                         ["Module"] = "Raid",
                         ["FunctionName"] = "Start",
-                        ["Args"] = "Public"
+                        ["Args"] = "Friend"
                     }
                 }
                 
@@ -267,6 +267,50 @@ Main:Toggle{
                             }
                         }
                         
+                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                        task.wait()
+                    until v:GetAttributes()["Health"] ~= 0 or not v
+                end
+            end
+            task.wait()
+        end
+    end
+}
+local AutoInvasion
+Main:Toggle{
+    Name = "AutoInvasion",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoInvasion = state
+        while AutoInvasion do
+            if (workspace.Server.InvasionShip.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+                --tp to invasion
+              local args = {
+                   [1] = "Enemies",
+                   [2] = "Bridge",
+                   [3] = {
+                        ["Module"] = "InvasionShip",
+                        ["FunctionName"] = "Start",
+                        ["Args"] = "Friend"
+                  }
+               }
+
+              game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+
+            end
+            for _,v in pairs(workspace.Server.InvasionShip.Enemies:GetChildren()) do
+                if v:GetAttributes()["Health"] > 0 then
+                    repeat
+                        if not AutoInvasion then break end
+		        local args = {
+                            [1] = "Attack",
+                            [2] = "Click",
+                            [3] = {
+                                ["Enemy"] = v,
+                                ["Type"] = "InvasionShip"
+                           }
+                        }
                         game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                         task.wait()
                     until v:GetAttributes()["Health"] ~= 0 or not v
