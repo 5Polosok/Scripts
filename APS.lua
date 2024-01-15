@@ -262,7 +262,7 @@ Main:Toggle{
                 pcall(function()
                     repeat
                         if not autoraid then break end
-                        HRT.CFrame = v.CFrame + CFrame.new(0, 2, 0)
+                        HRT.CFrame = v.CFrame + Vector3.new(0, 2, 0)
                         print(v:GetFullName())
                         local args = {
                             [1] = "Attack",
