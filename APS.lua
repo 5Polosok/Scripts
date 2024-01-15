@@ -350,3 +350,32 @@ Main:Toggle{
         end
     end
 }
+local AutoInvasion2
+Main:Toggle{
+    Name = "AutoInvasionStealer",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoInvasion2 = state
+        while AutoInvasion2 do
+            for _,v in pairs(workspace.Server.InvasionShip.Enemies:GetChildren()) do
+                if v:GetAttributes()["Health"] > 0 then
+                    repeat
+                        if not AutoInvasion2 then break end
+		        local args = {
+                            [1] = "Attack",
+                            [2] = "Click",
+                            [3] = {
+                                ["Enemy"] = v,
+                                ["Type"] = "InvasionShip"
+                           }
+                        }
+                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                        task.wait()
+                    until v:GetAttributes()["Health"] ~= 0 or not v
+                end
+            end
+            task.wait()
+        end
+    end
+}
