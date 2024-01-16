@@ -232,7 +232,7 @@ Main:Toggle{
                     v.CanCollide = false
                 end)
             end
-            task.wait(1)      
+            task.wait(1)
         end
     end
 }
@@ -256,7 +256,6 @@ table.sort(worldz)
 for _,v in pairs(worldz) do
     Worlds:AddItems({v})
 end
-local mob_chosen
 local AFarmSelected = {}
 local Mobs = Main:Dropdown{
     Name = "Mobs DD",
@@ -341,11 +340,17 @@ Main:Toggle{
     Description = nil,
     Callback = function(state)
         WorldFarm = state
+        local args = {
+            [1] = "Teleport",
+            [2] = "Spawn",
+            [3] = world
+        }
+        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
         while WorldFarm do
             local mob
             for _,v in pairs(workspace.Server.Enemies.World[world]:GetChildren()) do
                 for _, z in pairs(AFarmSelected) do
-                    if v.Name == z then
+                    if v.Name == z and v:GetAttributes()["Health"] > 0 then
                         mob = v
                         break
                     end
