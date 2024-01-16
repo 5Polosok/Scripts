@@ -305,6 +305,25 @@ Main:Toggle{
             task.wait()
         end
     end
+local room
+Main:Textbox{
+	Name = "AutoLeave Room",
+	Callback = function(text)
+             room = text
+        end
+}
+local AutoLeave
+Tab:Toggle{
+        Name = "Toggle",
+        StartingState = false,
+        Description = nil,
+        Callback = function(state)
+        AutoLeave = state
+        while AutoLeave do 
+	    task.wait(1)
+            if 
+        end
+     end
 }
 local AutoInvasion
 Main:Toggle{
