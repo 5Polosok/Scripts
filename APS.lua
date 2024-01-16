@@ -333,6 +333,13 @@ Main:Button{
         end
     end
 }
+Main:Button{
+    Name = "Reset Mob List",
+    Description = nil,
+    Callback = function()
+            AFarmSelected = {}
+    end
+}
 local WorldFarm
 Main:Toggle{
     Name = "World Farm",
