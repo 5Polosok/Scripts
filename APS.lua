@@ -360,9 +360,7 @@ Main:Toggle{
                     if v.Name == z and v:GetAttributes()["Health"] > 0 then
                         mob = v
                         break
-		    elseif v:GetAttributes()["Health"] <= 0 then
-                           print(v:GetAttributes()["Health"]) 
-		    end
+                    end
                 end
                 if mob then break end
             end
@@ -380,7 +378,7 @@ Main:Toggle{
                     
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args2))
                     task.wait()
-                until mob:GetAttributes()["Health"] <= 0
+                until mob:GetAttributes()["Health"] ~= 0 or not mob
             end
             task.wait()
         end
@@ -530,6 +528,84 @@ Main2:Toggle{
         while AutoLeave2 do
             task.wait(3)
             if plyr.PlayerGui.UI.HUD.InvasionShip.Room.Text == "Room "..room2 then
+                local args = {
+                    [1] = "Teleport",
+                    [2] = "Spawn",
+                    [3] = "Desert Piece"
+                }
+                game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+            end
+        end
+    end
+} 
+
+local AutoDefense
+Main2:Toggle{
+    Name = "AutoDefense",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoDefense = state
+        while AutoDefense do
+            if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+                --tp to invasion
+                local args = {
+                    [1] = "Enemies",
+                    [2] = "Bridge",
+                    [3] = {
+                        ["Module"] = "Defense",
+                        ["FunctionName"] = "Start",
+                        ["Args"] = "Friend"
+                    }
+                }
+                
+                game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+            end
+
+            local mob
+            for _,v in pairs(workspace.Server.Defense.Enemies:GetChildren()) do
+                if v:GetAttributes()["Health"] > 0 then
+                    mob = v
+                    break
+                end
+            end
+            if mob then
+                repeat
+                    if not AutoDefense then break end
+                    local args = {
+                        [1] = "Attack",
+                        [2] = "Click",
+                        [3] = {
+                            ["Enemy"] = mob,
+                            ["Type"] = "Defense"
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait()
+                until mob:GetAttributes()["Health"] ~= 0 or not mob
+            end
+            task.wait()
+        end
+    end
+}
+local room3
+Main2:Textbox{
+	Name = "AutoLeave Room Defense",
+	Callback = function(text)
+        room3 = text
+    end
+}
+local AutoLeave3
+Main2:Toggle{
+    Name = "AutoLeave Defense",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoLeave3 = state
+        while AutoLeave3 do
+            task.wait(3)
+            if plyr.PlayerGui.UI.HUD.Defense.Room.Text == "Wave "..room3 then
                 local args = {
                     [1] = "Teleport",
                     [2] = "Spawn",
