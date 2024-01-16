@@ -305,6 +305,7 @@ Main:Toggle{
             task.wait()
         end
     end
+}
 local room
 Main:Textbox{
 	Name = "AutoLeave Room",
