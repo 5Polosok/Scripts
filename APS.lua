@@ -313,15 +313,23 @@ Main:Textbox{
         end
 }
 local AutoLeave
-Tab:Toggle{
-        Name = "Toggle",
+Main:Toggle{
+        Name = "AutoLeave",
         StartingState = false,
         Description = nil,
         Callback = function(state)
         AutoLeave = state
         while AutoLeave do 
-	    task.wait(1)
-            if 
+	    task.wait(3)
+            if plyr.PlayerGui.UI.Hud.Raid.Room.Text == "Room "..room then
+                local args = {
+                  [1] = "Teleport",
+                  [2] = "Spawn",
+                  [3] = "Desert Piece"
+		}
+                game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+
+	    end
         end
      end
 }
