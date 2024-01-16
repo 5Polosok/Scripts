@@ -192,6 +192,10 @@ local Main = GUI:Tab{
 	Name = "Main Feauters",
 	Icon = "rbxassetid://8569322835"
 }
+local Main2 = GUI:Tab{
+    Name = "AutoFarm Feauters",
+	Icon = "rbxassetid://8569322835"
+}
 
 local AutoClick
 Main:Toggle{
@@ -232,8 +236,148 @@ Main:Toggle{
         end
     end
 }
-local autoraid
+local world = "Leaf City"
+local Worlds = Main:Dropdown{
+	Name = "Worlds DD",
+	StartingText = "Select...",
+	Description = nil,
+	Items = {
+
+	},
+	Callback = function(item)
+        world = item
+    end
+}
+local worldz = {}
+for _,v in pairs(workspace.Server.Enemies.World:GetChildren()) do
+    table.insert(worldz, v.Name)
+end
+table.sort(worldz)
+for _,v in pairs(worldz) do
+    Worlds:AddItems(v)
+end
+local mob_chosen
+local AFarmSelected
+local Mobs = Main:Dropdown{
+    Name = "Mobs DD",
+    StartingText = "Select...",
+    Description = nil,
+    Items = {
+
+    },
+    Callback = function(item)
+        local string = "Current AutoFarm:"
+        local state = false
+        for _,v in pairs(AFarmSelected) do
+            if v == item then
+                state = true
+                break
+            end
+        end
+        if not state then
+            table.insert(AFarmSelected, item)
+        else
+            for k, q in pairs(AFarmSelected) do
+                if q == item then
+                    table.remove(AFarmSelected, k)
+                end
+            end
+        end
+        for _,v in pairs(AFarmSelected) do
+            string = " "..string..v..";"
+        end
+        Notif.New(string)
+    end
+}
+local mobs_table = {}
+for _,v in pairs(workspace.Server.Enemies.World[world]:GetChildren()) do
+    local state = true
+    for _, z in pairs(mobs_table) do
+        if z == v.Name then
+            state = false
+            break
+        end
+    end
+    if state then
+        table.insert(mobs_table, v.Name)
+    end
+end
+table.sort(mobs_table)
+for _,v in pairs(mobs_table) do
+    Mobs:AddItems({v})
+end
+Main:Button{
+    Name = "Refresh Mobs DD",
+    Description = nil,
+    Callback = function()
+        for _,v in pairs(mobs_table) do
+            pcall(function()
+                Mobs:RemoveItems({v})
+            end)
+        end
+        mobs_table = {}
+        for _,v in pairs(workspace.Server.Enemies.World[world]:GetChildren()) do
+            local state = true
+            for _, z in pairs(mobs_table) do
+                if z == v.Name then
+                    state = false
+                    break
+                end
+            end
+            if state then
+                table.insert(mobs_table, v.Name)
+            end
+        end
+        table.sort(mobs_table)
+        for _,v in pairs(mobs_table) do
+            Mobs:AddItems({v})
+        end
+    end
+}
+local WorldFarm
 Main:Toggle{
+    Name = "World Farm",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        WorldFarm = state
+        while WorldFarm do
+            local mob
+            local statemantus = false
+            for _,v in pairs(workspace.Server.Enemies.World[world]:GetChildren()) do
+                for _, z in pairs(AFarmSelected) do
+                    if v.Name == z then
+                        mob = v
+                        break
+                    end
+                end
+                if mob then break end
+            end
+            if mob then
+                repeat
+                    if not WorldFarm then break end
+                    local args = {
+                        [1] = "Attack",
+                        [2] = "Click",
+                        [3] = {
+                            ["Enemy"] = mob,
+                            ["Type"] = "World"
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait()
+                until not mob or mob:GetAttributes()["Health"] ~= 0
+            end
+            task.wait()
+        end
+    end
+}
+
+
+----- MAIN2
+local autoraid
+Main2:Toggle{
     Name = "AutoRaid",
     StartingState = false,
     Description = nil,
@@ -254,88 +398,97 @@ Main:Toggle{
                 
                 game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
             end
+            local mob
             for _,v in pairs(workspace.Server.Raid.Enemies:GetChildren()) do
                 if v:GetAttributes()["Health"] > 0 then
-                    repeat
-                        if not autoraid then break end
-                        local args = {
-                            [1] = "Attack",
-                            [2] = "Click",
-                            [3] = {
-                                ["Enemy"] = v,
-                                ["Type"] = "Raid"
-                            }
-                        }
-                        
-                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                        task.wait()
-                    until v:GetAttributes()["Health"] ~= 0 or not v
+                    mob = v
+                    break
                 end
+            end
+            if mob then
+                repeat
+                    if not autoraid then break end
+                    local args = {
+                        [1] = "Attack",
+                        [2] = "Click",
+                        [3] = {
+                            ["Enemy"] = mob,
+                            ["Type"] = "Raid"
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait()
+                until mob:GetAttributes()["Health"] ~= 0 or not mob
             end
             task.wait()
         end
     end
 }
 local autoraid2
-Main:Toggle{
+Main2:Toggle{
     Name = "AutoRaidStealer",
     StartingState = false,
     Description = nil,
     Callback = function(state)
         autoraid2 = state
         while autoraid2 do
+            local mob
             for _,v in pairs(workspace.Server.Raid.Enemies:GetChildren()) do
                 if v:GetAttributes()["Health"] > 0 then
-                    repeat
-                        if not autoraid2 then break end
-                        local args = {
-                            [1] = "Attack",
-                            [2] = "Click",
-                            [3] = {
-                                ["Enemy"] = v,
-                                ["Type"] = "Raid"
-                            }
-                        }
-                        
-                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                        task.wait()
-                    until v:GetAttributes()["Health"] ~= 0 or not v
+                    mob = v
+                    break
                 end
+            end
+            if mob then
+                repeat
+                    if not autoraid2 then break end
+                    local args = {
+                        [1] = "Attack",
+                        [2] = "Click",
+                        [3] = {
+                            ["Enemy"] = mob,
+                            ["Type"] = "Raid"
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait()
+                until mob:GetAttributes()["Health"] ~= 0 or not mob
             end
             task.wait()
         end
     end
 }
 local room
-Main:Textbox{
+Main2:Textbox{
 	Name = "AutoLeave Room",
 	Callback = function(text)
-             room = text
-        end
+        room = text
+    end
 }
 local AutoLeave
-Main:Toggle{
+Main2:Toggle{
         Name = "AutoLeave",
         StartingState = false,
         Description = nil,
         Callback = function(state)
         AutoLeave = state
-        while AutoLeave do 
-	    task.wait(3)
+        while AutoLeave do
+	        task.wait(3)
             if plyr.PlayerGui.UI.HUD.Raid.Room.Text == "Room "..room then
                 local args = {
-                  [1] = "Teleport",
-                  [2] = "Spawn",
-                  [3] = "Desert Piece"
-		}
+                    [1] = "Teleport",
+                    [2] = "Spawn",
+                    [3] = "Desert Piece"
+		        }
                 game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-
-	    end
+	        end
         end
-     end
+    end
 }
 local AutoInvasion
-Main:Toggle{
+Main2:Toggle{
     Name = "AutoInvasion",
     StartingState = false,
     Description = nil,
@@ -344,66 +497,75 @@ Main:Toggle{
         while AutoInvasion do
             if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
                 --tp to invasion
-              local args = {
-                   [1] = "Enemies",
-                   [2] = "Bridge",
-                   [3] = {
+                 local args = {
+                    [1] = "Enemies",
+                    [2] = "Bridge",
+                    [3] = {
                         ["Module"] = "InvasionShip",
                         ["FunctionName"] = "Start",
                         ["Args"] = "Friend"
-                  }
-               }
-
-              game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-
+                    }
+                }
+                game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
             end
+
+            local mob
             for _,v in pairs(workspace.Server.InvasionShip.Enemies:GetChildren()) do
                 if v:GetAttributes()["Health"] > 0 then
-                    repeat
-                        if not AutoInvasion then break end
-		        local args = {
-                            [1] = "Attack",
-                            [2] = "Click",
-                            [3] = {
-                                ["Enemy"] = v,
-                                ["Type"] = "InvasionShip"
-                           }
-                        }
-                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                        task.wait()
-                    until v:GetAttributes()["Health"] ~= 0 or not v
+                    mob = v
+                    break
                 end
+            end
+            if mob then
+                repeat
+                    if not AutoInvasion then break end
+                    local args = {
+                        [1] = "Attack",
+                        [2] = "Click",
+                        [3] = {
+                            ["Enemy"] = mob,
+                            ["Type"] = "InvasionShip"
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait()
+                until mob:GetAttributes()["Health"] ~= 0 or not mob
             end
             task.wait()
         end
     end
 }
 local AutoInvasion2
-Main:Toggle{
+Main2:Toggle{
     Name = "AutoInvasionStealer",
     StartingState = false,
     Description = nil,
     Callback = function(state)
         AutoInvasion2 = state
         while AutoInvasion2 do
+            local mob
             for _,v in pairs(workspace.Server.InvasionShip.Enemies:GetChildren()) do
                 if v:GetAttributes()["Health"] > 0 then
-                    repeat
-                        if not AutoInvasion2 then break end
-		        local args = {
-                            [1] = "Attack",
-                            [2] = "Click",
-                            [3] = {
-                                ["Enemy"] = v,
-                                ["Type"] = "InvasionShip"
-                           }
-                        }
-                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                        task.wait()
-                    until v:GetAttributes()["Health"] ~= 0 or not v
+                    mob = v
+                    break
                 end
+            end
+            if mob then
+                repeat
+                    if not AutoInvasion2 then break end
+                    local args = {
+                        [1] = "Attack",
+                        [2] = "Click",
+                        [3] = {
+                            ["Enemy"] = mob,
+                            ["Type"] = "InvasionShip"
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait()
+                until mob:GetAttributes()["Health"] ~= 0 or not mob
             end
             task.wait()
         end
     end
-}
+}   
