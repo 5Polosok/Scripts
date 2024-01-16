@@ -429,41 +429,6 @@ Main2:Toggle{
         end
     end
 }
-local autoraid2
-Main2:Toggle{
-    Name = "AutoRaidStealer",
-    StartingState = false,
-    Description = nil,
-    Callback = function(state)
-        autoraid2 = state
-        while autoraid2 do
-            local mob
-            for _,v in pairs(workspace.Server.Raid.Enemies:GetChildren()) do
-                if v:GetAttributes()["Health"] > 0 then
-                    mob = v
-                    break
-                end
-            end
-            if mob then
-                repeat
-                    if not autoraid2 then break end
-                    local args = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = mob,
-                            ["Type"] = "Raid"
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait()
-                until mob:GetAttributes()["Health"] ~= 0 or not mob
-            end
-            task.wait()
-        end
-    end
-}
 local room
 Main2:Textbox{
 	Name = "AutoLeave Room Raid",
@@ -539,50 +504,16 @@ Main2:Toggle{
         end
     end
 }
-local AutoInvasion2
-Main2:Toggle{
-    Name = "AutoInvasionStealer",
-    StartingState = false,
-    Description = nil,
-    Callback = function(state)
-        AutoInvasion2 = state
-        while AutoInvasion2 do
-            local mob
-            for _,v in pairs(workspace.Server.InvasionShip.Enemies:GetChildren()) do
-                if v:GetAttributes()["Health"] > 0 then
-                    mob = v
-                    break
-                end
-            end
-            if mob then
-                repeat
-                    if not AutoInvasion2 then break end
-                    local args = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = mob,
-                            ["Type"] = "InvasionShip"
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait()
-                until mob:GetAttributes()["Health"] ~= 0 or not mob
-            end
-            task.wait()
-        end
-    end
-}  
 local room2
 Main2:Textbox{
-	Name = "AutoLeave InvasionShip",
+	Name = "AutoLeave Room InvasionShip",
 	Callback = function(text)
         room2 = text
     end
 }
 local AutoLeave2
 Main2:Toggle{
-    Name = "AutoLeave",
+    Name = "AutoLeave Invasion",
     StartingState = false,
     Description = nil,
     Callback = function(state)
