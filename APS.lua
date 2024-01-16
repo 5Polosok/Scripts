@@ -360,7 +360,7 @@ Main:Toggle{
             if mob then
                 repeat
                     if not WorldFarm then break end
-                    local args = {
+                    local args2 = {
                         [1] = "Attack",
                         [2] = "Click",
                         [3] = {
@@ -369,9 +369,9 @@ Main:Toggle{
                         }
                     }
                     
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args2))
                     task.wait()
-                until not mob or mob:GetAttributes()["Health"] ~= 0
+                until mob:GetAttributes()["Health"] ~= 0 or not mob
             end
             task.wait()
         end
@@ -466,14 +466,14 @@ Main2:Toggle{
 }
 local room
 Main2:Textbox{
-	Name = "AutoLeave Room",
+	Name = "AutoLeave Room Raid",
 	Callback = function(text)
         room = text
     end
 }
 local AutoLeave
 Main2:Toggle{
-        Name = "AutoLeave",
+        Name = "AutoLeave Raid",
         StartingState = false,
         Description = nil,
         Callback = function(state)
@@ -572,4 +572,31 @@ Main2:Toggle{
             task.wait()
         end
     end
-}   
+}  
+local room2
+Main2:Textbox{
+	Name = "AutoLeave InvasionShip",
+	Callback = function(text)
+        room2 = text
+    end
+}
+local AutoLeave2
+Main2:Toggle{
+    Name = "AutoLeave",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoLeave2 = state
+        while AutoLeave2 do
+            task.wait(3)
+            if plyr.PlayerGui.UI.HUD.InvasionShip.Room.Text == "Room "..room2 then
+                local args = {
+                    [1] = "Teleport",
+                    [2] = "Spawn",
+                    [3] = "Desert Piece"
+                }
+                game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+            end
+        end
+    end
+} 
