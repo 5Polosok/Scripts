@@ -360,7 +360,9 @@ Main:Toggle{
                     if v.Name == z and v:GetAttributes()["Health"] > 0 then
                         mob = v
                         break
-                    end
+		    elseif v:GetAttributes()["Health"] <= 0 then
+                           print(v:GetAttributes()["Health"]) 
+		    end
                 end
                 if mob then break end
             end
@@ -378,7 +380,7 @@ Main:Toggle{
                     
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args2))
                     task.wait()
-                until mob:GetAttributes()["Health"] ~= 0 or not mob
+                until mob:GetAttributes()["Health"] <= 0
             end
             task.wait()
         end
