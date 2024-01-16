@@ -236,6 +236,54 @@ Main:Toggle{
         end
     end
 }
+local egg_chosen
+local Eggs = Main:Dropdown{
+	Name = "Dropdown",
+	StartingText = "Select...",
+	Description = nil,
+	Items = {
+
+	},
+	Callback = function(item)
+        egg_chosen = item
+    end
+} 
+
+local worldzq = {}
+
+for _,v in pairs(workspace.Server.Enemies.World:GetChildren()) do
+    table.insert(worldzq, v.Name)
+end
+
+table.sort(worldzq)
+
+for _,v in pairs(worldzq) do
+    Eggs:AddItems({v})
+end
+
+local AutoOpenEgg
+Main:Toggle{
+    Name = "AutoOpen Star",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoOpenEgg = state
+        while AutoOpenEgg do
+            local args = {
+                [1] = "Stars",
+                [2] = "Roll",
+                [3] = {
+                    ["Map"] = egg_chosen,
+                    ["Type"] = "Multi"
+                }
+            }
+            
+            game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+            task.wait()
+        end
+    end
+}
+
 local world = "Leaf City"
 local Worlds = Main:Dropdown{
 	Name = "Worlds DD",
