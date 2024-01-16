@@ -257,7 +257,7 @@ for _,v in pairs(worldz) do
     Worlds:AddItems({v})
 end
 local mob_chosen
-local AFarmSelected
+local AFarmSelected = {}
 local Mobs = Main:Dropdown{
     Name = "Mobs DD",
     StartingText = "Select...",
