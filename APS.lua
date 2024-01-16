@@ -254,7 +254,7 @@ for _,v in pairs(workspace.Server.Enemies.World:GetChildren()) do
 end
 table.sort(worldz)
 for _,v in pairs(worldz) do
-    Worlds:AddItems(v)
+    Worlds:AddItems({v})
 end
 local mob_chosen
 local AFarmSelected
@@ -343,7 +343,6 @@ Main:Toggle{
         WorldFarm = state
         while WorldFarm do
             local mob
-            local statemantus = false
             for _,v in pairs(workspace.Server.Enemies.World[world]:GetChildren()) do
                 for _, z in pairs(AFarmSelected) do
                     if v.Name == z then
