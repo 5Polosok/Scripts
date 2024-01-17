@@ -199,7 +199,7 @@ local Main2 = GUI:Tab{
 
 local AutoClick
 Main:Toggle{
-    Name = "AutoClick",
+    Name = "Auto Energy",
     StartingState = false,
     Description = nil,
     Callback = function(state)
@@ -220,7 +220,7 @@ Main:Toggle{
 }
 local AutoCollect
 Main:Toggle{
-    Name = "AutoCollect",
+    Name = "AutoCollect Drop",
     StartingState = false,
     Description = nil,
     Callback = function(state)
@@ -238,7 +238,7 @@ Main:Toggle{
 }
 local egg_chosen
 local Eggs = Main:Dropdown{
-	Name = "Egg Selection",
+	Name = "Star Selection",
 	StartingText = "Select...",
 	Description = nil,
 	Items = {
@@ -286,7 +286,7 @@ Main:Toggle{
 
 local world = "Leaf City"
 local Worlds = Main:Dropdown{
-	Name = "Worlds DD",
+	Name = "World Farm Selection",
 	StartingText = "Select...",
 	Description = nil,
 	Items = {
@@ -306,7 +306,7 @@ for _,v in pairs(worldz) do
 end
 local AFarmSelected = {}
 local Mobs = Main:Dropdown{
-    Name = "Mobs DD",
+    Name = "Mobs Selection",
     StartingText = "Select...",
     Description = nil,
     Items = {
@@ -354,7 +354,7 @@ for _,v in pairs(mobs_table) do
     Mobs:AddItems({v})
 end
 Main:Button{
-    Name = "Refresh Mobs DD",
+    Name = "Refresh Mobs DropDown",
     Description = nil,
     Callback = function()
         for _,v in pairs(mobs_table) do
