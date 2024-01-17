@@ -479,6 +479,7 @@ Main2:Toggle{
                         }
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+		    print(mob:GetAttributes()["Health"])
                     task.wait()
                 until mob:GetAttributes()["Health"] == 0
             end
