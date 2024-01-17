@@ -469,6 +469,7 @@ Main2:Toggle{
 	        HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 repeat
                     if not autoraid then break end
+	            if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -546,6 +547,8 @@ Main2:Toggle{
 		HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 repeat
                     if not AutoInvasion then break end
+                    if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+ break end               
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -624,6 +627,7 @@ Main2:Toggle{
 		HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 repeat
                     if not AutoDefense then break end
+                    if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
