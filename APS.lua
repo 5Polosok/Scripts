@@ -416,7 +416,7 @@ Main:Toggle{
                 end
                 if mob then break end
             end
-            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss then
+            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Escenor" then
                 boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
             end
             if mob and not boss then
@@ -448,7 +448,7 @@ Main:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args2))
                     task.wait()
                 until mob:GetAttributes()["Health"] == 0
-            elseif boss then
+            elseif boss and raidboss then
                 if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
                     local args = {
                         [1] = "Teleport",
@@ -490,7 +490,7 @@ Main2:Toggle{
             local boss
             if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
                 --tp to raid
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Escenor" then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
                     local args = {
@@ -531,7 +531,7 @@ Main2:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
-            elseif boss then
+            elseif boss and raidboss then
                 if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
                     local args = {
                         [1] = "Teleport",
@@ -597,7 +597,7 @@ Main2:Toggle{
         while AutoInvasion do
             local boss
             if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Escenor" then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
                     --tp to invasion
@@ -639,7 +639,7 @@ Main2:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
-            elseif boss then
+            elseif boss and raidboss then
                 if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
                     local args = {
                         [1] = "Teleport",
@@ -706,7 +706,7 @@ Main2:Toggle{
         while AutoDefense do
             local boss
             if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Escenor" then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
                     --tp to defense
@@ -750,7 +750,7 @@ Main2:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
-            elseif boss then
+            elseif boss and raidboss then
                 if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
                     local args = {
                         [1] = "Teleport",
