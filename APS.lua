@@ -421,13 +421,18 @@ Main:Toggle{
             end
             if mob and not boss then
                 if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
-                    local args = {
-                        [1] = "Teleport",
-                        [2] = "Spawn",
-                        [3] = world
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+                    if workspace.Client.Maps:GetChildren()[1].Name ~= mob:GetAttributes()["World"] then
+                        local args = {
+                            [1] = "Teleport",
+                            [2] = "Spawn",
+                            [3] = mob:GetAttributes()["World"]
+                        }
+                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                        task.wait(1)
+                        HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+                    else
+                        HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+                    end
 		        end
                 repeat
                     if not WorldFarm then break end
