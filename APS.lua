@@ -478,7 +478,7 @@ Main2:Toggle{
                             ["Type"] = "Raid"
                         }
                     }
-                    
+                    print(mob:GetAttributes("Health"))
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob:GetAttributes("Health") == 0
