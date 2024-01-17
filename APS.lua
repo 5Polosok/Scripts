@@ -465,7 +465,7 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob then
+            if mob and (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
 	        HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 repeat
                     if not autoraid then break end
@@ -479,9 +479,8 @@ Main2:Toggle{
                         }
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-		    print(mob:GetAttributes()["Health"])
                     task.wait()
-                until mob
+                until not mob
             end
             task.wait()
         end
