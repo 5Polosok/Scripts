@@ -415,7 +415,7 @@ Main:Toggle{
             if mob then
                 repeat
                     if not WorldFarm then break end
-		    HRT.CFrame = v.CFrame
+		    HRT.CFrame = mob.CFrame
                     local args2 = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -468,7 +468,7 @@ Main2:Toggle{
             if mob then
                 repeat
                     if not autoraid then break end
-		    HRT.CFrame = v.CFrame
+		    HRT.CFrame = mob.CFrame
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -545,7 +545,7 @@ Main2:Toggle{
             if mob then
                 repeat
                     if not AutoInvasion then break end
-		    HRT.CFrame = v.CFrame
+		    HRT.CFrame = mob.CFrame
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -623,7 +623,7 @@ Main2:Toggle{
             if mob then
                 repeat
                     if not AutoDefense then break end
-		    HRT.CFrame = v.CFrame
+		    HRT.CFrame = mob.CFrame
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
