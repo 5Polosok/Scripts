@@ -404,12 +404,6 @@ Main:Toggle{
     Description = nil,
     Callback = function(state)
         WorldFarm = state
-        local args = {
-            [1] = "Teleport",
-            [2] = "Spawn",
-            [3] = world
-        }
-        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
         while WorldFarm do
             local mob
             local boss
@@ -426,7 +420,15 @@ Main:Toggle{
                 boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
             end
             if mob and not boss then
-		        HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+                if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    local args = {
+                        [1] = "Teleport",
+                        [2] = "Spawn",
+                        [3] = world
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+		        end
                 repeat
                     if not WorldFarm then break end
                     local args2 = {
@@ -442,7 +444,7 @@ Main:Toggle{
                     task.wait()
                 until mob:GetAttributes()["Health"] == 0
             elseif boss then
-                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
                     local args = {
                         [1] = "Teleport",
                         [2] = "Spawn",
@@ -450,7 +452,7 @@ Main:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait(1)
-                    HRT.CFrame = boss.CFrame + Vector3.new(0, 1.5, 0)
+                    HRT.CFrame = boss.CFrame + Vector3.new(0, 4, 0)
                 end
                 repeat
                     if not WorldFarm then break end
@@ -525,7 +527,7 @@ Main2:Toggle{
                     task.wait()
                 until mob
             elseif boss then
-                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
                     local args = {
                         [1] = "Teleport",
                         [2] = "Spawn",
@@ -533,7 +535,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait(1)
-                    HRT.CFrame = boss.CFrame + Vector3.new(0, 1.5, 0)
+                    HRT.CFrame = boss.CFrame + Vector3.new(0, 4, 0)
                 end
                 repeat
                     if not autoraid then break end
@@ -633,7 +635,7 @@ Main2:Toggle{
                     task.wait()
                 until mob
             elseif boss then
-                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
                     local args = {
                         [1] = "Teleport",
                         [2] = "Spawn",
@@ -641,7 +643,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait(1)
-                    HRT.CFrame = boss.CFrame + Vector3.new(0, 1.5, 0)
+                    HRT.CFrame = boss.CFrame + Vector3.new(0, 4, 0)
                 end
                 repeat
                     if not AutoInvasion then break end
@@ -744,7 +746,7 @@ Main2:Toggle{
                     task.wait()
                 until mob
             elseif boss then
-                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
                     local args = {
                         [1] = "Teleport",
                         [2] = "Spawn",
@@ -752,7 +754,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait(1)
-                    HRT.CFrame = boss.CFrame + Vector3.new(0, 1.5, 0)
+                    HRT.CFrame = boss.CFrame + Vector3.new(0, 4, 0)
                 end
                 repeat
                     if not AutoDefense then break end
