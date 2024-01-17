@@ -421,7 +421,7 @@ Main:Toggle{
             end
             if mob and not boss then
                 if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
-                    if tostring(workspace.Client.Maps:GetChildren()[1]) ~= tostring(mob:GetAttributes()["World"]) then
+                    if tostring(workspace.Client.Maps:GetChildren()[1]) ~= world then
                         local args = {
                             [1] = "Teleport",
                             [2] = "Spawn",
