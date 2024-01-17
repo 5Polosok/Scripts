@@ -443,6 +443,13 @@ Main:Toggle{
                 until mob:GetAttributes()["Health"] == 0
             elseif boss then
                 if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    local args = {
+                        [1] = "Teleport",
+                        [2] = "Spawn",
+                        [3] = boss:GetAttributes()["World"]
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait(1)
                     HRT.CFrame = boss.CFrame + Vector3.new(0, 1.5, 0)
                 end
                 repeat
@@ -519,6 +526,13 @@ Main2:Toggle{
                 until mob
             elseif boss then
                 if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    local args = {
+                        [1] = "Teleport",
+                        [2] = "Spawn",
+                        [3] = boss:GetAttributes()["World"]
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait(1)
                     HRT.CFrame = boss.CFrame + Vector3.new(0, 1.5, 0)
                 end
                 repeat
@@ -620,6 +634,13 @@ Main2:Toggle{
                 until mob
             elseif boss then
                 if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    local args = {
+                        [1] = "Teleport",
+                        [2] = "Spawn",
+                        [3] = boss:GetAttributes()["World"]
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait(1)
                     HRT.CFrame = boss.CFrame + Vector3.new(0, 1.5, 0)
                 end
                 repeat
@@ -724,6 +745,13 @@ Main2:Toggle{
                 until mob
             elseif boss then
                 if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    local args = {
+                        [1] = "Teleport",
+                        [2] = "Spawn",
+                        [3] = boss:GetAttributes()["World"]
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait(1)
                     HRT.CFrame = boss.CFrame + Vector3.new(0, 1.5, 0)
                 end
                 repeat
