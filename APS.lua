@@ -595,7 +595,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until mob:GetAttributes()["Health"] == 0
+                until mob
             elseif workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
                 if (workspace.Server.Enemies.RaidBoss:GetChildren()[1]:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = workspace.Server.Enemies.RaidBoss:GetChildren()[1].CFrame + Vector3.new(0, 1.5, 0)
@@ -612,7 +612,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until workspace.Server.Enemies.RaidBoss:GetChildren()[1]:GetAttributes()["Health"] == 0
+                until workspace.Server.Enemies.RaidBoss:GetChildren()[1]:GetAttributes()["Health"] ~= 0
             end
             task.wait()
         end
@@ -694,7 +694,7 @@ Main2:Toggle{
                     
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until mob:GetAttributes()["Health"] == 0
+                until mob
             elseif workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
                 if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = workspace.Server.Enemies.RaidBoss:GetChildren()[1].CFrame + Vector3.new(0, 1.5, 0)
