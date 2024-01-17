@@ -238,7 +238,7 @@ Main:Toggle{
 }
 local egg_chosen
 local Eggs = Main:Dropdown{
-	Name = "Dropdown",
+	Name = "Egg Selection",
 	StartingText = "Select...",
 	Description = nil,
 	Items = {
