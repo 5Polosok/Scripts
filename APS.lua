@@ -457,7 +457,7 @@ Main:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args5))
                     task.wait()
-                until boss:GetAttributes()["Health"] == 0
+                until boss:GetAttributes()["Health"] ~= 0
             end
             task.wait()
         end
@@ -533,7 +533,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until boss:GetAttributes()["Health"] == 0
+                until boss:GetAttributes()["Health"] ~= 0
             end
             task.wait()
         end
@@ -634,7 +634,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until boss:GetAttributes()["Health"] == 0
+                until boss:GetAttributes()["Health"] ~= 0
             end
             task.wait()
         end
@@ -738,7 +738,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until boss:GetAttributes()["Health"] == 0
+                until boss:GetAttributes()["Health"] ~= 0
             end
             task.wait()
         end
