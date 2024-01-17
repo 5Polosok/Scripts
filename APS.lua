@@ -482,7 +482,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until not mob
+                until mob
             end
             task.wait()
         end
@@ -550,6 +550,7 @@ Main2:Toggle{
 		end
                 repeat
                     if not AutoInvasion then break end  
+                    if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -630,6 +631,7 @@ Main2:Toggle{
 	        end
                 repeat
                     if not AutoDefense then break end
+                    if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
