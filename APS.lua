@@ -388,6 +388,15 @@ Main:Button{
             AFarmSelected = {}
     end
 }
+local raidboss = false
+Main:Toggle{
+    Name = "RaidBoss Farm",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        raidboss = state
+    end
+}
 local WorldFarm
 Main:Toggle{
     Name = "World Farm",
@@ -403,6 +412,7 @@ Main:Toggle{
         game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
         while WorldFarm do
             local mob
+            local boss
             for _,v in pairs(workspace.Server.Enemies.World[world]:GetChildren()) do
                 for _, z in pairs(AFarmSelected) do
                     if v.Name == z and v:GetAttributes()["Health"] > 0 then
@@ -412,7 +422,10 @@ Main:Toggle{
                 end
                 if mob then break end
             end
-            if mob and not workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
+            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss then
+                boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
+            end
+            if mob and not boss then
 		        HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 repeat
                     if not WorldFarm then break end
@@ -428,29 +441,28 @@ Main:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args2))
                     task.wait()
                 until mob:GetAttributes()["Health"] == 0
-            elseif workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
-                if (workspace.Server.Enemies.RaidBoss:GetChildren()[1]:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
-                    HRT.CFrame = workspace.Server.Enemies.RaidBoss:GetChildren()[1].CFrame + Vector3.new(0, 1.5, 0)
+            elseif boss then
+                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    HRT.CFrame = boss.CFrame + Vector3.new(0, 1.5, 0)
                 end
                 repeat
                     if not WorldFarm then break end
-                    local args3 = {
+                    local args5 = {
                         [1] = "Attack",
                         [2] = "Click",
                         [3] = {
-                            ["Enemy"] = workspace.Server.Enemies.RaidBoss:GetChildren()[1],
+                            ["Enemy"] = boss,
                             ["Type"] = "RaidBoss"
                         }
                     }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args3))
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args5))
                     task.wait()
-                until workspace.Server.Enemies.RaidBoss:GetChildren()[1]:GetAttributes()["Health"] == 0
+                until boss:GetAttributes()["Health"] == 0
             end
             task.wait()
         end
     end
 }
-
 
 ----- MAIN2
 local autoraid
@@ -461,19 +473,24 @@ Main2:Toggle{
     Callback = function(state)
         autoraid = state
         while autoraid do
-            if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 and not workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
+            local boss
+            if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
                 --tp to raid
-                local args = {
-                    [1] = "Enemies",
-                    [2] = "Bridge",
-                    [3] = {
-                        ["Module"] = "Raid",
-                        ["FunctionName"] = "Start",
-                        ["Args"] = "Friend"
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
+                    boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
+                else
+                    local args = {
+                        [1] = "Enemies",
+                        [2] = "Bridge",
+                        [3] = {
+                            ["Module"] = "Raid",
+                            ["FunctionName"] = "Start",
+                            ["Args"] = "Friend"
+                        }
                     }
-                }
-                
-                game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                end
             end
             local mob
             for _,v in pairs(workspace.Server.Raid.Enemies:GetChildren()) do
@@ -482,7 +499,7 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob and (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude <= 250 and not workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
+            if mob and (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude <= 250 and not boss then
 	            if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
 		        end
@@ -500,9 +517,9 @@ Main2:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
-            elseif workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
-                if (workspace.Server.Enemies.RaidBoss:GetChildren()[1]:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
-                    HRT.CFrame = workspace.Server.Enemies.RaidBoss:GetChildren()[1].CFrame + Vector3.new(0, 1.5, 0)
+            elseif boss then
+                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    HRT.CFrame = boss.CFrame + Vector3.new(0, 1.5, 0)
                 end
                 repeat
                     if not autoraid then break end
@@ -510,13 +527,13 @@ Main2:Toggle{
                         [1] = "Attack",
                         [2] = "Click",
                         [3] = {
-                            ["Enemy"] = workspace.Server.Enemies.RaidBoss:GetChildren()[1],
+                            ["Enemy"] = boss,
                             ["Type"] = "RaidBoss"
                         }
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until workspace.Server.Enemies.RaidBoss:GetChildren()[1]:GetAttributes()["Health"] == 0
+                until boss:GetAttributes()["Health"] == 0
             end
             task.wait()
         end
@@ -557,18 +574,23 @@ Main2:Toggle{
     Callback = function(state)
         AutoInvasion = state
         while AutoInvasion do
-            if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 and not workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
-                --tp to invasion
-                 local args = {
-                    [1] = "Enemies",
-                    [2] = "Bridge",
-                    [3] = {
-                        ["Module"] = "InvasionShip",
-                        ["FunctionName"] = "Start",
-                        ["Args"] = "Friend"
+            local boss
+            if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
+                    boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
+                else
+                    --tp to invasion
+                    local args = {
+                        [1] = "Enemies",
+                        [2] = "Bridge",
+                        [3] = {
+                            ["Module"] = "InvasionShip",
+                            ["FunctionName"] = "Start",
+                            ["Args"] = "Friend"
+                        }
                     }
-                }
-                game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                end
             end
       
             local mob
@@ -578,7 +600,7 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob and (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 and not workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
+            if mob and (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 and not boss then
                 if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 end
@@ -596,9 +618,9 @@ Main2:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
-            elseif workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
-                if (workspace.Server.Enemies.RaidBoss:GetChildren()[1]:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
-                    HRT.CFrame = workspace.Server.Enemies.RaidBoss:GetChildren()[1].CFrame + Vector3.new(0, 1.5, 0)
+            elseif boss then
+                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    HRT.CFrame = boss.CFrame + Vector3.new(0, 1.5, 0)
                 end
                 repeat
                     if not AutoInvasion then break end
@@ -606,13 +628,13 @@ Main2:Toggle{
                         [1] = "Attack",
                         [2] = "Click",
                         [3] = {
-                            ["Enemy"] = workspace.Server.Enemies.RaidBoss:GetChildren()[1],
+                            ["Enemy"] = boss,
                             ["Type"] = "RaidBoss"
                         }
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until workspace.Server.Enemies.RaidBoss:GetChildren()[1]:GetAttributes()["Health"] ~= 0
+                until boss:GetAttributes()["Health"] == 0
             end
             task.wait()
         end
@@ -654,19 +676,24 @@ Main2:Toggle{
     Callback = function(state)
         AutoDefense = state
         while AutoDefense do
-            if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 and not workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
-                --tp to invasion
-                local args = {
-                    [1] = "Enemies",
-                    [2] = "Bridge",
-                    [3] = {
-                        ["Module"] = "Defense",
-                        ["FunctionName"] = "Start",
-                        ["Args"] = "Friend"
+            local boss
+            if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
+                    boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
+                else
+                    --tp to defense
+                    local args = {
+                        [1] = "Enemies",
+                        [2] = "Bridge",
+                        [3] = {
+                            ["Module"] = "Defense",
+                            ["FunctionName"] = "Start",
+                            ["Args"] = "Friend"
+                        }
                     }
-                }
-                
-                game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                end
             end
 
             local mob
@@ -676,7 +703,7 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob and (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
+            if mob and (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 and not boss then
 		        if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
 	            end
@@ -695,9 +722,9 @@ Main2:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
-            elseif workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
-                if (workspace.Server.Enemies.RaidBoss:GetChildren()[1]:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
-                    HRT.CFrame = workspace.Server.Enemies.RaidBoss:GetChildren()[1].CFrame + Vector3.new(0, 1.5, 0)
+            elseif boss then
+                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    HRT.CFrame = boss.CFrame + Vector3.new(0, 1.5, 0)
                 end
                 repeat
                     if not AutoDefense then break end
@@ -705,13 +732,13 @@ Main2:Toggle{
                         [1] = "Attack",
                         [2] = "Click",
                         [3] = {
-                            ["Enemy"] = workspace.Server.Enemies.RaidBoss:GetChildren()[1],
+                            ["Enemy"] = boss,
                             ["Type"] = "RaidBoss"
                         }
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until workspace.Server.Enemies.RaidBoss:GetChildren()[1]:GetAttributes()["Health"] == 0
+                until boss:GetAttributes()["Health"] == 0
             end
             task.wait()
         end
