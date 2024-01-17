@@ -461,7 +461,7 @@ Main2:Toggle{
     Callback = function(state)
         autoraid = state
         while autoraid do
-            if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+            if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 and not workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
                 --tp to raid
                 local args = {
                     [1] = "Enemies",
@@ -557,7 +557,7 @@ Main2:Toggle{
     Callback = function(state)
         AutoInvasion = state
         while AutoInvasion do
-            if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+            if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 and not workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
                 --tp to invasion
                  local args = {
                     [1] = "Enemies",
@@ -654,7 +654,7 @@ Main2:Toggle{
     Callback = function(state)
         AutoDefense = state
         while AutoDefense do
-            if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+            if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 and not workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
                 --tp to invasion
                 local args = {
                     [1] = "Enemies",
@@ -696,7 +696,7 @@ Main2:Toggle{
                     task.wait()
                 until mob
             elseif workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
-                if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                if (workspace.Server.Enemies.RaidBoss:GetChildren()[1]:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = workspace.Server.Enemies.RaidBoss:GetChildren()[1].CFrame + Vector3.new(0, 1.5, 0)
                 end
                 repeat
