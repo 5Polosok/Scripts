@@ -413,7 +413,7 @@ Main:Toggle{
                 if mob then break end
             end
             if mob then
-		HRT.CFrame = mob.CFrame + Vector3.new(0, 1, 0)
+		HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 repeat
                     if not WorldFarm then break end
                     local args2 = {
@@ -466,7 +466,7 @@ Main2:Toggle{
                 end
             end
             if mob then
-	        HRT.CFrame = mob.CFrame + Vector3.new(0, 1, 0)
+	        HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 repeat
                     if not autoraid then break end
                     local args = {
@@ -480,7 +480,7 @@ Main2:Toggle{
                     
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until mob:GetAttributes()["Health"] ~= 0 or not mob
+                until mob:GetAttributes()["Health"] == 0
             end
             task.wait()
         end
@@ -543,7 +543,7 @@ Main2:Toggle{
                 end
             end
             if mob then
-		HRT.CFrame = mob.CFrame + Vector3.new(0, 1, 0)
+		HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 repeat
                     if not AutoInvasion then break end
                     local args = {
@@ -556,7 +556,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until mob:GetAttributes()["Health"] ~= 0 or not mob
+                until mob:GetAttributes()["Health"] == 0
             end
             task.wait()
         end
@@ -621,7 +621,7 @@ Main2:Toggle{
                 end
             end
             if mob then
-		HRT.CFrame = mob.CFrame + Vector3.new(0, 1, 0)
+		HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 repeat
                     if not AutoDefense then break end
                     local args = {
@@ -635,7 +635,7 @@ Main2:Toggle{
                     
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until mob:GetAttributes()["Health"] ~= 0 or not mob
+                until mob:GetAttributes()["Health"] == 0
             end
             task.wait()
         end
