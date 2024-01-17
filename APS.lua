@@ -413,9 +413,9 @@ Main:Toggle{
                 if mob then break end
             end
             if mob then
+		HRT.CFrame = mob.CFrame + Vector3.new(0, 1, 0)
                 repeat
                     if not WorldFarm then break end
-		    HRT.CFrame = mob.CFrame
                     local args2 = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -466,9 +466,9 @@ Main2:Toggle{
                 end
             end
             if mob then
+	        HRT.CFrame = mob.CFrame + Vector3.new(0, 1, 0)
                 repeat
                     if not autoraid then break end
-		    HRT.CFrame = mob.CFrame
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -534,7 +534,7 @@ Main2:Toggle{
                 }
                 game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
             end
-
+      
             local mob
             for _,v in pairs(workspace.Server.InvasionShip.Enemies:GetChildren()) do
                 if v:GetAttributes()["Health"] > 0 then
@@ -543,9 +543,9 @@ Main2:Toggle{
                 end
             end
             if mob then
+		HRT.CFrame = mob.CFrame + Vector3.new(0, 1, 0)
                 repeat
                     if not AutoInvasion then break end
-		    HRT.CFrame = mob.CFrame
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -621,9 +621,9 @@ Main2:Toggle{
                 end
             end
             if mob then
+		HRT.CFrame = mob.CFrame + Vector3.new(0, 1, 0)
                 repeat
                     if not AutoDefense then break end
-		    HRT.CFrame = mob.CFrame
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
