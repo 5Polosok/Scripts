@@ -480,7 +480,7 @@ Main2:Toggle{
                     
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until mob
+                until mob:GetAttributes("Health") == 0
             end
             task.wait()
         end
@@ -556,7 +556,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-		until mob
+		until mob:GetAttributes()["Health"] == 0
             end
             task.wait()
         end
@@ -635,7 +635,7 @@ Main2:Toggle{
                     
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until mob
+                until mob:GetAttributes()["Health"] == 0
             end
             task.wait()
         end
