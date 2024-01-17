@@ -466,7 +466,9 @@ Main2:Toggle{
                 end
             end
             if mob and (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
-	        HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+	        if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+		end
                 repeat
                     if not autoraid then break end
 	            if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
@@ -542,12 +544,12 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob then
-		HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+            if mob and (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
+		if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+		end
                 repeat
-                    if not AutoInvasion then break end
-                    if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
- break end               
+                    if not AutoInvasion then break end  
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -622,11 +624,12 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob then
-		HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+            if mob and (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
+		if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+	        end
                 repeat
                     if not AutoDefense then break end
-                    if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
