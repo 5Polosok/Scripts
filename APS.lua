@@ -452,7 +452,7 @@ Main:Toggle{
                     
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until melio:GetAttributes()["Health"] == 0
+                until melio:GetAttributes()["Health"] ~= 0
             elseif rboss and raidboss then
                 if (rboss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
                     local args = {
