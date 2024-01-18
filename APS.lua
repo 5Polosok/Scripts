@@ -933,7 +933,7 @@ Main2:Toggle{
 	            end
                 repeat
                     if not AutoCrystalDefense then break end
-                    if tostring(workspace.Client.Maps:GetChildren()[1]) == "ProtectCrystal" then break end
+                    if tostring(workspace.Client.Maps:GetChildren()[1]) ~= "ProtectCrystal" then break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
