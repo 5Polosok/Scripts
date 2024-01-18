@@ -397,6 +397,91 @@ Main:Toggle{
         raidboss = state
     end
 }
+local sboss
+Main:Toggle{
+    Name = "Summon Boss Farm",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        sboss = state
+        while sboss do
+            local melio
+            local rboss
+            if not workspace.Server.Enemies.SummonBoss:GetChildren()[1] then
+                local args = {
+                    [1] = "Enemies",
+                    [2] = "Bridge",
+                    [3] = {
+                        ["Module"] = "SummonBoss",
+                        ["FunctionName"] = "Spawn"
+                    }
+                }
+                
+                game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+            else
+                melio = workspace.Server.Enemies.SummonBoss:GetChildren()[1]
+            end
+            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" then
+                rboss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
+            end
+            if melio and not rboss then
+                if (melio:GetPivot().p - char:GetPivot().p).Magnitude >= 6 then
+                    if tostring(workspace.Client.Maps:GetChildren()[1]) ~= "Criminal Village" then
+                        local args = {
+                            [1] = "Teleport",
+                            [2] = "Spawn",
+                            [3] = "Criminal Village"
+                        }
+                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                        task.wait(1)
+                        HRT.CFrame = melio.CFrame + Vector3.new(0, 4, 0)
+                    else
+                        HRT.CFrame = melio.CFrame + Vector3.new(0, 4, 0)
+                    end
+                end
+                repeat 
+                    if not sboss then break end
+                    local args = {
+                        [1] = "Attack",
+                        [2] = "Click",
+                        [3] = {
+                            ["Enemy"] = melio,
+                            ["Type"] = "SummonBoss"
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait()
+                until melio:GetAttributes()["Health"] == 0
+            elseif rboss and raidboss then
+                if (rboss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
+                    local args = {
+                        [1] = "Teleport",
+                        [2] = "Spawn",
+                        [3] = rboss:GetAttributes()["World"]
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait(1)
+                    HRT.CFrame = rboss.CFrame + Vector3.new(0, 4, 0)
+                end
+                repeat
+                    if not sboss then break end
+                    local args5 = {
+                        [1] = "Attack",
+                        [2] = "Click",
+                        [3] = {
+                            ["Enemy"] = rboss,
+                            ["Type"] = "RaidBoss"
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args5))
+                    task.wait()
+                until rboss:GetAttributes()["Health"] ~= 0
+            end
+            task.wait()
+        end
+    end
+}
 local WorldFarm
 Main:Toggle{
     Name = "World Farm",
@@ -416,7 +501,7 @@ Main:Toggle{
                 end
                 if mob then break end
             end
-            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Escenor" then
+            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" then
                 boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
             end
             if mob and not boss then
@@ -490,7 +575,7 @@ Main2:Toggle{
             local boss
             if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
                 --tp to raid
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Escenor" then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
                     local args = {
@@ -515,11 +600,11 @@ Main2:Toggle{
             end
             if mob and (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude <= 250 and not boss then
 	            if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
-                        HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
-		    end
+                    HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+		        end
                 repeat
                     if not autoraid then break end
-	            if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
+	                if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -597,7 +682,7 @@ Main2:Toggle{
         while AutoInvasion do
             local boss
             if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Escenor" then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal"  then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
                     --tp to invasion
@@ -706,7 +791,7 @@ Main2:Toggle{
         while AutoDefense do
             local boss
             if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Escenor" then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
                     --tp to defense
