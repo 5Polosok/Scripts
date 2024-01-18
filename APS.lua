@@ -901,7 +901,7 @@ Main2:Toggle{
         AutoCrystalDefense = state
         while AutoCrystalDefense do
             local boss
-            if (workspace.Server.ProtectCrystal.Steps["1"]:GetChildren()[1]:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+            if (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 350 then
                 if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
@@ -927,13 +927,13 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob and (workspace.Server.ProtectCrystal.Steps["1"]:GetChildren()[1]:GetPivot().p-char:GetPivot().p).Magnitude <= 250 and not boss then
+            if mob and (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 350 and not boss then
 		        if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
 	            end
                 repeat
                     if not AutoCrystalDefense then break end
-                    if (workspace.Server.ProtectCrystal.Steps["1"]:GetChildren()[1]:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
+                    if (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 350 then break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
