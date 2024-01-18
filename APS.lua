@@ -501,7 +501,7 @@ Main:Toggle{
                 end
                 if mob then break end
             end
-            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" then
+            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss then
                 boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
             end
             if mob and not boss then
@@ -682,7 +682,7 @@ Main2:Toggle{
         while AutoInvasion do
             local boss
             if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal"  then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
                     --tp to invasion
@@ -791,7 +791,7 @@ Main2:Toggle{
         while AutoDefense do
             local boss
             if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
                     --tp to defense
@@ -902,7 +902,7 @@ Main2:Toggle{
         while AutoCrystalDefense do
             local boss
             if (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 350 then
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
                     --tp to crystal defense
