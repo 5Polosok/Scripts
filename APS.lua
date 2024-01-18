@@ -901,7 +901,7 @@ Main2:Toggle{
         AutoCrystalDefense = state
         while AutoCrystalDefense do
             local boss
-            if (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 350 then
+            if (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
                 if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
