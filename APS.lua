@@ -573,7 +573,7 @@ Main2:Toggle{
         autoraid = state
         while autoraid do
             local boss
-            if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+            if tostring(workspace.Client.Maps:GetChildren()[1]) ~= "Raid" then
                 --tp to raid
                 if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
@@ -598,13 +598,13 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob and (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude <= 250 and not boss then
+            if mob and tostring(workspace.Client.Maps:GetChildren()[1]) == "Raid" and not boss then
 	            if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
 		        end
                 repeat
                     if not autoraid then break end
-	                if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
+	                if tostring(workspace.Client.Maps:GetChildren()[1]) ~= "Raid" then break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -681,7 +681,7 @@ Main2:Toggle{
         AutoInvasion = state
         while AutoInvasion do
             local boss
-            if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+            if tostring(workspace.Client.Maps:GetChildren()[1]) ~= "InvasionShip" then
                 if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal"  then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
@@ -706,13 +706,13 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob and (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 and not boss then
+            if mob and tostring(workspace.Client.Maps:GetChildren()[1]) == "InvasionShip" and not boss then
                 if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 end
                 repeat
                     if not AutoInvasion then break end  
-                    if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
+                    if tostring(workspace.Client.Maps:GetChildren()[1]) ~= "InvasionShip" then break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -790,7 +790,7 @@ Main2:Toggle{
         AutoDefense = state
         while AutoDefense do
             local boss
-            if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+            if tostring(workspace.Client.Maps:GetChildren()[1]) ~= "Defense" then
                 if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
@@ -816,13 +816,13 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob and (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 and not boss then
+            if mob and tostring(workspace.Client.Maps:GetChildren()[1]) == "Defense" and not boss then
 		        if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
 	            end
                 repeat
                     if not AutoDefense then break end
-                    if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
+                    if tostring(workspace.Client.Maps:GetChildren()[1]) ~= "Defense" then break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -881,6 +881,117 @@ Main2:Toggle{
         while AutoLeave3 do
             task.wait(3)
             if plyr.PlayerGui.UI.HUD.Defense.Room.Text == "Wave "..room3 then
+                local args = {
+                    [1] = "Teleport",
+                    [2] = "Spawn",
+                    [3] = "Desert Piece"
+                }
+                game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+            end
+        end
+    end
+} 
+
+local AutoCrystalDefense
+Main2:Toggle{
+    Name = "AutoCrystalDefense",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoCrystalDefense = state
+        while AutoCrystalDefense do
+            local boss
+            if tostring(workspace.Client.Maps:GetChildren()[1]) ~= "ProtectCrystal" then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" then
+                    boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
+                else
+                    --tp to crystal defense
+                    local args = {
+                        [1] = "Enemies",
+                        [2] = "Bridge",
+                        [3] = {
+                            ["Module"] = "ProtectCrystal",
+                            ["FunctionName"] = "Start",
+                            ["Args"] = "Friend"
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                end
+            end
+
+            local mob
+            for _,v in pairs(workspace.Server.ProtectCrystal.Enemies:GetChildren()) do
+                if v:GetAttributes()["Health"] > 0 then
+                    mob = v
+                    break
+                end
+            end
+            if mob and tostring(workspace.Client.Maps:GetChildren()[1]) == "ProtectCrystal" and not boss then
+		        if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+	            end
+                repeat
+                    if not AutoCrystalDefense then break end
+                    if tostring(workspace.Client.Maps:GetChildren()[1]) == "ProtectCrystal" then break end
+                    local args = {
+                        [1] = "Attack",
+                        [2] = "Click",
+                        [3] = {
+                            ["Enemy"] = mob,
+                            ["Type"] = "ProtectCrystal"
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait()
+                until mob
+            elseif boss and raidboss then
+                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
+                    local args = {
+                        [1] = "Teleport",
+                        [2] = "Spawn",
+                        [3] = boss:GetAttributes()["World"]
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait(1)
+                    HRT.CFrame = boss.CFrame + Vector3.new(0, 4, 0)
+                end
+                repeat
+                    if not AutoDefense then break end
+                    local args = {
+                        [1] = "Attack",
+                        [2] = "Click",
+                        [3] = {
+                            ["Enemy"] = boss,
+                            ["Type"] = "RaidBoss"
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait()
+                until boss:GetAttributes()["Health"] ~= 0
+            end
+            task.wait()
+        end
+    end
+}
+local room4
+Main2:Textbox{
+	Name = "AutoLeave Room Crystal Defense",
+	Callback = function(text)
+        room4 = text
+    end
+}
+local AutoLeave4
+Main2:Toggle{
+    Name = "AutoLeave Crystal Defense",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoLeave4 = state
+        while AutoLeave4 do
+            task.wait(3)
+            if plyr.PlayerGui.UI.HUD.ProtectCrystal.Room.Text == "Wave "..room4 then
                 local args = {
                     [1] = "Teleport",
                     [2] = "Spawn",
