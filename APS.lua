@@ -432,12 +432,24 @@ Main:Toggle{
             else
                 melio = workspace.Server.Enemies.SummonBoss:GetChildren()[1]
             end
-            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
+            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
                 rboss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
             end
             if adungeon then
-                if workspace.Client.Open.Map:GetChildren()[1] or (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 1000 then
+                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 2000 then
                     adungbool = true
+                else
+                    local args = {
+                        [1] = "Enemies",
+                        [2] = "Bridge",
+                        [3] = {
+                            ["Module"] = "Dungeon",
+                            ["FunctionName"] = "Join",
+                            ["Args"] = ""
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                 end
             end
             if melio and not rboss and not adungbool then
@@ -495,20 +507,6 @@ Main:Toggle{
                 until rboss:GetAttributes()["Health"] ~= 0
             elseif adungbool then
                 local dmob
-                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude > 1000 then
-                    local args = {
-                        [1] = "Enemies",
-                        [2] = "Bridge",
-                        [3] = {
-                            ["Module"] = "Dungeon",
-                            ["FunctionName"] = "Join",
-                            ["Args"] = ""
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait(1)
-                end
                 for _,v in pairs(workspace.Server.Dungeon.Enemies:GetChildren()) do
                     if v:GetAttributes()["Health"] > 0 then
                         dmob = v
@@ -516,8 +514,8 @@ Main:Toggle{
                     end
                 end
                 if dmob then
-                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 4 then
-                        HRT.CFrame = dmob.CFrame + Vector3.new(0, 3, 0)
+                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 6 then
+                        HRT.CFrame = dmob.CFrame + Vector3.new(0, 1.5, 0)
                     end
                     repeat
                         if not sboss then break end
@@ -559,12 +557,24 @@ Main:Toggle{
                 end
                 if mob then break end
             end
-            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" and  tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
+            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss and  tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
                 boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
             end
             if adungeon then
-                if workspace.Client.Open.Map:GetChildren()[1] or (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 1000 then
+                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 2000 then
                     adungbool = true
+                else
+                    local args = {
+                        [1] = "Enemies",
+                        [2] = "Bridge",
+                        [3] = {
+                            ["Module"] = "Dungeon",
+                            ["FunctionName"] = "Join",
+                            ["Args"] = ""
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                 end
             end
             if mob and not boss and not adungbool then
@@ -622,20 +632,6 @@ Main:Toggle{
                 until boss:GetAttributes()["Health"] ~= 0
             elseif adungbool then
                 local dmob
-                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude > 1000 then
-                    local args = {
-                        [1] = "Enemies",
-                        [2] = "Bridge",
-                        [3] = {
-                            ["Module"] = "Dungeon",
-                            ["FunctionName"] = "Join",
-                            ["Args"] = ""
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait(1)
-                end
                 for _,v in pairs(workspace.Server.Dungeon.Enemies:GetChildren()) do
                     if v:GetAttributes()["Health"] > 0 then
                         dmob = v
@@ -643,7 +639,7 @@ Main:Toggle{
                     end
                 end
                 if dmob then
-                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 4 then
+                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 6 then
                         HRT.CFrame = dmob.CFrame + Vector3.new(0, 1.5, 0)
                     end
                     repeat
@@ -680,7 +676,7 @@ Main2:Toggle{
             local adungbool
             if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
                 --tp to raid
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1]  and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
                     local args = {
@@ -697,8 +693,20 @@ Main2:Toggle{
                 end
             end
             if adungeon then
-                if workspace.Client.Open.Map:GetChildren()[1] or (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 1000 then
+                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 2000 then
                     adungbool = true
+                else
+                    local args = {
+                        [1] = "Enemies",
+                        [2] = "Bridge",
+                        [3] = {
+                            ["Module"] = "Dungeon",
+                            ["FunctionName"] = "Join",
+                            ["Args"] = ""
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                 end
             end
             local mob
@@ -752,20 +760,6 @@ Main2:Toggle{
                 until boss:GetAttributes()["Health"] ~= 0
             elseif adungbool then
                 local dmob
-                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude > 1000 then
-                    local args = {
-                        [1] = "Enemies",
-                        [2] = "Bridge",
-                        [3] = {
-                            ["Module"] = "Dungeon",
-                            ["FunctionName"] = "Join",
-                            ["Args"] = ""
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait(1)
-                end
                 for _,v in pairs(workspace.Server.Dungeon.Enemies:GetChildren()) do
                     if v:GetAttributes()["Health"] > 0 then
                         dmob = v
@@ -773,7 +767,7 @@ Main2:Toggle{
                     end
                 end
                 if dmob then
-                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 4 then
+                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 6 then
                         HRT.CFrame = dmob.CFrame + Vector3.new(0, 1.5, 0)
                     end
                     repeat
@@ -834,7 +828,7 @@ Main2:Toggle{
             local boss
             local adungbool
             if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2"  then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2"  then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
                     --tp to invasion
@@ -851,8 +845,20 @@ Main2:Toggle{
                 end
             end
             if adungeon then
-                if workspace.Client.Open.Map:GetChildren()[1] or (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 1000 then
+                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 2000 then
                     adungbool = true
+                else
+                    local args = {
+                        [1] = "Enemies",
+                        [2] = "Bridge",
+                        [3] = {
+                            ["Module"] = "Dungeon",
+                            ["FunctionName"] = "Join",
+                            ["Args"] = ""
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                 end
             end
             local mob
@@ -927,7 +933,7 @@ Main2:Toggle{
                     end
                 end
                 if dmob then
-                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 4 then
+                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 6 then
                         HRT.CFrame = dmob.CFrame + Vector3.new(0, 1.5, 0)
                     end
                     repeat
@@ -989,7 +995,7 @@ Main2:Toggle{
             local boss
             local adungbool
             if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Titan Colossal" and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
+                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
                     boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
                 else
                     --tp to defense
@@ -1063,20 +1069,6 @@ Main2:Toggle{
                 until boss:GetAttributes()["Health"] ~= 0
             elseif adungbool then
                 local dmob
-                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude > 1000 then
-                    local args = {
-                        [1] = "Enemies",
-                        [2] = "Bridge",
-                        [3] = {
-                            ["Module"] = "Dungeon",
-                            ["FunctionName"] = "Join",
-                            ["Args"] = ""
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait(1)
-                end
                 for _,v in pairs(workspace.Server.Dungeon.Enemies:GetChildren()) do
                     if v:GetAttributes()["Health"] > 0 then
                         dmob = v
@@ -1084,7 +1076,7 @@ Main2:Toggle{
                     end
                 end
                 if dmob then
-                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 4 then
+                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 6 then
                         HRT.CFrame = dmob.CFrame + Vector3.new(0, 1.5, 0)
                     end
                     repeat
@@ -1164,8 +1156,20 @@ Main2:Toggle{
                 end
             end
             if adungeon then
-                if workspace.Client.Open.Map:GetChildren()[1] or (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 1000 then
+                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 2000 then
                     adungbool = true
+                else
+                    local args = {
+                        [1] = "Enemies",
+                        [2] = "Bridge",
+                        [3] = {
+                            ["Module"] = "Dungeon",
+                            ["FunctionName"] = "Join",
+                            ["Args"] = ""
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                 end
             end
             local mob
@@ -1220,20 +1224,6 @@ Main2:Toggle{
                 until boss:GetAttributes()["Health"] ~= 0
             elseif adungbool then
                 local dmob
-                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude > 1000 then
-                    local args = {
-                        [1] = "Enemies",
-                        [2] = "Bridge",
-                        [3] = {
-                            ["Module"] = "Dungeon",
-                            ["FunctionName"] = "Join",
-                            ["Args"] = ""
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait(1)
-                end
                 for _,v in pairs(workspace.Server.Dungeon.Enemies:GetChildren()) do
                     if v:GetAttributes()["Health"] > 0 then
                         dmob = v
@@ -1241,7 +1231,7 @@ Main2:Toggle{
                     end
                 end
                 if dmob then
-                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 4 then
+                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 6 then
                         HRT.CFrame = dmob.CFrame + Vector3.new(0, 1.5, 0)
                     end
                     repeat
