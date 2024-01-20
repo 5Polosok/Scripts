@@ -323,7 +323,8 @@ Main:Toggle{
                     pcall(function()
                         repeat
                             if not AFarm then break end
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.lookVector * -8
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame + Vector3.new(0, 4, 0)
+                            plyr.Character.HumanoidRootPart.CFrame.LookVector = v.CFrame
                             local args = {
                                 [1] = "MOUSEBUTTON1"
                             }
