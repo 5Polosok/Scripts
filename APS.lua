@@ -443,7 +443,7 @@ Main:Toggle{
         adungeon = state
         while adungeon do
             if adungeon then
-                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 1300 then
+                if (workspace.Server.Dungeon.Teleport:GetPivot().p - char:GetPivot().p).Magnitude < 1300 then
                     adungbool = true
                 else
                     adungbool = nil
