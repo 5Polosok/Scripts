@@ -307,7 +307,6 @@ Main:Toggle{
     Description = nil,
     Callback = function(state)
         AFarm = state
-        plyr.Character.HumanoidRootPart.CFrame = CFrame.new(2006,942,-1443)
         while AFarm do
             local cs
             if AutoOpen then
@@ -320,15 +319,18 @@ Main:Toggle{
             end 
             for _,v in pairs(workspace.Living:GetChildren()) do
                 if tostring(v) ~= tostring(game.Players.LocalPlayer) and (v:GetPivot().p-game.Players.LocalPlayer.Character:GetPivot().p).Magnitude <= 400 and not cs then
-                    repeat
-                        if not AFarm then break end
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.lookVector * -5
-                        local args = {
-                            [1] = "MOUSEBUTTON1"
-                        }   
-                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
-                        task.wait()
-                    until not v
+                    pcall(function()
+                        repeat
+                            if not AFarm then break end
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.lookVector * -5
+                            local args = {
+                                [1] = "MOUSEBUTTON1"
+                            }
+                                
+                            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                            task.wait()
+                        until not v
+                    end)
                 else
                     plyr.Character.HumanoidRootPart.CFrame = CFrame.new(2006,942,-1443)
                 end
@@ -344,7 +346,7 @@ Main:Toggle{
     Callback = function(state)
         AutoOpen = state
         while AutoOpen do
-            for _,v in pairs(workspace) do
+            for _,v in pairs(workspace:GetChildren()) do
                 if v:IsA("Model") then
                     repeat
                         if not AutoOpen then break end
