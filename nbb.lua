@@ -323,7 +323,7 @@ Main:Toggle{
                     pcall(function()
                         repeat
                             if not AFarm then break end
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.lookVector * -5
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.lookVector * -8
                             local args = {
                                 [1] = "MOUSEBUTTON1"
                             }
@@ -349,19 +349,17 @@ Main:Toggle{
         while AutoOpen do
             for _,v in pairs(workspace:GetChildren()) do
                 if v:IsA("Model") then
-                    pcall(function()
-                        plyr.Character.HumanoidRootPart.CFrame = v.RootPart.CFrame * CFrame.new(0, 0.5, 0)
-                        repeat
-                            if not AutoOpen then break end
-                            task.wait()
-                        until v.RootPart.ProximityAttachment.Interaction
-                        task.wait(0.5)
-                        repeat
-                            if not AutoOpen then break end
-                            fireproximityprompt(v.RootPart.ProximityAttachment.Interaction)
-                            task.wait()
-                        until not v.RootPart
-                    end)
+                    plyr.Character.HumanoidRootPart.CFrame = v.RootPart.CFrame * CFrame.new(0, 0.5, 0)
+                    repeat
+                        if not AutoOpen then break end
+                        task.wait()
+                    until v.RootPart.ProximityAttachment.Interaction
+                    task.wait(0.5)
+                    repeat
+                        if not AutoOpen then break end
+                        fireproximityprompt(v.RootPart.ProximityAttachment.Interaction)
+                        task.wait()
+                    until not v.RootPart
                 end
             end
             task.wait()      
