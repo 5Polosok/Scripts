@@ -301,6 +301,7 @@ local Main = GUI:Tab{
 }
 local AFarm
 local AutoOpen
+local HRT = plyr.Character.HumanoidRootPart
 Main:Toggle{
     Name = "AutoFarm Last Zone",
     StartingState = false,
@@ -323,8 +324,8 @@ Main:Toggle{
                     pcall(function()
                         repeat
                             if not AFarm then break end
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame + Vector3.new(0, 4, 0)
-                            plyr.Character.HumanoidRootPart.CFrame.LookVector = v.CFrame
+                            HRT.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.UpVector * 5
+                            HRT.CFrame = CFrame.lookAt(plyr.Character.HumanoidRootPart.Position, v.Position)
                             local args = {
                                 [1] = "MOUSEBUTTON1"
                             }
