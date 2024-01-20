@@ -458,6 +458,7 @@ Main:Toggle{
                     }
                     
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait(3)
                 end
             end
             if adungbool then
@@ -488,6 +489,7 @@ Main:Toggle{
                     until dmob:GetAttributes()["Health"] ~= 0
                 end
             end
+            task.wait()
         end
     end
 }
@@ -576,9 +578,11 @@ Main:Toggle{
                         }
                         game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                         task.wait(1.5)
+                        HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+                    else
+                        HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                     end
-		    HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
-		end
+		        end
                 repeat
                     if not WorldFarm then break end
                     local args2 = {
@@ -632,14 +636,14 @@ Main2:Toggle{
                 end
             end
             if mob and (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
-	        if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+	            if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
-		end
+		        end
                 repeat
                     if not autoraid then break end
-	            if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 or adungbool then
+	                if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 or adungbool then
                         task.wait(3)
-                	break
+                        break
                     end
                     local args = {
                         [1] = "Attack",
@@ -799,9 +803,9 @@ Main2:Toggle{
                 end
             end
             if mob and (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
-		if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+		        if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
-	        end
+	            end
                 repeat
                     if not AutoDefense then break end
                     if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 or adungbool then task.wait(3) break end
@@ -882,9 +886,9 @@ Main2:Toggle{
                 end
             end
             if mob and (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 350 then
-		if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+		        if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
-	        end
+	            end
                 repeat
                     if not AutoCrystalDefense then break end
                     if (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 350 or adungbool then break end
