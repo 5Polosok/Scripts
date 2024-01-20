@@ -390,21 +390,105 @@ Main:Button{
     end
 }
 local raidboss = false
+local rboss
 Main:Toggle{
     Name = "RaidBoss Farm",
     StartingState = false,
     Description = nil,
     Callback = function(state)
         raidboss = state
+        while raidboss do
+            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
+                rboss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
+            else
+                rboss = nil
+                task.wait(1)
+            end
+            if rboss then
+                if (rboss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
+                    local args = {
+                        [1] = "Teleport",
+                        [2] = "Spawn",
+                        [3] = rboss:GetAttributes()["World"]
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait(1)
+                    HRT.CFrame = rboss.CFrame + Vector3.new(0, 4, 0)
+                end
+                repeat
+                    if not raidboss then break end
+                    local args5 = {
+                        [1] = "Attack",
+                        [2] = "Click",
+                        [3] = {
+                            ["Enemy"] = rboss,
+                            ["Type"] = "RaidBoss"
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args5))
+                    task.wait()
+                until rboss:GetAttributes()["Health"] ~= 0
+            end
+            task.wait()
+        end
     end
 }
 local adungeon
+local adungbool
 Main:Toggle{
     Name = "AutoDungeon",
     StartingState = false,
     Description = nil,
     Callback = function(state)
         adungeon = state
+        while adungeon do
+            if adungeon then
+                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 1300 then
+                    adungbool = true
+                else
+                    adungbool = nil
+                    local args = {
+                        [1] = "Enemies",
+                        [2] = "Bridge",
+                        [3] = {
+                            ["Module"] = "Dungeon",
+                            ["FunctionName"] = "Join",
+                            ["Args"] = ""
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                end
+            end
+            if adungbool then
+                local dmob
+                for _,v in pairs(workspace.Server.Dungeon.Enemies:GetChildren()) do
+                    if v:GetAttributes()["Health"] > 0 then
+                        dmob = v
+                        break
+                    end
+                end
+                if dmob then
+                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 6 then
+                        HRT.CFrame = dmob.CFrame + Vector3.new(0, 1.5, 0)
+                    end
+                    repeat
+                        if not adungeon then break end
+                        local args = {
+                            [1] = "Attack",
+                            [2] = "Click",
+                            [3] = {
+                                ["Enemy"] = dmob,
+                                ["Type"] = "Dungeon"
+                            }
+                        }
+                        
+                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                        task.wait()
+                    until dmob:GetAttributes()["Health"] ~= 0
+                end
+            end
+        end
     end
 }
 local sboss
@@ -416,8 +500,6 @@ Main:Toggle{
         sboss = state
         while sboss do
             local melio
-            local rboss
-            local adungbool
             if not workspace.Server.Enemies.SummonBoss:GetChildren()[1] then
                 local args = {
                     [1] = "Enemies",
@@ -431,26 +513,6 @@ Main:Toggle{
                 game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
             else
                 melio = workspace.Server.Enemies.SummonBoss:GetChildren()[1]
-            end
-            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
-                rboss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
-            end
-            if adungeon then
-                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 2000 then
-                    adungbool = true
-                else
-                    local args = {
-                        [1] = "Enemies",
-                        [2] = "Bridge",
-                        [3] = {
-                            ["Module"] = "Dungeon",
-                            ["FunctionName"] = "Join",
-                            ["Args"] = ""
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                end
             end
             if melio and not rboss and not adungbool then
                 if (melio:GetPivot().p - char:GetPivot().p).Magnitude >= 6 then
@@ -467,7 +529,7 @@ Main:Toggle{
                         HRT.CFrame = melio.CFrame + Vector3.new(0, 4, 0)
                     end
                 end
-                repeat 
+                repeat
                     if not sboss then break end
                     local args = {
                         [1] = "Attack",
@@ -481,57 +543,6 @@ Main:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until melio:GetAttributes()["Health"] ~= 0
-            elseif rboss and raidboss and not adungbool then
-                if (rboss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
-                    local args = {
-                        [1] = "Teleport",
-                        [2] = "Spawn",
-                        [3] = rboss:GetAttributes()["World"]
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait(1)
-                    HRT.CFrame = rboss.CFrame + Vector3.new(0, 4, 0)
-                end
-                repeat
-                    if not sboss then break end
-                    local args5 = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = rboss,
-                            ["Type"] = "RaidBoss"
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args5))
-                    task.wait()
-                until rboss:GetAttributes()["Health"] ~= 0
-            elseif adungbool then
-                local dmob
-                for _,v in pairs(workspace.Server.Dungeon.Enemies:GetChildren()) do
-                    if v:GetAttributes()["Health"] > 0 then
-                        dmob = v
-                        break
-                    end
-                end
-                if dmob then
-                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 6 then
-                        HRT.CFrame = dmob.CFrame + Vector3.new(0, 1.5, 0)
-                    end
-                    repeat
-                        if not sboss then break end
-                        local args = {
-                            [1] = "Attack",
-                            [2] = "Click",
-                            [3] = {
-                                ["Enemy"] = dmob,
-                                ["Type"] = "Dungeon"
-                            }
-                        }
-                        
-                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                        task.wait()
-                    until dmob:GetAttributes()["Health"] ~= 0
-                end
             end
             task.wait()
         end
@@ -546,8 +557,6 @@ Main:Toggle{
         WorldFarm = state
         while WorldFarm do
             local mob
-            local boss
-            local adungbool
             for _,v in pairs(workspace.Server.Enemies.World[world]:GetChildren()) do
                 for _, z in pairs(AFarmSelected) do
                     if v.Name == z and v:GetAttributes()["Health"] > 0 then
@@ -557,27 +566,7 @@ Main:Toggle{
                 end
                 if mob then break end
             end
-            if workspace.Server.Enemies.RaidBoss:GetChildren()[1] and raidboss and  tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
-                boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
-            end
-            if adungeon then
-                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 2000 then
-                    adungbool = true
-                else
-                    local args = {
-                        [1] = "Enemies",
-                        [2] = "Bridge",
-                        [3] = {
-                            ["Module"] = "Dungeon",
-                            ["FunctionName"] = "Join",
-                            ["Args"] = ""
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                end
-            end
-            if mob and not boss and not adungbool then
+            if mob and not rboss and not adungbool then
                 if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     if tostring(workspace.Client.Maps:GetChildren()[1]) ~= world then
                         local args = {
@@ -587,11 +576,9 @@ Main:Toggle{
                         }
                         game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                         task.wait(1.5)
-                        HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
-                    else
-                        HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                     end
-		        end
+		    HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+		end
                 repeat
                     if not WorldFarm then break end
                     local args2 = {
@@ -606,57 +593,6 @@ Main:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args2))
                     task.wait()
                 until mob:GetAttributes()["Health"] == 0
-            elseif boss and raidboss and not adungbool then
-                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
-                    local args = {
-                        [1] = "Teleport",
-                        [2] = "Spawn",
-                        [3] = boss:GetAttributes()["World"]
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait(1)
-                    HRT.CFrame = boss.CFrame + Vector3.new(0, 4, 0)
-                end
-                repeat
-                    if not WorldFarm then break end
-                    local args5 = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = boss,
-                            ["Type"] = "RaidBoss"
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args5))
-                    task.wait()
-                until boss:GetAttributes()["Health"] ~= 0
-            elseif adungbool then
-                local dmob
-                for _,v in pairs(workspace.Server.Dungeon.Enemies:GetChildren()) do
-                    if v:GetAttributes()["Health"] > 0 then
-                        dmob = v
-                        break
-                    end
-                end
-                if dmob then
-                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 6 then
-                        HRT.CFrame = dmob.CFrame + Vector3.new(0, 1.5, 0)
-                    end
-                    repeat
-                        if not WorldFarm then break end
-                        local args = {
-                            [1] = "Attack",
-                            [2] = "Click",
-                            [3] = {
-                                ["Enemy"] = dmob,
-                                ["Type"] = "Dungeon"
-                            }
-                        }
-                        
-                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                        task.wait()
-                    until dmob:GetAttributes()["Health"] ~= 0
-                end
             end
             task.wait()
         end
@@ -672,12 +608,9 @@ Main2:Toggle{
     Callback = function(state)
         autoraid = state
         while autoraid do
-            local boss
-            local adungbool
             if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
-                --tp to raid
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1]  and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
-                    boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
+                if rboss or adungbool then
+                    task.wait(3)
                 else
                     local args = {
                         [1] = "Enemies",
@@ -688,24 +621,6 @@ Main2:Toggle{
                             ["Args"] = "Friend"
                         }
                     }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                end
-            end
-            if adungeon then
-                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 2000 then
-                    adungbool = true
-                else
-                    local args = {
-                        [1] = "Enemies",
-                        [2] = "Bridge",
-                        [3] = {
-                            ["Module"] = "Dungeon",
-                            ["FunctionName"] = "Join",
-                            ["Args"] = ""
-                        }
-                    }
-                    
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                 end
             end
@@ -716,13 +631,16 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob and (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude <= 250 and not boss and not adungbool then
-	            if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+            if mob and (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
+	        if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
-		        end
+		end
                 repeat
                     if not autoraid then break end
-	                if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
+	            if (workspace.Server.Raid.Map.Map:GetPivot().p-char:GetPivot().p).Magnitude >= 250 or adungbool then
+                        task.wait(3)
+                	break
+                    end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -734,57 +652,6 @@ Main2:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
-            elseif boss and raidboss and not adungbool then
-                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
-                    local args = {
-                        [1] = "Teleport",
-                        [2] = "Spawn",
-                        [3] = boss:GetAttributes()["World"]
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait(1)
-                    HRT.CFrame = boss.CFrame + Vector3.new(0, 4, 0)
-                end
-                repeat
-                    if not autoraid then break end
-                    local args = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = boss,
-                            ["Type"] = "RaidBoss"
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait()
-                until boss:GetAttributes()["Health"] ~= 0
-            elseif adungbool then
-                local dmob
-                for _,v in pairs(workspace.Server.Dungeon.Enemies:GetChildren()) do
-                    if v:GetAttributes()["Health"] > 0 then
-                        dmob = v
-                        break
-                    end
-                end
-                if dmob then
-                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 6 then
-                        HRT.CFrame = dmob.CFrame + Vector3.new(0, 1.5, 0)
-                    end
-                    repeat
-                        if not autoraid then break end
-                        local args = {
-                            [1] = "Attack",
-                            [2] = "Click",
-                            [3] = {
-                                ["Enemy"] = dmob,
-                                ["Type"] = "Dungeon"
-                            }
-                        }
-                        
-                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                        task.wait()
-                    until dmob:GetAttributes()["Health"] ~= 0
-                end
             end
             task.wait()
         end
@@ -825,13 +692,10 @@ Main2:Toggle{
     Callback = function(state)
         AutoInvasion = state
         while AutoInvasion do
-            local boss
-            local adungbool
             if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2"  then
-                    boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
+                if rboss or adungbool then
+                    task.wait(3)
                 else
-                    --tp to invasion
                     local args = {
                         [1] = "Enemies",
                         [2] = "Bridge",
@@ -844,23 +708,6 @@ Main2:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                 end
             end
-            if adungeon then
-                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 2000 then
-                    adungbool = true
-                else
-                    local args = {
-                        [1] = "Enemies",
-                        [2] = "Bridge",
-                        [3] = {
-                            ["Module"] = "Dungeon",
-                            ["FunctionName"] = "Join",
-                            ["Args"] = ""
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                end
-            end
             local mob
             for _,v in pairs(workspace.Server.InvasionShip.Enemies:GetChildren()) do
                 if v:GetAttributes()["Health"] > 0 then
@@ -868,13 +715,13 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob and (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 and not boss and not adungbool then
+            if mob and (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
                 if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 end
                 repeat
-                    if not AutoInvasion then break end  
-                    if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
+                    if not AutoInvasion then break end
+                    if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 or adungbool then task.wait(3) break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -886,71 +733,6 @@ Main2:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
-            elseif boss and raidboss and not adungbool then
-                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
-                    local args = {
-                        [1] = "Teleport",
-                        [2] = "Spawn",
-                        [3] = boss:GetAttributes()["World"]
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait(1)
-                    HRT.CFrame = boss.CFrame + Vector3.new(0, 4, 0)
-                end
-                repeat
-                    if not AutoInvasion then break end
-                    local args = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = boss,
-                            ["Type"] = "RaidBoss"
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait()
-                until boss:GetAttributes()["Health"] ~= 0
-            elseif adungbool then
-                local dmob
-                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude > 1000 then
-                    local args = {
-                        [1] = "Enemies",
-                        [2] = "Bridge",
-                        [3] = {
-                            ["Module"] = "Dungeon",
-                            ["FunctionName"] = "Join",
-                            ["Args"] = ""
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait(1)
-                end
-                for _,v in pairs(workspace.Server.Dungeon.Enemies:GetChildren()) do
-                    if v:GetAttributes()["Health"] > 0 then
-                        dmob = v
-                        break
-                    end
-                end
-                if dmob then
-                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 6 then
-                        HRT.CFrame = dmob.CFrame + Vector3.new(0, 1.5, 0)
-                    end
-                    repeat
-                        if not AutoInvasion then break end
-                        local args = {
-                            [1] = "Attack",
-                            [2] = "Click",
-                            [3] = {
-                                ["Enemy"] = dmob,
-                                ["Type"] = "Dungeon"
-                            }
-                        }
-                        
-                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                        task.wait()
-                    until dmob:GetAttributes()["Health"] ~= 0
-                end
             end
             task.wait()
         end
@@ -992,13 +774,10 @@ Main2:Toggle{
     Callback = function(state)
         AutoDefense = state
         while AutoDefense do
-            local boss
-            local adungbool
             if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
-                    boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
+                if rboss or adungbool then
+                    task.wait(3)
                 else
-                    --tp to defense
                     local args = {
                         [1] = "Enemies",
                         [2] = "Bridge",
@@ -1012,11 +791,6 @@ Main2:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                 end
             end
-            if adungeon then
-                if workspace.Client.Open.Map:GetChildren()[1] or (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 1000 then
-                    adungbool = true
-                end
-            end
             local mob
             for _,v in pairs(workspace.Server.Defense.Enemies:GetChildren()) do
                 if v:GetAttributes()["Health"] > 0 then
@@ -1024,13 +798,13 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob and (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 and not boss and not adungbool then
-		        if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+            if mob and (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
+		if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
-	            end
+	        end
                 repeat
                     if not AutoDefense then break end
-                    if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then break end
+                    if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 or adungbool then task.wait(3) break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -1043,57 +817,6 @@ Main2:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
-            elseif boss and raidboss and not adungbool then
-                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
-                    local args = {
-                        [1] = "Teleport",
-                        [2] = "Spawn",
-                        [3] = boss:GetAttributes()["World"]
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait(1)
-                    HRT.CFrame = boss.CFrame + Vector3.new(0, 4, 0)
-                end
-                repeat
-                    if not AutoDefense then break end
-                    local args = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = boss,
-                            ["Type"] = "RaidBoss"
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait()
-                until boss:GetAttributes()["Health"] ~= 0
-            elseif adungbool then
-                local dmob
-                for _,v in pairs(workspace.Server.Dungeon.Enemies:GetChildren()) do
-                    if v:GetAttributes()["Health"] > 0 then
-                        dmob = v
-                        break
-                    end
-                end
-                if dmob then
-                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 6 then
-                        HRT.CFrame = dmob.CFrame + Vector3.new(0, 1.5, 0)
-                    end
-                    repeat
-                        if not AutoDefense then break end
-                        local args = {
-                            [1] = "Attack",
-                            [2] = "Click",
-                            [3] = {
-                                ["Enemy"] = dmob,
-                                ["Type"] = "Dungeon"
-                            }
-                        }
-                        
-                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                        task.wait()
-                    until dmob:GetAttributes()["Health"] ~= 0
-                end
             end
             task.wait()
         end
@@ -1135,13 +858,10 @@ Main2:Toggle{
     Callback = function(state)
         AutoCrystalDefense = state
         while AutoCrystalDefense do
-            local boss
-            local adungbool
             if (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 350 then
-                if raidboss and workspace.Server.Enemies.RaidBoss:GetChildren()[1] and tostring(workspace.Server.Enemies.RaidBoss:GetChildren()[1]) ~= "Android 2" then
-                    boss = workspace.Server.Enemies.RaidBoss:GetChildren()[1]
+                if rboss or adungbool then
+                    task.wait(3)
                 else
-                    --tp to crystal defense
                     local args = {
                         [1] = "Enemies",
                         [2] = "Bridge",
@@ -1151,24 +871,6 @@ Main2:Toggle{
                             ["Args"] = "Friend"
                         }
                     }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                end
-            end
-            if adungeon then
-                if (workspace.Server.Dungeon.Boss:GetPivot().p - char:GetPivot().p).Magnitude < 2000 then
-                    adungbool = true
-                else
-                    local args = {
-                        [1] = "Enemies",
-                        [2] = "Bridge",
-                        [3] = {
-                            ["Module"] = "Dungeon",
-                            ["FunctionName"] = "Join",
-                            ["Args"] = ""
-                        }
-                    }
-                    
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                 end
             end
@@ -1179,13 +881,13 @@ Main2:Toggle{
                     break
                 end
             end
-            if mob and (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 350 and not boss and not adungbool then
-		        if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+            if mob and (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 350 then
+		if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
-	            end
+	        end
                 repeat
                     if not AutoCrystalDefense then break end
-                    if (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 350 then break end
+                    if (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 350 or adungbool then break end
                     local args = {
                         [1] = "Attack",
                         [2] = "Click",
@@ -1198,57 +900,6 @@ Main2:Toggle{
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
-            elseif boss and raidboss and not adungbool then
-                if (boss:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
-                    local args = {
-                        [1] = "Teleport",
-                        [2] = "Spawn",
-                        [3] = boss:GetAttributes()["World"]
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait(1)
-                    HRT.CFrame = boss.CFrame + Vector3.new(0, 4, 0)
-                end
-                repeat
-                    if not AutoDefense then break end
-                    local args = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = boss,
-                            ["Type"] = "RaidBoss"
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                    task.wait()
-                until boss:GetAttributes()["Health"] ~= 0
-            elseif adungbool then
-                local dmob
-                for _,v in pairs(workspace.Server.Dungeon.Enemies:GetChildren()) do
-                    if v:GetAttributes()["Health"] > 0 then
-                        dmob = v
-                        break
-                    end
-                end
-                if dmob then
-                    if (dmob:GetPivot().p - char:GetPivot().p).Magnitude > 6 then
-                        HRT.CFrame = dmob.CFrame + Vector3.new(0, 1.5, 0)
-                    end
-                    repeat
-                        if not AutoCrystalDefense then break end
-                        local args = {
-                            [1] = "Attack",
-                            [2] = "Click",
-                            [3] = {
-                                ["Enemy"] = dmob,
-                                ["Type"] = "Dungeon"
-                            }
-                        }
-                        
-                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
-                        task.wait()
-                    until dmob:GetAttributes()["Health"] ~= 0
-                end
             end
             task.wait()
         end
