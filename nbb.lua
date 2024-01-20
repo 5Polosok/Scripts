@@ -350,9 +350,8 @@ Main:Toggle{
         while AutoOpen do
             for _,v in pairs(workspace:GetChildren()) do
                 if v:IsA("Model") then
-                    plyr.Character.HumanoidRootPart.CFrame = v.RootPart.CFrame * CFrame.new(0, 0.5, 0)
-                    task.wait(0.5)
                     repeat
+                        plyr.Character.HumanoidRootPart.CFrame = v.RootPart.CFrame * CFrame.new(0, 0.5, 0)
                         if not AutoOpen then break end
                         fireproximityprompt(v.RootPart.ProximityAttachment.Interaction)
                         task.wait()
