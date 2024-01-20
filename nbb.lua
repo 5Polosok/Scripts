@@ -247,7 +247,7 @@ misc:Dropdown{
         for _,v in pairs(AutoStore_Selected) do
             string = " "..string..v..";"
         end
-        Notif.New(string)
+        print(string)
     end
 }
 misc:Button{
