@@ -350,7 +350,7 @@ Main:Toggle{
             for _,v in pairs(workspace:GetChildren()) do
                 if v:IsA("Model") then
                     pcall(function()
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+                        plyr.Character.HumanoidRootPart.CFrame = v.RootPart.CFrame * CFrame.new(0, 0.5, 0)
                         repeat
                             if not AutoOpen then break end
                             task.wait()
