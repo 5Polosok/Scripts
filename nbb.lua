@@ -321,7 +321,6 @@ Main:Toggle{
             end 
             for _,v in pairs(workspace.Living:GetChildren()) do
                 if tostring(v) ~= tostring(game.Players.LocalPlayer) and (v:GetPivot().p-game.Players.LocalPlayer.Character:GetPivot().p).Magnitude <= 400 and not cs then
-                    pcall(function()
                         repeat
                             if not AFarm then break end
                             HRT.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.UpVector * 5
@@ -333,7 +332,6 @@ Main:Toggle{
                             game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
                             task.wait()
                         until not v
-                    end)
                 else
                     plyr.Character.HumanoidRootPart.CFrame = CFrame.new(2006,942,-1443)
                 end
