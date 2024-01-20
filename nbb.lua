@@ -349,6 +349,7 @@ Main:Toggle{
         while AutoOpen do
             for _,v in pairs(workspace:GetChildren()) do
                 if v:IsA("Model") then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.RootPart.CFrame
                     repeat
                         if not AutoOpen then break end
                         task.wait()
