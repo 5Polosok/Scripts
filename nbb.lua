@@ -349,17 +349,19 @@ Main:Toggle{
         while AutoOpen do
             for _,v in pairs(workspace:GetChildren()) do
                 if v:IsA("Model") then
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.RootPart.CFrame
-                    repeat
-                        if not AutoOpen then break end
-                        task.wait()
-                    until v.RootPart.ProximityAttachment.Interaction
-                    task.wait(0.5)
-                    repeat
-                        if not AutoOpen then break end
-                        fireproximityprompt(v.RootPart.ProximityAttachment.Interaction)
-                        task.wait()
-                    until not v.RootPart
+                    pcall(function()
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+                        repeat
+                            if not AutoOpen then break end
+                            task.wait()
+                        until v.RootPart.ProximityAttachment.Interaction
+                        task.wait(0.5)
+                        repeat
+                            if not AutoOpen then break end
+                            fireproximityprompt(v.RootPart.ProximityAttachment.Interaction)
+                            task.wait()
+                        until not v.RootPart
+                    end)
                 end
             end
             task.wait()      
