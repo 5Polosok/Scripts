@@ -351,10 +351,6 @@ Main:Toggle{
             for _,v in pairs(workspace:GetChildren()) do
                 if v:IsA("Model") then
                     plyr.Character.HumanoidRootPart.CFrame = v.RootPart.CFrame * CFrame.new(0, 0.5, 0)
-                    repeat
-                        if not AutoOpen then break end
-                        task.wait()
-                    until v.RootPart.ProximityAttachment.Interaction
                     task.wait(0.5)
                     repeat
                         if not AutoOpen then break end
