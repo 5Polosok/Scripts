@@ -299,65 +299,8 @@ local Main = GUI:Tab{
 	Name = "Main Feauters",
 	Icon = "rbxassetid://8569322835"
 }
-local choosen_zone
-local zones_table = {}
-local zone = Main:Dropdown{
-	Name = "Zone DropDowns",
-	StartingText = "Select...",
-	Description = nil,
-	Items = {
-        
-	},
-	Callback = function(item) 
-        choosen_zone = item
-    end
-} 
-
-for _,v in pairs(workspace.MappedRegions:GetChildren()) do
-    local state = true
-    for _, z in pairs(zones_table) do
-        if z == v.Name then
-            state = false
-            break
-        end
-    end
-    if state then
-        table.insert(zones_table, v.Name)
-    end
-end
-table.sort(zones_table)
-for _,v in pairs(zones_table) do
-    zone:AddItems({v})
-end
-misc:Button{
-    Name = "Refresh DD",
-    Description = nil,
-    Callback = function()
-            for _,v in pairs(zones_table) do
-                pcall(function()
-                    zone:RemoveItems({v})
-                end)
-            end
-            zones_table = {}
-            for _,v in pairs(workspace.MappedRegions:GetChildren()) do
-                local state = true
-                for _, z in pairs(zones_table) do
-                    if z == v.Name then
-                        state = false
-                        break
-                    end
-                end
-                if state then
-                    table.insert(zones_table, v.Name)
-                end
-            end
-            table.sort(zones_table)
-            for _,v in pairs(zones_table) do
-                zone:AddItems({v})
-            end
-    end
-}
 local AFarm
+local AutoOpen
 Main:Toggle{
     Name = "AutoFarm Selected Zone",
     StartingState = false,
@@ -366,22 +309,53 @@ Main:Toggle{
         AFarm = state
         plyr.Character.HumanoidRootPart.CFrame = CFrame.new(2006,942,-1443)
         while AFarm do
+            local cs
+            if AutoOpen then
+                for _,v in pairs(workspace) do
+                    if v:IsA("Model") then
+                        cs = true
+                        break    
+                    end 
+                end
+            end 
             for _,v in pairs(workspace.Living:GetChildren()) do
-                if tostring(v) ~= tostring(game.Players.LocalPlayer) and (v:GetPivot().p-game.Players.LocalPlayer.Character:GetPivot().p).Magnitude <= 400 then
-                    pcall(function()
-                        repeat
-                            if not AFarm then break end
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.lookVector * 5
-                            local args = {
-                                [1] = "MOUSEBUTTON1"
-                            }
-                                
-                            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
-                            task.wait()
-                        until not v
-                    end)
+                if tostring(v) ~= tostring(game.Players.LocalPlayer) and (v:GetPivot().p-game.Players.LocalPlayer.Character:GetPivot().p).Magnitude <= 400 and not cs then
+                    repeat
+                        if not AFarm then break end
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.lookVector * -5
+                        local args = {
+                            [1] = "MOUSEBUTTON1"
+                        }   
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        task.wait()
+                    until not v
                 else
                     plyr.Character.HumanoidRootPart.CFrame = CFrame.new(2006,942,-1443)
+                end
+            end
+            task.wait()      
+        end
+    end
+}
+Main:Toggle{
+    Name = "AutoOpen Chest",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoOpen = state
+        while AutoOpen do
+            for _,v in pairs(workspace) do
+                if v:IsA("Model") then
+                    repeat
+                        if not AutoOpen then break end
+                        task.wait()
+                    until v.RootPart.ProximityAttachment.Interaction
+                    task.wait(0.5)
+                    repeat
+                        if not AutoOpen then break end
+                        fireproximityprompt(v.RootPart.ProximityAttachment.Interaction)
+                        task.wait()
+                    until not v.RootPart
                 end
             end
             task.wait()      
