@@ -302,7 +302,7 @@ local Main = GUI:Tab{
 local AFarm
 local AutoOpen
 Main:Toggle{
-    Name = "AutoFarm Selected Zone",
+    Name = "AutoFarm Last Zone",
     StartingState = false,
     Description = nil,
     Callback = function(state)
