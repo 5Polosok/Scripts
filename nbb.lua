@@ -307,6 +307,7 @@ Main:Toggle{
     Description = nil,
     Callback = function(state)
         AFarm = state
+        plyr.Character.HumanoidRootPart.CFrame = CFrame.new(2006,942,-1443)
         while AFarm do
             local cs
             if AutoOpen then
