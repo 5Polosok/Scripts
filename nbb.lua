@@ -310,7 +310,7 @@ Main:Toggle{
         while AFarm do
             local cs
             if AutoOpen then
-                for _,v in pairs(workspace) do
+                for _,v in pairs(workspace:GetChildren()) do
                     if v:IsA("Model") then
                         cs = true
                         break    
