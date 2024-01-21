@@ -16,6 +16,39 @@ local Tab = GUI:Tab{
 	Name = "New Tab",
 	Icon = "rbxassetid://8569322835"
 }
+local ismobile = game:GetService("UserInputService").TouchEnabled
+    if ismobile then
+        local RaCc0oNScrGUI = Instance.new("ScreenGui")
+        local RaCc0oNImg = Instance.new("ImageButton")
+        local UICorner = Instance.new("UICorner")
+        local VIM = game:GetService("VirtualInputManager")
+        local Keytosend = Enum.KeyCode.Delete
+
+        RaCc0oNScrGUI.Name = "RaCc0oNScrGUI"
+        RaCc0oNScrGUI.Parent = game.CoreGui
+        RaCc0oNScrGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+        RaCc0oNImg.Name = "RaCc0oNImg"
+        RaCc0oNImg.Parent = RaCc0oNScrGUI
+        RaCc0oNImg.BackgroundColor3 = Color3.fromRGB(67, 62, 132)
+        RaCc0oNImg.BackgroundTransparency = 1.000
+        RaCc0oNImg.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        RaCc0oNImg.BorderSizePixel = 0
+        RaCc0oNImg.Size = UDim2.new(0, 50, 0, 50)
+        RaCc0oNImg.Image = "rbxassetid://3821457207"
+        RaCc0oNImg.Draggable = true
+        RaCc0oNImg.Selectable = true
+        RaCc0oNImg.Active = true
+
+        UICorner.CornerRadius = UDim.new(0, 100)
+        UICorner.Parent = RaCc0oNImg
+
+        RaCc0oNImg.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    VIM:SendKeyEvent(true, Keytosend, false, game)
+            end
+        end)
+    end
 local money
 local HRT = game.Players.LocalPlayer.Character.HumanoidRootPart
 Tab:Toggle{
@@ -25,7 +58,7 @@ Tab:Toggle{
     Callback = function(state)
         money = state
         while money do
-            HRT.CFrame = workspace.Map.Obbies.Obbies.Hard.CFrame
+            HRT.CFrame = workspace.Map.Obbies.Obbies.Hard.Reward.CFrame
             task.wait()      
         end
     end
