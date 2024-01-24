@@ -713,7 +713,7 @@ Main2:Toggle{
         AutoLeave12 = state
         while AutoLeave12 do
 	        task.wait(3)
-            if plyr.PlayerGui.UI.HUD.RaidEvolved.Room.Text == "Room "..room12 then
+            if plyr.PlayerGui.UI.HUD.RaidEvolved.Room.Text == "Wave "..room12 then
                 local args = {
                     [1] = "Teleport",
                     [2] = "Spawn",
