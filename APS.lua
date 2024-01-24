@@ -417,15 +417,6 @@ Main:Toggle{
                 end
                 repeat
                     if not raidboss then break end
-                    local args5 = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = rboss,
-                            ["Type"] = "RaidBoss"
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args5))
                     task.wait()
                 until rboss:GetAttributes()["Health"] ~= 0
             end
@@ -475,16 +466,6 @@ Main:Toggle{
                     end
                     repeat
                         if not adungeon then break end
-                        local args = {
-                            [1] = "Attack",
-                            [2] = "Click",
-                            [3] = {
-                                ["Enemy"] = dmob,
-                                ["Type"] = "Dungeon"
-                            }
-                        }
-                        
-                        game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                         task.wait()
                     until dmob:GetAttributes()["Health"] ~= 0
                 end
@@ -533,16 +514,6 @@ Main:Toggle{
                 end
                 repeat
                     if not sboss then break end
-                    local args = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = melio,
-                            ["Type"] = "SummonBoss"
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until melio:GetAttributes()["Health"] ~= 0
             end
@@ -585,16 +556,6 @@ Main:Toggle{
 		        end
                 repeat
                     if not WorldFarm then break end
-                    local args2 = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = mob,
-                            ["Type"] = "World"
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args2))
                     task.wait()
                 until mob:GetAttributes()["Health"] == 0
             end
@@ -645,15 +606,6 @@ Main2:Toggle{
                         task.wait(3)
                         break
                     end
-                    local args = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = mob,
-                            ["Type"] = "Raid"
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
             end
@@ -730,15 +682,7 @@ Main2:Toggle{
                         task.wait(3)
                         break
                     end
-                    local args = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = mob,
-                            ["Type"] = "RaidEvolved"
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+
                     task.wait()
                 until mob
             end
@@ -760,8 +704,8 @@ Main2:Toggle{
         StartingState = false,
         Description = nil,
         Callback = function(state)
-        AutoLeave2 = state
-        while AutoLeave2 do
+        AutoLeave12 = state
+        while AutoLeave12 do
 	        task.wait(3)
             if plyr.PlayerGui.UI.HUD.RaidEvolved.Room.Text == "Room "..room12 then
                 local args = {
@@ -812,15 +756,6 @@ Main2:Toggle{
                 repeat
                     if not AutoInvasion then break end
                     if (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 or adungbool then task.wait(3) break end
-                    local args = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = mob,
-                            ["Type"] = "InvasionShip"
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
             end
@@ -893,15 +828,6 @@ Main2:Toggle{
                 repeat
                     if not AutoInvasion2 then break end
                     if (workspace.Server.ShipEvolved.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 or adungbool then task.wait(3) break end
-                    local args = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = mob,
-                            ["Type"] = "ShipEvolved"
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
             end
@@ -975,16 +901,6 @@ Main2:Toggle{
                 repeat
                     if not AutoDefense then break end
                     if (workspace.Server.Defense.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 or adungbool then task.wait(3) break end
-                    local args = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = mob,
-                            ["Type"] = "Defense"
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
             end
@@ -1058,16 +974,6 @@ Main2:Toggle{
                 repeat
                     if not AutoCrystalDefense then break end
                     if (workspace.Server.ProtectCrystal.Map.Crystal.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 350 or adungbool then break end
-                    local args = {
-                        [1] = "Attack",
-                        [2] = "Click",
-                        [3] = {
-                            ["Enemy"] = mob,
-                            ["Type"] = "ProtectCrystal"
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
                 until mob
             end
