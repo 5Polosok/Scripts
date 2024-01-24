@@ -857,7 +857,7 @@ Main2:Toggle{
         AutoLeave22 = state
         while AutoLeave22 do
             task.wait(3)
-            if plyr.PlayerGui.UI.HUD.ShipEvolved.Room.Text == "Room "..room22 then
+            if plyr.PlayerGui.UI.HUD.ShipEvolved.Room.Text == "Wave "..room22 then
                 local args = {
                     [1] = "Teleport",
                     [2] = "Spawn",
