@@ -661,7 +661,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until not mob
+                until mob
             end
             task.wait()
         end
@@ -746,7 +746,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until not mob
+                until mob
             end
             task.wait()
         end
@@ -828,7 +828,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until not mob
+                until mob
             end
             task.wait()
         end
@@ -909,7 +909,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until not mob
+                until mob
             end
             task.wait()
         end
