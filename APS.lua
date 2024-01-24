@@ -655,7 +655,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until mob
+                until not mob
             end
             task.wait()
         end
@@ -678,6 +678,92 @@ Main2:Toggle{
         while AutoLeave do
 	        task.wait(3)
             if plyr.PlayerGui.UI.HUD.Raid.Room.Text == "Room "..room then
+                local args = {
+                    [1] = "Teleport",
+                    [2] = "Spawn",
+                    [3] = "Desert Piece"
+		        }
+                game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+	        end
+        end
+    end
+}
+
+local autoraid2
+Main2:Toggle{
+    Name = "AutoRaidEvo",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        autoraid2 = state
+        while autoraid2 do
+            if (workspace.Server.RaidEvolved.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+                if rboss or adungbool then
+                    task.wait(3)
+                else
+                    local args = {
+                        [1] = "Enemies",
+                        [2] = "Bridge",
+                        [3] = {
+                            ["Module"] = "RaidEvolved",
+                            ["FunctionName"] = "Start",
+                            ["Args"] = "Friend"
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                end
+            end
+            local mob
+            for _,v in pairs(workspace.Server.RaidEvolved.Enemies:GetChildren()) do
+                if v:GetAttributes()["Health"] > 0 then
+                    mob = v
+                    break
+                end
+            end
+            if mob and (workspace.Server.RaidEvolved.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
+	            if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+		        end
+                repeat
+                    if not autoraid2 then break end
+	                if (workspace.Server.RaidEvolved.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 or adungbool then
+                        task.wait(3)
+                        break
+                    end
+                    local args = {
+                        [1] = "Attack",
+                        [2] = "Click",
+                        [3] = {
+                            ["Enemy"] = mob,
+                            ["Type"] = "RaidEvolved"
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait()
+                until not mob
+            end
+            task.wait()
+        end
+    end
+}
+
+local room12
+Main2:Textbox{
+	Name = "AutoLeave Room RaidEvo",
+	Callback = function(text)
+        room12 = text
+    end
+}
+local AutoLeave12
+Main2:Toggle{
+        Name = "AutoLeave RaidEvo",
+        StartingState = false,
+        Description = nil,
+        Callback = function(state)
+        AutoLeave2 = state
+        while AutoLeave2 do
+	        task.wait(3)
+            if plyr.PlayerGui.UI.HUD.RaidEvolved.Room.Text == "Room "..room12 then
                 local args = {
                     [1] = "Teleport",
                     [2] = "Spawn",
@@ -736,7 +822,7 @@ Main2:Toggle{
                     }
                     game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
                     task.wait()
-                until mob
+                until not mob
             end
             task.wait()
         end
@@ -769,7 +855,87 @@ Main2:Toggle{
         end
     end
 } 
-
+local AutoInvasion2
+Main2:Toggle{
+    Name = "AutoInvasionEvo",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoInvasion2 = state
+        while AutoInvasion2 do
+            if (workspace.Server.ShipEvolved.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 then
+                if rboss or adungbool then
+                    task.wait(3)
+                else
+                    local args = {
+                        [1] = "Enemies",
+                        [2] = "Bridge",
+                        [3] = {
+                            ["Module"] = "ShipEvolved",
+                            ["FunctionName"] = "Start",
+                            ["Args"] = "Friend"
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                end
+            end
+            local mob
+            for _,v in pairs(workspace.Server.ShipEvolved.Enemies:GetChildren()) do
+                if v:GetAttributes()["Health"] > 0 then
+                    mob = v
+                    break
+                end
+            end
+            if mob and (workspace.Server.ShipEvolved.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
+                if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                    HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
+                end
+                repeat
+                    if not AutoInvasion2 then break end
+                    if (workspace.Server.ShipEvolved.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude >= 250 or adungbool then task.wait(3) break end
+                    local args = {
+                        [1] = "Attack",
+                        [2] = "Click",
+                        [3] = {
+                            ["Enemy"] = mob,
+                            ["Type"] = "ShipEvolved"
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+                    task.wait()
+                until not mob
+            end
+            task.wait()
+        end
+    end
+}
+local room22
+Main2:Textbox{
+	Name = "AutoLeave Room InvasionShipEvo",
+	Callback = function(text)
+        room22 = text
+    end
+}
+local AutoLeave22
+Main2:Toggle{
+    Name = "AutoLeave InvasionEvo",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoLeave22 = state
+        while AutoLeave22 do
+            task.wait(3)
+            if plyr.PlayerGui.UI.HUD.ShipEvolved.Room.Text == "Room "..room22 then
+                local args = {
+                    [1] = "Teleport",
+                    [2] = "Spawn",
+                    [3] = "Desert Piece"
+                }
+                game:GetService("ReplicatedStorage").Bridge:FireServer(unpack(args))
+            end
+        end
+    end
+} 
 local AutoDefense
 Main2:Toggle{
     Name = "AutoDefense",
