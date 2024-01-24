@@ -756,7 +756,7 @@ Main2:Toggle{
                 end
             end
             if mob and (workspace.Server.InvasionShip.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
-                if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 end
                 repeat
@@ -828,7 +828,7 @@ Main2:Toggle{
                 end
             end
             if mob and (workspace.Server.ShipEvolved.Map.Model:GetPivot().p-char:GetPivot().p).Magnitude <= 250 then
-                if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 4 then
+                if (mob:GetPivot().p-char:GetPivot().p).Magnitude >= 6 then
                     HRT.CFrame = mob.CFrame + Vector3.new(0, 1.5, 0)
                 end
                 repeat
