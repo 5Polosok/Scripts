@@ -288,7 +288,7 @@ Main:Button{
     Name = "Delete Open Animation ",
     Description = "FOREVER.",
     Callback = function()
-        game.Players.LocalPlayer.PlayerGui.Billboard.Stars:Destroy()
+        game.Players.LocalPlayer.PlayerGui.Stars:Destroy()
     end
 }
 local world = "Leaf City"
