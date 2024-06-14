@@ -68,7 +68,7 @@ Tab:Toggle{
     Callback = function(state)
         AutoFarm = state
         while AutoFarm do
-            for _,v in pairs(workspace:GetChildren("NPCs"):GetDescendants()) do
+            for _,v in pairs(workspace["NPCs"]:GetDescendants()) do
                 if v:IsA("Model") then
                     print(v:GetAttributes())
                 end
