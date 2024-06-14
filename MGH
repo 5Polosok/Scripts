@@ -70,14 +70,26 @@ Tab:Toggle{
         while AutoFarm do
             for _,v in pairs(workspace["NPCs"]:GetDescendants()) do
                 if v:IsA("Model") then
-                    print(v:GetAttributes())
+                    
                 end
             end
             task.wait()      
         end
     end
 }
-
+Tab:Button{
+	Name = "Button",
+	Description = nil,
+	Callback = function()
+        for _,v in pairs(workspace["NPCs"]:GetDescendants()) do
+            if v:IsA("Model") then
+                for i,q in pairs(v) do
+                    print(i, q)
+                end
+            end
+        end
+    end
+}
 -- Tab:Slider{
 -- 	Name = "Slider",
 -- 	Default = 50,
