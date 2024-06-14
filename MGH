@@ -19,13 +19,13 @@ local Tab = GUI:Tab{
 
 --- toggle
 local AutoFarm
-local tsp
-local slid
+-- local tsp
+-- local slid
 
-local Istw = true
-local tS = game:GetService("TweenService")
-local tweeninfo = TweenInfo.new(slid, Enum.EasingStyle.Linear)
-local plyr = game.Players.LocalPlayer
+-- local Istw = true
+-- local tS = game:GetService("TweenService")
+-- local tweeninfo = TweenInfo.new(slid, Enum.EasingStyle.Linear)
+-- local plyr = game.Players.LocalPlayer
 
 
 Tab:Toggle{
@@ -35,7 +35,6 @@ Tab:Toggle{
     Callback = function(state)
         AutoFarm = state
         while AutoFarm do
-            tsp = slid
             for _,v in pairs(workspace:GetChldren("NPCs"):GetDescendants()) do
                 if v:IsA("Model") then
                     print(v:GetAttributes())
@@ -46,12 +45,12 @@ Tab:Toggle{
     end
 }
 
-Tab:Slider{
-	Name = "Slider",
-	Default = 50,
-	Min = 0,
-	Max = 100,
-	Callback = function(item)
-        slid = item
-    end
-}
+-- Tab:Slider{
+-- 	Name = "Slider",
+-- 	Default = 50,
+-- 	Min = 0,
+-- 	Max = 100,
+-- 	Callback = function(item)
+--         slid = item
+--     end
+-- }
