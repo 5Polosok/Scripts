@@ -83,7 +83,7 @@ Tab:Button{
 	Callback = function()
         for _,v in pairs(workspace["NPCs"]:GetDescendants()) do
             if v:IsA("Model") then
-                for i,q in pairs(v) do
+                for i,q in pairs(v:GetAttributes()) do
                     print(i, q)
                 end
             end
