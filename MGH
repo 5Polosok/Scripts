@@ -1,0 +1,45 @@
+
+--- Loading lib
+local Mercury = loadstring(game:HttpGet("https://raw.githubusercontent.com/RaCc0oN1/RobloxObf/main/ReworkMercury"))()
+---
+--- GUI create
+local GUI = Mercury:Create{
+    Name = "Mercury",
+    Size = UDim2.fromOffset(600, 400),
+    Theme = Mercury.Themes.Dark,
+    Link = "https://github.com/deeeity/mercury-lib"
+}
+---
+--- Tab
+local Tab = GUI:Tab{
+	Name = "New Tab",
+	Icon = "rbxassetid://8569322835"
+}
+---
+
+--- toggle
+local AutoFarm
+local tsp
+Tab:Toggle{
+    Name = "Toggle",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoFarm = state
+        while AutoFarm do
+            tsp = slid
+            task.wait()      
+        end
+    end
+}
+
+local slid
+Tab:Slider{
+	Name = "Slider",
+	Default = 50,
+	Min = 0,
+	Max = 100,
+	Callback = function(item)
+        slid = item
+    end
+}
