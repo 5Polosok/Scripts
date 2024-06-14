@@ -37,7 +37,7 @@ Tab:Toggle{
         while AutoFarm do
             tsp = slid
             for _,v in pairs(workspace:GetChldren("NPCs"):GetDescendants()) do
-                if v:IsA("Model"):
+                if v:IsA("Model") then
                     print(v:GetAttributes())
                 end
             end
