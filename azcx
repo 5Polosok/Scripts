@@ -285,14 +285,11 @@ Main:Toggle{
         end
     end
 }
-Main:Slider{
-	Name = "Slider",
-	Default = 7,
-	Min = 1,
-	Max = 20,
-	Callback = function(item)
-        furth = item
-    end
+Main:Textbox{
+	Name = "distance",
+	Callback = function(text) 
+    furth = tonumber(text)
+end
 }
 Main:Toggle{
     Name = "AutoOpen Chest",
