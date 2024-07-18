@@ -171,7 +171,7 @@ misc:Toggle{
         while itemsell do
             local tabletka = {}
             for _,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-                if v:IsA("Tool") and v:GetAttributes()["ItemId"] ~= nil and v.Name ~= "Mount" then
+                if v:IsA("Tool") and v.Name ~= "Mount" then
                     table.insert(tabletka, v)
                 end
             end
@@ -198,7 +198,7 @@ misc:Toggle{
 
 
             game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.ShopService.RE.Signal:FireServer(unpack(args))
-            task.wait(20)      
+            task.wait(10)      
         end
     end
 }
@@ -239,8 +239,6 @@ Main:Toggle{
                             if workspace.Living:FindFirstChild(v):IsA("Model") and workspace.Living:FindFirstChild(v) ~= nil then
                                 currentMob = workspace.Living:FindFirstChild(v)
                                 break
-                            elseif currentMob == nil then
-                                HRT.CFrame = part.CFrame
                             end
                         else
                             HRT.CFrame = part.CFrame
@@ -285,6 +283,9 @@ Main:Toggle{
                 table.remove(fold, 1)
                 print(#fold)
                 task.wait()
+            end
+            if not cs and #fold == 0 then
+                HRT.CFrame = part.CFrame
             end
         end
     end
