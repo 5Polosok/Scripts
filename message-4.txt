@@ -204,7 +204,7 @@ Main:Toggle{
                         if not AFarm or cs then break end
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
                         for _,v in pairs(a) do
-                            if workspace.Living:FindFirstChild(v).Humanoid.Health > 0 then
+                            if workspace.Living:FindFirstChild(v) then
                                 currentMob = workspace.Living:FindFirstChild(v)
                                 break
                             end
