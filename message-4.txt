@@ -1,214 +1,375 @@
+local Mercury = loadstring(game:HttpGet("https://raw.githubusercontent.com/RaCc0oN1/RobloxObf/main/ReworkMercury"))()
+---
+local GUI = Mercury:Create{
+    Name = "Mercury",
+    Size = UDim2.fromOffset(600, 400),
+    Theme = Mercury.Themes.Dark,
+    Link = "https://github.com/deeeity/mercury-lib"
+}
+--- GUI create
+local Plugins = GUI:Tab{
+    Name = "Plugins",
+    Icon = "rbxassetid://9087232887"
+}
 
-    local Mercury = loadstring(game:HttpGet("https://raw.githubusercontent.com/RaCc0oN1/RobloxObf/main/ReworkMercury"))()
-    --- GUI create
-    local GUI = Mercury:Create{
-        Name = "Mercury",
-        Size = UDim2.fromOffset(600, 400),
-        Theme = Mercury.Themes.Dark,
-        Link = "https://github.com/deeeity/mercury-lib";
-    }
-    local ismobile = game:GetService("UserInputService").TouchEnabled
-    if ismobile then
-        local RaCc0oNScrGUI = Instance.new("ScreenGui")
-        local RaCc0oNImg = Instance.new("ImageButton")
-        local UICorner = Instance.new("UICorner")
-        local VIM = game:GetService("VirtualInputManager")
-        local Keytosend = Enum.KeyCode.Delete
-
-        RaCc0oNScrGUI.Name = "RaCc0oNScrGUI"
-        RaCc0oNScrGUI.Parent = game.CoreGui
-        RaCc0oNScrGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
-        RaCc0oNImg.Name = "RaCc0oNImg"
-        RaCc0oNImg.Parent = RaCc0oNScrGUI
-        RaCc0oNImg.BackgroundColor3 = Color3.fromRGB(67, 62, 132)
-        RaCc0oNImg.BackgroundTransparency = 1.000
-        RaCc0oNImg.BorderColor3 = Color3.fromRGB(0, 0, 0)
-        RaCc0oNImg.BorderSizePixel = 0
-        RaCc0oNImg.Size = UDim2.new(0, 50, 0, 50)
-        RaCc0oNImg.Image = "rbxassetid://3821457207"
-        RaCc0oNImg.Draggable = true
-        RaCc0oNImg.Selectable = true
-        RaCc0oNImg.Active = true
-
-        UICorner.CornerRadius = UDim.new(0, 100)
-        UICorner.Parent = RaCc0oNImg
-
-        RaCc0oNImg.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
-                    VIM:SendKeyEvent(true, Keytosend, false, game)
-            end
-        end)
-    end
-    ---
-    -------------------------PluginsTab
-    local Plugins = GUI:Tab{
-        Name = "Plugins",
-        Icon = "rbxassetid://9087232887"
-    }
-    Plugins:Button{
-        Name = "SimpleSpy",
-        Description = nil,
-        Callback = function()
-            loadstring(game:HttpGet(
-                "https://raw.githubusercontent.com/exxtremestuffs/SimpleSpySource/master/SimpleSpy.lua"))()
-        end
-    }
-    Plugins:Button{
-        Name = "DarkDex",
-        Description = nil,
-        Callback = function()
-            loadstring(game:HttpGet(
-                "https://raw.githubusercontent.com/Babyhamsta/RBLX_Scripts/main/Universal/BypassedDarkDexV3.lua",
-                true))()
-        end
-    }
-    Plugins:Button{
-        Name = "Awesome Explorer",
-        Description = nil,
-        Callback = function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/wally-rblx/awesome-explorer/main/source.lua"))()
-        end
-    }
-    Plugins:Button{
-        Name = "Anti-AFK",
-        Description = nil,
-        Callback = function()
-            Plugins:Prompt{
-                Followup = false,
-                Title = "Anti-AFK",
-                Text = "This function cannot be disabled. Enable it?",
-                Buttons = {
-                    Y = function()
-                        local vu = game:GetService("VirtualUser")
-                        game:GetService("Players").LocalPlayer.Idled:connect(function()
-                            vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
-                            wait(1)
-                            vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
-                        end)
-                        GUI:set_Status("Anti-AFK WORKING")
-                    end,
-                    N = function()
-                        return false
-                    end
-                }
+Plugins:Button{
+    Name = "Anti-AFK",
+    Description = nil,
+    Callback = function()
+        Plugins:Prompt{
+            Followup = false,
+            Title = "Anti-AFK",
+            Text = "This function cannot be disabled. Enable it?",
+            Buttons = {
+                Y = function()
+                    local vu = game:GetService("VirtualUser")
+                    game:GetService("Players").LocalPlayer.Idled:connect(function()
+                        vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                        wait(1)
+                        vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                    end)
+                    GUI:set_Status("Anti-AFK WORKING")
+                end,
+                N = function()
+                    return false
+                end
             }
+        }
+    end
+}
+
+------------------PlayerTab
+local PlayerTab = GUI:Tab{
+    Name = "Player",
+    Icon = "rbxassetid://9179124493"
+}
+local WalkSpeedD = 16
+local WalkSpeedSlider = 16
+local WalkSpeedON
+PlayerTab:Slider{
+    Name = "WalkSpeedNum",
+    Default = 16,
+    Min = 16,
+    Max = 200,
+    Callback = function(WalkSpeedSlider)
+        WalkSpeedD = WalkSpeedSlider
+    end
+}
+PlayerTab:Toggle{
+    Name = "WalkSpeed",
+    StartingState = false,
+    Description = "If u Die UPD BTNS and Num",
+    Callback = function(state)
+        if state then
+            WalkSpeedON = true
+        else
+            WalkSpeedON = false
         end
-    }
-    Plugins:Button{
-        Name = "Infinite Yield",
-        Description = nil,
-        Callback = function()
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
-        end
-    }
-    Plugins:Button{
-        Name = "FLY",
-        Description = nil,
-        Callback = function()
-            loadstring(
-                "\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\40\39\104\116\116\112\115\58\47\47\103\105\115\116\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\109\101\111\122\111\110\101\89\84\47\98\102\48\51\55\100\102\102\57\102\48\97\55\48\48\49\55\51\48\52\100\100\100\54\55\102\100\99\100\51\55\48\47\114\97\119\47\101\49\52\101\55\52\102\52\50\53\98\48\54\48\100\102\53\50\51\51\52\51\99\102\51\48\98\55\56\55\48\55\52\101\98\51\99\53\100\50\47\97\114\99\101\117\115\37\50\53\50\48\120\37\50\53\50\48\102\108\121\37\50\53\50\48\50\37\50\53\50\48\111\98\102\108\117\99\97\116\111\114\39\41\44\116\114\117\101\41\41\40\41\10\10")()
-        end
-    }
-    Plugins:Button{
-        Name = "Ctrl + LMB = TP",
-        Description = nil,
-        Callback = function()
-            local UIS = game:GetService("UserInputService")
-            local Player = game.Players.LocalPlayer
-            local Mouse = Player:GetMouse()
-            function GetCharacter()
-                return game.Players.LocalPlayer.Character
-            end
-            function Teleport(pos)
-                local Char = GetCharacter()
-                if Char then
-                    Char:MoveTo(pos)
+        while WalkSpeedON do
+            while game:GetService("RunService").RenderStepped:wait() do
+                if WalkSpeedON then
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WalkSpeedD
+                else
+                    break
                 end
             end
-            UIS.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 and
-                    UIS:IsKeyDown(Enum.KeyCode.LeftControl) then
-                    Teleport(Mouse.Hit.p)
+        end
+    end
+}
+
+local JumpHeightSlider = 50.145
+
+PlayerTab:Slider{
+    Name = "JumpPowerNum",
+    Default = 50.145,
+    Min = 1,
+    Max = 500,
+    Callback = function(JumpHeightSlider)
+        game.Players.LocalPlayer.Character.Humanoid.JumpHeight = JumpHeightSlider
+    end
+}
+local part = Instance.new("Part")
+part.CFrame = CFrame.new(1966, 935, -1524)
+part.CanCollide = False
+---
+local misc = GUI:Tab{
+	Name = "Misc Functions",
+	Icon = "rbxassetid://8569322835"
+}
+local ismobile = game:GetService("UserInputService").TouchEnabled
+if ismobile then
+    local RaCc0oNScrGUI = Instance.new("ScreenGui")
+    local RaCc0oNImg = Instance.new("ImageButton")
+    local UICorner = Instance.new("UICorner")
+    local VIM = game:GetService("VirtualInputManager")
+    local Keytosend = Enum.KeyCode.Delete
+
+    RaCc0oNScrGUI.Name = "RaCc0oNScrGUI"
+    RaCc0oNScrGUI.Parent = game.CoreGui
+    RaCc0oNScrGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+    RaCc0oNImg.Name = "RaCc0oNImg"
+    RaCc0oNImg.Parent = RaCc0oNScrGUI
+    RaCc0oNImg.BackgroundColor3 = Color3.fromRGB(67, 62, 132)
+    RaCc0oNImg.BackgroundTransparency = 1.000
+    RaCc0oNImg.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    RaCc0oNImg.BorderSizePixel = 0
+    RaCc0oNImg.Size = UDim2.new(0, 50, 0, 50)
+    RaCc0oNImg.Image = "rbxassetid://3821457207"
+    RaCc0oNImg.Draggable = true
+    RaCc0oNImg.Selectable = true
+    RaCc0oNImg.Active = true
+
+    UICorner.CornerRadius = UDim.new(0, 100)
+    UICorner.Parent = RaCc0oNImg
+
+    RaCc0oNImg.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+            VIM:SendKeyEvent(true, Keytosend, false, game)
+        end
+    end)
+end
+local itemsell
+misc:Toggle{
+    Name = "Sell Items",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        itemsell = state
+        while itemsell do
+            local tabletka = {}
+            for _,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                if v:IsA("Tool") and v.Name ~= "Mount" then
+                    table.insert(tabletka, v)
+                end
+            end
+
+            local kolvo = #tabletka
+            local iter = 1
+            local args = {"BlackMarketBulkSellItems", {}}
+
+            while iter ~= kolvo + 1 do
+                table.insert(args[2], {})
+                iter += 1
+                task.wait()
+            end
+
+            local iterz = 1
+
+            while iterz ~= kolvo + 1 do
+                table.insert(args[2][iterz], tostring(tabletka[iterz]:GetAttributes()["ItemId"]))
+                table.insert(args[2][iterz], tostring(tabletka[iterz]:GetAttributes()["UUID"]))
+                table.insert(args[2][iterz], 1)
+                iterz += 1
+                task.wait()
+            end
+
+
+            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.ShopService.RE.Signal:FireServer(unpack(args))
+            task.wait(10)      
+        end
+    end
+}
+
+local Main = GUI:Tab{
+	Name = "Main Feauters",
+	Icon = "rbxassetid://8569322835"
+}
+local a = {"Jujutsu Sorcerer", "Mantis Curse", "Flyhead", "Roppongi Curse"}
+local AFarm
+local AutoOpen
+local furth = 7
+local cs
+Main:Toggle{
+    Name = "AutoFarm Last Zone",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AFarm = state
+        while AFarm do
+                        -- Константs
+            -- AutoOpenChest
+            for _,vq in pairs(workspace:GetChildren()) do
+                pcall(function()
+                    if vq:IsA("Model") and (vq:GetPivot().p - game.Players.LocalPlayer.Character.HumanoidRootPart:GetPivot().p).Magnitude < 500 and vq.RootPart.ProximityAttachment.Interaction then
+                        cs = true
+                    end
+                end)
+            end
+            -- Ждём жертву
+            local currentMob = nil
+            while currentMob == nil do
+                pcall(function()
+                    repeat
+                        if not AFarm or cs then break end
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
+                        for _,v in pairs(a) do
+                            if workspace.Living:FindFirstChild(v):IsA("Model") and (workspace.Living:FindFirstChild(v).HumanoidRootPart:GetPivot().p - part:GetPivot().p).Magnitude < 500 then
+                                currentMob = workspace.Living:FindFirstChild(v)
+                                break
+                            end
+                        end
+                        task.wait()
+                    until currentMob ~= nil
+                end)
+                task.wait()
+            end
+            print("z")
+            -- Вычисляем корешей жертвы
+            local fold = {}
+            table.insert(fold, currentMob)
+            pcall(function()
+                for _,k in pairs(workspace.Living:GetChildren()) do
+                    if (k:GetPivot().p - currentMob:GetPivot().p).Magnitude < 20 then
+                        table.insert(fold, k)
+                    end
                 end
             end)
-        end
-    }
-    ------------------PlayerTab
-    local PlayerTab = GUI:Tab{
-        Name = "Player",
-        Icon = "rbxassetid://9179124493"
-    }
-    local WalkSpeedD = 16
-    local WalkSpeedSlider = 16
-    local WalkSpeedON
-    PlayerTab:Slider{
-        Name = "WalkSpeedNum",
-        Default = 16,
-        Min = 16,
-        Max = 200,
-        Callback = function(WalkSpeedSlider)
-            WalkSpeedD = WalkSpeedSlider
-        end
-    }
-    PlayerTab:Toggle{
-        Name = "WalkSpeed",
-        StartingState = false,
-        Description = "If u Die UPD BTNS and Num",
-        Callback = function(state)
-            if state then
-                WalkSpeedON = true
-            else
-                WalkSpeedON = false
+            -- Пиздим жертву с его корешами
+            while #fold ~= 0 and AFarm and not cs do
+                local v = fold[1]
+                pcall(function()
+                    repeat
+                        if not AFarm then break end
+                        if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
+                        elseif not v.HumanoidRootPart then
+                            table.remove(fold, 1)
+                        end
+                        local args = {
+                            [1] = "MOUSEBUTTON1"
+                        }                
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        local args = {
+                            [1] = "T"
+                        }
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        task.wait()
+                    until v.Humanoid.Health <= 0 
+                end)
+                table.remove(fold, 1)
+                print(#fold)
+                task.wait()
             end
-            while WalkSpeedON do
-                while game:GetService("RunService").RenderStepped:wait() do
-                    if WalkSpeedON then
-                        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WalkSpeedD
-                    else
-                        break
+        end
+    end
+}
+local AQuest
+Main:Toggle{
+    Name = "AutoQuest",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AQuest= state
+        while AQuest do
+            local args = {
+                [1] = "Special_Grade_Adventure"
+            }
+            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
+            local currentMob = nil
+            while currentMob == nil do
+                pcall(function()
+                    repeat
+                        if not AQuest then break end
+                        for _,v in pairs(a) do
+                            if workspace.Living:FindFirstChild(v) ~= nil then
+                                if workspace.Living:FindFirstChild(v):IsA("Model") and workspace.Living:FindFirstChild(v).Humanoid.Health >= 1300  then
+                                    currentMob = workspace.Living:FindFirstChild(v)
+                                    break
+                                end
+                            end
+                        end
+                        task.wait()
+                    until currentMob == nil
+                end)
+                task.wait()
+            end
+            repeat
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1621, 983, 62)
+                if currentMob.PrimaryPart ~= nil then break end
+                task.wait(2)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1904, 940, 636)
+                if currentMob.PrimaryPart ~= nil then break end
+                task.wait(2)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2439, 999, -234)
+                if currentMob.PrimaryPart ~= nil then break end
+                task.wait(2)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2505, 989, -573)
+                if currentMob.PrimaryPart ~= nil then break end
+                task.wait(2)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2778, 1021, -731)
+                if currentMob.PrimaryPart ~= nil then break end
+                task.wait(2)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(874, 1009, -357)
+                if currentMob.PrimaryPart ~= nil then break end
+                task.wait(2)
+            until currentMob.PrimaryPart == nil
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = currentMob.HumanoidRootPart.CFrame
+            local iskilled = false
+            if currentMob ~= nil then
+                pcall(function()
+                    repeat
+                        if not AQuest then break end
+                        if currentMob.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and currentMob.HumanoidRootPart then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = currentMob:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
+                        end
+                        local args = {
+                            [1] = "MOUSEBUTTON1"
+                        }                
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        local args = {
+                            [1] = "T"
+                        }
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        task.wait()
+                        iskilled = true
+                    until currentMob.Humanoid.Health <= 0 
+                end)
+                task.wait()
+            end
+            if iskilled then
+                game.Players.LocalPlayer.CFrame = CFrame.new(2057.797, 973.989, 324.664)
+                task.wait(3)
+                fireproximityprompt(workspace.NPCs.Valcure.HumanoidRootPart.Attachment.Interaction)
+                task.wait(2)
+            end
+            task.wait()
+        end
+    end
+}
+Main:Slider{
+	Name = "Slider",
+	Default = 7,
+	Min = 1,
+	Max = 20,
+	Callback = function(item)
+        furth = item
+    end
+}
+Main:Toggle{
+    Name = "AutoOpen Chest",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoOpen = state
+        while AutoOpen do
+            local plyr = game.Players.LocalPlayer.Character
+            local HRT = plyr:WaitForChild("HumanoidRootPart")
+            if cs then
+                for _,v in pairs(workspace:GetChildren()) do
+                    if v:IsA("Model") then
+                        pcall(function()
+                            repeat
+                                plyr.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame * CFrame.new(0, 0.5, 0)
+                                task.wait(1)
+                                fireproximityprompt(v.RootPart.ProximityAttachment.Interaction)
+                            until v.RootPart.ProximityAttachment.Interaction
+                        end)
                     end
                 end
+                cs = false
             end
+            task.wait()     
         end
-    }
-    local JumpHeightSlider = 50.145
-    PlayerTab:Slider{
-        Name = "JumpPowerNum",
-        Default = 50.145,
-        Min = 1,
-        Max = 500,
-        Callback = function(JumpHeightSlider)
-            game.Players.LocalPlayer.Character.Humanoid.JumpHeight = JumpHeightSlider
-        end
-    }
-    --------------------------------------------------------------------
-    local Notif = loadstring(game:HttpGet("https://api-sirclub.onrender.com/scripts/raw/notifybottom.lua"))()
-    local Main = GUI:Tab{
-        Name = "Main Functions",
-        Icon = "rbxassetid://9179124493"
-    }
-    local clover
-    Main:Toggle{
-        Name = "AutoClover",
-        StartingState = false,
-        Description = nil,
-        Callback = function(state)
-            clover = state
-            while clover do
-                for _,v in pairs(workspace.clova:GetChildren()) do
-                    if not clover then break end
-                    v:PivotTo(game.Players.LocalPlayer.Character:GetPivot())
-                end
-                task.wait()      
-            end
-        end
-    }
-    Main:Toggle{
-        Name = "Toggle AutoRoll",
-        StartingState = false,
-        Description = nil,
-        Callback = function(state)
-            game.Players.LocalPlayer.PlayerData.ToggleAutoRoll.Value = state
-        end
-    }
+    end
+}
