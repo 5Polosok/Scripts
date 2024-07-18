@@ -234,16 +234,17 @@ Main:Toggle{
             local currentMob 
             while currentMob == nil do
                 pcall(function()
-                    for _,v in pairs(a) do
-                        if (HRT:GetPivot().p-part:GetPivot().p).Magnitude < 260 then
+                repeat
+                      HRT.CFrame = part.CFrame
+                     for _,v in pairs(a) do
                             if workspace.Living:FindFirstChild(v):IsA("Model") and workspace.Living:FindFirstChild(v) ~= nil then
                                 currentMob = workspace.Living:FindFirstChild(v)
                                 break
                             end
-                        else
-                            HRT.CFrame = part.CFrame
                         end
                     end
+                task.wait()
+                until currentMob == nil
                 end)
                 task.wait()
             end
@@ -283,9 +284,6 @@ Main:Toggle{
                 table.remove(fold, 1)
                 print(#fold)
                 task.wait()
-            end
-            if not cs and #fold == 0 then
-                HRT.CFrame = part.CFrame
             end
         end
     end
