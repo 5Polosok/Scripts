@@ -204,7 +204,7 @@ Main:Toggle{
                         if not AFarm or cs then break end
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
                         for _,v in pairs(a) do
-                            if workspace.Living:FindFirstChild(v):IsA("Model") and (workspace.Living:FindFirstChild(v):GetPivot().p - part:GetPivot().p).Magnitude < 500 then
+                            if (workspace.Living:FindFirstChild(v):GetPivot().p - part:GetPivot().p).Magnitude < 500 then
                                 currentMob = workspace.Living:FindFirstChild(v)
                                 break
                             end
