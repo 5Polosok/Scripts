@@ -42,8 +42,8 @@ Plugins:Button{
     Name = "3dRenderEnabling",
     Description = "Turning on/off by pressing button",
     Callback = function()
-        rend = not rend
         game:GetService("RunService"):Set3dRenderingEnabled(rend)
+        rend = not rend
     end
 }
 ------------------PlayerTab
