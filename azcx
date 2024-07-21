@@ -256,6 +256,7 @@ misc:Toggle{
                     end
                 end)
             end
+            task.wait(1)
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame
             local args = {
                 [1] = "Zoros_Swords_Adventure"
