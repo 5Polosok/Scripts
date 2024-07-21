@@ -351,8 +351,7 @@ Main:Toggle{
                     repeat
                         if not AFarmL then break end
                         if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame + v.PrimaryPart.CFrame.UpVector * furth
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.lookAt(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, v.PrimaryPart.Position)
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
                         elseif not v.HumanoidRootPart then
                             table.remove(fold, 1)
                         end
