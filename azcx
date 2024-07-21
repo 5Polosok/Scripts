@@ -482,4 +482,489 @@ Main:Toggle{
             task.wait()     
         end
     end
+}local Mercury = loadstring(game:HttpGet("https://raw.githubusercontent.com/RaCc0oN1/RobloxObf/main/ReworkMercury"))()
+---
+local GUI = Mercury:Create{
+    Name = "Mercury",
+    Size = UDim2.fromOffset(600, 400),
+    Theme = Mercury.Themes.Dark,
+    Link = "https://github.com/deeeity/mercury-lib"
+}
+--- GUI create
+local Plugins = GUI:Tab{
+    Name = "Plugins",
+    Icon = "rbxassetid://9087232887"
+}
+
+Plugins:Button{
+    Name = "Anti-AFK",
+    Description = nil,
+    Callback = function()
+        Plugins:Prompt{
+            Followup = false,
+            Title = "Anti-AFK",
+            Text = "This function cannot be disabled. Enable it?",
+            Buttons = {
+                Y = function()
+                    local vu = game:GetService("VirtualUser")
+                    game:GetService("Players").LocalPlayer.Idled:connect(function()
+                        vu:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                        wait(1)
+                        vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+                    end)
+                    GUI:set_Status("Anti-AFK WORKING")
+                end,
+                N = function()
+                    return false
+                end
+            }
+        }
+    end
+}
+local rend = false
+Plugins:Button{
+    Name = "3dRenderEnabling",
+    Description = "Turning on/off by pressing button",
+    Callback = function()
+        game:GetService("RunService"):Set3dRenderingEnabled(rend)
+        rend = not rend
+    end
+}
+------------------PlayerTab
+local PlayerTab = GUI:Tab{
+    Name = "Player",
+    Icon = "rbxassetid://9179124493"
+}
+local WalkSpeedD = 16
+local WalkSpeedSlider = 16
+local WalkSpeedON
+PlayerTab:Slider{
+    Name = "WalkSpeedNum",
+    Default = 16,
+    Min = 16,
+    Max = 200,
+    Callback = function(WalkSpeedSlider)
+        WalkSpeedD = WalkSpeedSlider
+    end
+}
+PlayerTab:Toggle{
+    Name = "WalkSpeed",
+    StartingState = false,
+    Description = "If u Die UPD BTNS and Num",
+    Callback = function(state)
+        if state then
+            WalkSpeedON = true
+        else
+            WalkSpeedON = false
+        end
+        while WalkSpeedON do
+            while game:GetService("RunService").RenderStepped:wait() do
+                if WalkSpeedON then
+                    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WalkSpeedD
+                else
+                    break
+                end
+            end
+        end
+    end
+}
+
+local JumpHeightSlider = 50.145
+
+PlayerTab:Slider{
+    Name = "JumpPowerNum",
+    Default = 50.145,
+    Min = 1,
+    Max = 500,
+    Callback = function(JumpHeightSlider)
+        game.Players.LocalPlayer.Character.Humanoid.JumpHeight = JumpHeightSlider
+    end
+}
+local part = Instance.new("Part")
+part.CFrame = CFrame.new(1966, 935, -1524)
+part.CanCollide = false
+---
+local misc = GUI:Tab{
+	Name = "Misc Functions",
+	Icon = "rbxassetid://8569322835"
+}
+local ismobile = game:GetService("UserInputService").TouchEnabled
+if ismobile then
+    local RaCc0oNScrGUI = Instance.new("ScreenGui")
+    local RaCc0oNImg = Instance.new("ImageButton")
+    local UICorner = Instance.new("UICorner")
+    local VIM = game:GetService("VirtualInputManager")
+    local Keytosend = Enum.KeyCode.Delete
+
+    RaCc0oNScrGUI.Name = "RaCc0oNScrGUI"
+    RaCc0oNScrGUI.Parent = game.CoreGui
+    RaCc0oNScrGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+    RaCc0oNImg.Name = "RaCc0oNImg"
+    RaCc0oNImg.Parent = RaCc0oNScrGUI
+    RaCc0oNImg.BackgroundColor3 = Color3.fromRGB(67, 62, 132)
+    RaCc0oNImg.BackgroundTransparency = 1.000
+    RaCc0oNImg.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    RaCc0oNImg.BorderSizePixel = 0
+    RaCc0oNImg.Size = UDim2.new(0, 50, 0, 50)
+    RaCc0oNImg.Image = "rbxassetid://3821457207"
+    RaCc0oNImg.Draggable = true
+    RaCc0oNImg.Selectable = true
+    RaCc0oNImg.Active = true
+
+    UICorner.CornerRadius = UDim.new(0, 100)
+    UICorner.Parent = RaCc0oNImg
+
+    RaCc0oNImg.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.Touch or input.UserInputType == Enum.UserInputType.MouseButton1 then
+            VIM:SendKeyEvent(true, Keytosend, false, game)
+        end
+    end)
+end
+local itemsell
+misc:Toggle{
+    Name = "Sell Items",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        itemsell = state
+        while itemsell do
+            local tabletka = {}
+            for _,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                if v:IsA("Tool") and v.Name ~= "Mount" then
+                    table.insert(tabletka, v)
+                end
+            end
+
+            local kolvo = #tabletka
+            local iter = 1
+            local args = {"BlackMarketBulkSellItems", {}}
+
+            while iter ~= kolvo + 1 do
+                table.insert(args[2], {})
+                iter += 1
+                task.wait()
+            end
+
+            local iterz = 1
+
+            while iterz ~= kolvo + 1 do
+                table.insert(args[2][iterz], tostring(tabletka[iterz]:GetAttributes()["ItemId"]))
+                table.insert(args[2][iterz], tostring(tabletka[iterz]:GetAttributes()["UUID"]))
+                table.insert(args[2][iterz], 1)
+                iterz += 1
+                task.wait()
+            end
+
+
+            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.ShopService.RE.Signal:FireServer(unpack(args))
+            task.wait(10)      
+        end
+    end
+}
+local apr
+misc:Toggle{
+    Name = "AutoPrestige",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        apr = state
+        while apr do
+            local args = {
+                [1] = game.Players.LocalPlayer.Data.Ability.Value
+            }
+            
+            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.LevelService.RF.AscendAbility:InvokeServer(unpack(args))
+            task.wait(10)     
+        end
+    end
+}
+local ast
+misc:Toggle{
+    Name = "AutoAttackStat",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        ast = state
+        while ast do
+            local args = {
+                [1] = game.Players.LocalPlayer.Data.Ability.Value,
+                [2] = {
+                    ["Special"] = 0,
+                    ["Defense"] = 0,
+                    ["Health"] = 0,
+                    ["Attack"] = 10
+                }
+            }
+            
+            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.StatService.RF.ApplyStats:InvokeServer(unpack(args))
+            task.wait(2)     
+        end
+    end
+}
+local partzxc = Instance.new("Part")
+partzxc.CFrame = CFrame.new(1014.52, 1013.95, -235.86)
+partzxc.CanCollide = false
+local aqst
+local quest_taken = false
+misc:Toggle{
+    Name = "AutoFarmQuest",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        aqst = state
+        while aqst do
+            if not quest_taken then
+            local args = {
+                [1] = "Zoros_Swords_Adventure"
+            }
+            
+            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
+            quest_taken = true
+            end
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame
+            task.wait(1)
+            fireproximityprompt(workspace.NPCS.Zoro.HumanoidRootPart.Attachment.Interaction)
+            task.wait(1)
+            firesignal(game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"):FindFirstChild("DialogueGUI"):FindFirstChild("Frame"):FindFirstChild("Close").MouseButton1Click)
+            for _,v in pairs(workspace:GetChildren()) do
+                pcall(function()
+                    if string.find(v.Name, "Sword") then
+                        repeat
+                            if not aqst then break end
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Root.CFrame
+                            fireproximityprompt(v.Root.ProximityPrompt)
+                            task.wait()
+                            quest_taken = false
+                        until v
+                    end
+                end)
+            end
+            
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame
+            task.wait(1)
+local args = {
+                [1] = "Zoros_Swords_Adventure"
+            }
+            
+            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
+            task.wait(2)
+        end
+    end
+}
+local Main = GUI:Tab{
+	Name = "Main Feauters",
+	Icon = "rbxassetid://8569322835"
+}
+local a = {"Jujutsu Sorcerer", "Mantis Curse", "Flyhead", "Roppongi Curse"}
+local skillbox = {"MOUSEBUTTON1"}
+local AFarm
+local AutoOpen
+local furth = 7
+local cs
+Main:Toggle{
+    Name = "AutoFarm Last Zone",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AFarm = state
+        while AFarm do
+                        -- Константs
+            -- AutoOpenChest
+            for _,vq in pairs(workspace:GetChildren()) do
+                pcall(function()
+                    if vq:IsA("Model") and (vq:GetPivot().p - game.Players.LocalPlayer.Character:GetPivot().p).Magnitude < 500 and vq.RootPart.ProximityAttachment.Interaction then
+                        cs = true
+                    end
+                end)
+            end
+            -- Ждём жертву
+            local currentMob = nil
+            while currentMob == nil do
+                pcall(function()
+                    repeat
+                        if not AFarm or cs then break end
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
+                        for _,v in pairs(a) do
+                            if workspace.Living:FindFirstChild(v) then
+                                currentMob = workspace.Living:FindFirstChild(v)
+                                break
+                            end
+                        end
+                        task.wait()
+                    until currentMob ~= nil
+                end)
+                task.wait()
+            end
+            print("z")
+            -- Вычисляем корешей жертвы
+            local fold = {}
+            table.insert(fold, currentMob)
+            pcall(function()
+                for _,k in pairs(workspace.Living:GetChildren()) do
+                    if (k:GetPivot().p - currentMob:GetPivot().p).Magnitude < 20 then
+                        table.insert(fold, k)
+                    end
+                end
+            end)
+            -- Пиздим жертву с его корешами
+            while #fold ~= 0 and AFarm and not cs do
+                local v = fold[1]
+                pcall(function()
+                    repeat
+                        if not AFarm then break end
+                        if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
+                        elseif not v.HumanoidRootPart then
+                            table.remove(fold, 1)
+                        end
+                        for _, v in pairs(skillbox) do
+                            local args = {
+                                [1] = v
+                            }                
+                            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        end
+                        task.wait()
+                    until v.Humanoid.Health <= 0 
+                end)
+                table.remove(fold, 1)
+                print(#fold)
+                task.wait()
+            end
+        end
+    end
+}
+local part2 = Instance.new("Part")
+part2.CFrame = CFrame.new(2587.69, 918.56, 5559.93)
+part2.CanCollide = false
+local b = {"Fleeing Prisoner"}
+local AFarmL 
+Main:Toggle{
+    Name = "AutoFarm Level",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AFarmL = state
+        while AFarmL  do
+            -- Ждём жертву
+            local currentMob = nil
+            while currentMob == nil do
+                pcall(function()
+                    repeat
+                        if not AFarmL then break end
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part2.CFrame
+                        for _,v in pairs(b) do
+                            if workspace.Living:FindFirstChild(v) then
+                                currentMob = workspace.Living:FindFirstChild(v)
+                                break
+                            end
+                        end
+                        task.wait()
+                    until currentMob ~= nil
+                end)
+                task.wait()
+            end
+
+            -- Вычисляем корешей жертвы
+            local fold = {}
+            table.insert(fold, currentMob)
+            pcall(function()
+                for _,k in pairs(workspace.Living:GetChildren()) do
+                    if (k:GetPivot().p - currentMob:GetPivot().p).Magnitude < 20 then
+                        table.insert(fold, k)
+                    end
+                end
+            end)
+
+            -- Пиздим жертву с его корешами
+            while #fold ~= 0 and AFarmL do
+                local v = fold[1]
+                pcall(function()
+                    repeat
+                        if not AFarmL then break end
+                        if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
+                        elseif not v.HumanoidRootPart then
+                            table.remove(fold, 1)
+                        end
+                        local args = {
+                            [1] = "MOUSEBUTTON1"
+                        }                
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        local args = {
+                            [1] = "T"
+                        }
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        task.wait()
+                    until v.Humanoid.Health <= 0
+                end)
+                table.remove(fold, 1)
+                print(#fold)
+                task.wait()
+            end
+            task.wait()
+        end
+    end
+}
+Main:Textbox{
+	Name = "AutoFarm Distane",
+	Callback = function(text)
+        if tonumber(text) then
+            furth = tonumber(text) 
+        end
+    end
+}
+Main:Dropdown{
+	Name = "Skill Usage",
+	StartingText = "Select...",
+	Description = nil,
+	Items = {
+        "T", "E", "R", "Y"
+	},
+	Callback = function(item)
+        if #skillbox == 1 then
+            table.insert(skillbox, item)
+        else
+            local state = false
+            for _,v in pairs(skillbox) do
+                if v == state then
+                    state = true
+                    break
+                end
+            end
+            if not state then
+                table.insert(skillbox, item)
+            else
+                table.remove(skillbox, item)
+            end
+        end
+        task.wait()
+    end
+} 
+Main:Toggle{
+    Name = "AutoOpen Chest",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoOpen = state
+        while AutoOpen do
+            local plyr = game.Players.LocalPlayer.Character
+            local HRT = plyr:WaitForChild("HumanoidRootPart")
+            if cs then
+                for _,v in pairs(workspace:GetChildren()) do
+                    if v:IsA("Model") then
+                        pcall(function()
+                            repeat
+                                plyr.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame * CFrame.new(0, 0.5, 0)
+                                task.wait(1)
+                                fireproximityprompt(v.RootPart.ProximityAttachment.Interaction)
+                            until v.RootPart.ProximityAttachment.Interaction
+                        end)
+                    end
+                end
+                cs = false
+            end
+            task.wait()     
+        end
+    end
 }
