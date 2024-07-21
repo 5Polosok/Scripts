@@ -219,7 +219,7 @@ misc:Toggle{
     end
 }
 local partzxc = Instance.new("Part")
-partzxc.CFrame = CFrame.new(1014.52, 1011.95, -235.86)
+partzxc.CFrame = CFrame.new(1014.52, 1013.95, -235.86)
 partzxc.CanCollide = false
 local aqst
 misc:Toggle{
@@ -235,9 +235,9 @@ misc:Toggle{
             
             game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame
-            task.wait(2)
+            task.wait(1)
             fireproximityprompt(workspace.NPCS.Zoro.HumanoidRootPart.Attachment.Interaction)
-            task.wait(2)
+            task.wait(1)
             firesignal(game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"):FindFirstChild("DialogueGUI"):FindFirstChild("Frame"):FindFirstChild("Close").MouseButton1Click)
             repeat
                 task.wait()
@@ -250,17 +250,18 @@ misc:Toggle{
                             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Root.CFrame
                             fireproximityprompt(v.Root.ProximityPrompt)
                             task.wait()
-                        until not v
+                        until v
                     end
                 end)
             end
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame
+            task.wait(1)
             local args = {
                 [1] = "Zoros_Swords_Adventure"
             }
             
             game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame  
-            task.wait(1)
+            task.wait(2)
         end
     end
 }
