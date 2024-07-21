@@ -260,7 +260,7 @@ misc:Toggle{
             
             game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame  
-            task.wait(2)
+            task.wait(1)
         end
     end
 }
