@@ -39,7 +39,7 @@ Plugins:Button{
 }
 local rend = false
 Plugins:Button{
-    Name = "Anti-AFK",
+    Name = "3dRenderEnabling",
     Description = "Turning on/off by pressing button",
     Callback = function()
         rend = not rend
