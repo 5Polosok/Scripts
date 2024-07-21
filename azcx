@@ -262,13 +262,12 @@ Main:Toggle{
         end
     end
 }
-Main:Slider{
-	Name = "Slider",
-	Default = 7,
-	Min = 1,
-	Max = 20,
-	Callback = function(item)
-        furth = item
+Main:Textbox{
+	Name = "AutoFarm Distane",
+	Callback = function(text)
+        if tonumber(text) then
+            furth = tonumber(text) 
+        end
     end
 }
 Main:Toggle{
