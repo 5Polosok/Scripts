@@ -98,7 +98,7 @@ PlayerTab:Slider{
 }
 local part = Instance.new("Part")
 part.CFrame = CFrame.new(1966, 935, -1524)
-part.CanCollide = False
+part.CanCollide = false
 ---
 local misc = GUI:Tab{
 	Name = "Misc Functions",
@@ -175,6 +175,46 @@ misc:Toggle{
 
             game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.ShopService.RE.Signal:FireServer(unpack(args))
             task.wait(10)      
+        end
+    end
+}
+local apr
+misc:Toggle{
+    Name = "AutoPrestige",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        apr = state
+        while apr do
+            local args = {
+                [1] = 666
+            }
+            
+            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.LevelService.RF.AscendAbility:InvokeServer(unpack(args))
+            task.wait(10)     
+        end
+    end
+}
+local ast
+misc:Toggle{
+    Name = "AutoAttackStat",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        ast = state
+        while ast do
+            local args = {
+                [1] = 666,
+                [2] = {
+                    ["Special"] = 0,
+                    ["Defense"] = 0,
+                    ["Health"] = 0,
+                    ["Attack"] = 10
+                }
+            }
+            
+            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.StatService.RF.ApplyStats:InvokeServer(unpack(args))
+            task.wait(2)     
         end
     end
 }
@@ -259,6 +299,78 @@ Main:Toggle{
                 print(#fold)
                 task.wait()
             end
+        end
+    end
+}
+local part2 = Instance.new("Part")
+part2.CFrame = CFrame.new(2587.69, 918.56, 5559.93)
+part2.CanCollide = false
+local b = {"Fleeing Prisoner"}
+local AFarmL 
+Main:Toggle{
+    Name = "AutoFarm Level",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AFarmL = state
+        while AFarmL  do
+            -- Ждём жертву
+            local currentMob = nil
+            while currentMob == nil do
+                pcall(function()
+                    repeat
+                        if not AFarmL then break end
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part2.CFrame
+                        for _,v in pairs(b) do
+                            if workspace.Living:FindFirstChild(v) then
+                                currentMob = workspace.Living:FindFirstChild(v)
+                                break
+                            end
+                        end
+                        task.wait()
+                    until currentMob ~= nil
+                end)
+                task.wait()
+            end
+
+            -- Вычисляем корешей жертвы
+            local fold = {}
+            table.insert(fold, currentMob)
+            pcall(function()
+                for _,k in pairs(workspace.Living:GetChildren()) do
+                    if (k:GetPivot().p - currentMob:GetPivot().p).Magnitude < 20 then
+                        table.insert(fold, k)
+                    end
+                end
+            end)
+
+            -- Пиздим жертву с его корешами
+            while #fold ~= 0 and AFarmL do
+                local v = fold[1]
+                pcall(function()
+                    repeat
+                        if not AFarmL then break end
+                        if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
+                        elseif not v.HumanoidRootPart then
+                            table.remove(fold, 1)
+                        end
+                        local args = {
+                            [1] = "MOUSEBUTTON1"
+                        }                
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        local args = {
+                            [1] = "T"
+                        }
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        task.wait()
+                    until v.Humanoid.Health <= 0
+                end)
+                table.remove(fold, 1)
+                print(#fold)
+                task.wait()
+            end
+            task.wait()
         end
     end
 }
