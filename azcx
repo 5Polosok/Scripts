@@ -37,7 +37,15 @@ Plugins:Button{
         }
     end
 }
-
+local rend = false
+Plugins:Button{
+    Name = "Anti-AFK",
+    Description = "Turning on/off by pressing button",
+    Callback = function()
+        rend = not rend
+        game:GetService("RunService"):Set3dRenderingEnabled(rend)
+    end
+}
 ------------------PlayerTab
 local PlayerTab = GUI:Tab{
     Name = "Player",
