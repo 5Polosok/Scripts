@@ -219,7 +219,7 @@ misc:Toggle{
     end
 }
 local partzxc = Instance.new("Part")
-partzxc.CFrame = CFrame.new(1014.52, 1013.95, -235.86)
+partzxc.CFrame = CFrame.new(1014.52, 1011.95, -235.86)
 partzxc.CanCollide = false
 local aqst
 local quest_taken = false
@@ -277,6 +277,8 @@ local AFarm
 local AutoOpen
 local furth = 7
 local cs
+local ifquest
+local AutoDragon
 Main:Toggle{
     Name = "AutoFarm Last Zone",
     StartingState = false,
@@ -292,6 +294,15 @@ Main:Toggle{
                         cs = true
                     end
                 end)
+            end
+
+            local bossstat
+            if AutoDragon and not cs then
+                if workspace.Living:FindFirstChild("The Knight") then
+                    bossstat = true
+                end
+            elseif not AutoDragon then
+                ifquest = true
             end
             -- Ждём жертву
             local currentMob = nil
@@ -311,7 +322,6 @@ Main:Toggle{
                 end)
                 task.wait()
             end
-            print("z")
             -- Вычисляем корешей жертвы
             local fold = {}
             table.insert(fold, currentMob)
@@ -323,28 +333,47 @@ Main:Toggle{
                 end
             end)
             -- Пиздим жертву с его корешами
-            while #fold ~= 0 and AFarm and not cs do
-                local v = fold[1]
+            if not bossstat then
+                while #fold ~= 0 and AFarm and not cs and ifquest do
+                    local v = fold[1]
+                    pcall(function()
+                        repeat
+                            if not AFarm then break end
+                            if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
+                                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
+                            elseif not v.HumanoidRootPart then
+                                table.remove(fold, 1)
+                            end
+                            for _, q in pairs(skillbox) do
+                                local args = {
+                                    [1] = q
+                                }                
+                                game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                            end
+                            task.wait()
+                        until v.Humanoid.Health <= 0 
+                    end)
+                    table.remove(fold, 1)
+                    print(#fold)
+                    task.wait()
+                end
+            else
+                local v = workspace.Living:FindFirstChild("The Knight")
                 pcall(function()
                     repeat
                         if not AFarm then break end
                         if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
                             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
-                        elseif not v.HumanoidRootPart then
-                            table.remove(fold, 1)
                         end
-                        for _, v in pairs(skillbox) do
+                        for _, q in pairs(skillbox) do
                             local args = {
-                                [1] = v
-                            }                
+                                [1] = q
+                            }        
                             game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
                         end
                         task.wait()
                     until v.Humanoid.Health <= 0 
                 end)
-                table.remove(fold, 1)
-                print(#fold)
-                task.wait()
             end
         end
     end
@@ -429,6 +458,39 @@ Main:Textbox{
         end
     end
 }
+Main:Toggle{
+    Name = "Auto Dragon Knight",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AutoDragon = state
+        while AutoDragon do
+            ifquest = false
+            for _,v in pairs(game.Players.LocalPlayer.PlayerGui.UI.Menus.Quests.Questlines.QuestlinePage:GetDescendants()) do
+                if v:IsA("TextLabel") then
+                    if v.Text == "Slayer Quest" then
+                        ifquest = true
+                        break
+                    end
+                end
+            end
+            if not ifquest and not cs then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2089.42, 974, 113.46)
+                task.wait(1)
+                fireproximityprompt(workspace.NPCS.Hecate.HumanoidRootPart.Attachment.Interaction)
+                task.wait(1)
+                local args = {
+                    [1] = "Slayer_Quest",
+                    [2] = "Dragon Knight"
+                }
+                game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
+                task.wait(1)
+                firesignal(game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"):FindFirstChild("DialogueGUI"):FindFirstChild("Frame"):FindFirstChild("Close").MouseButton1Click)
+            end
+            task.wait(2)      
+        end
+    end
+}
 Main:Dropdown{
 	Name = "Skill Usage",
 	StartingText = "Select...",
@@ -482,3 +544,4 @@ Main:Toggle{
             task.wait()     
         end
     end
+}
