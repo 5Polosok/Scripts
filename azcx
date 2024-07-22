@@ -222,7 +222,6 @@ local partzxc = Instance.new("Part")
 partzxc.CFrame = CFrame.new(1014.52, 1011.95, -235.86)
 partzxc.CanCollide = false
 local aqst
-local quest_taken = false
 misc:Toggle{
     Name = "AutoFarmQuest",
     StartingState = false,
@@ -230,18 +229,26 @@ misc:Toggle{
     Callback = function(state)
         aqst = state
         while aqst do
+            local quest_taken = false
+            for _,v in pairs(game.Players.LocalPlayer.PlayerGui.UI.Menus.Quests.Questlines.QuestlinePage:GetDescendants()) do
+                if v:IsA("TextLabel") then
+                    if v.Text == "Zoro's Swords" then
+                        quest_taken = true
+                        break
+                    end
+                end
+            end
             if not quest_taken then
-            local args = {
-                [1] = "Zoros_Swords_Adventure"
-            }
-            
-            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
-            quest_taken = true
+                local args = {
+                    [1] = "Zoros_Swords_Adventure"
+                }
+                
+                game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
             end
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame
-            task.wait(1)
+            task.wait(2)
             fireproximityprompt(workspace.NPCS.Zoro.HumanoidRootPart.Attachment.Interaction)
-            task.wait(1)
+            task.wait(2)
             firesignal(game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"):FindFirstChild("DialogueGUI"):FindFirstChild("Frame"):FindFirstChild("Close").MouseButton1Click)
             for _,v in pairs(workspace:GetChildren()) do
                 pcall(function()
@@ -257,13 +264,14 @@ misc:Toggle{
                 end)
             end
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame
+            if not quest_taken then
+                local args = {
+                    [1] = "Zoros_Swords_Adventure"
+                }
+                
+                game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
+            end
             task.wait(1)
-            local args = {
-                [1] = "Zoros_Swords_Adventure"
-            }
-            
-            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
-            task.wait(2)
         end
     end
 }
@@ -272,19 +280,20 @@ local Main = GUI:Tab{
 	Icon = "rbxassetid://8569322835"
 }
 local a = {"Jujutsu Sorcerer", "Mantis Curse", "Flyhead", "Roppongi Curse"}
-local skillbox = {"MOUSEBUTTON1"}
+local skillbox = {}
 local AFarm
 local AutoOpen
 local furth = 7
 local cs
 local ifquest = false
 local AutoDragon
+local bossstat
 Main:Toggle{
     Name = "AutoFarm Last Zone",
     StartingState = false,
     Description = nil,
     Callback = function(state)
-        AFarm = state
+        AFarm = state 
         while AFarm do
                         -- Константs
             -- AutoOpenChest
@@ -295,12 +304,19 @@ Main:Toggle{
                     end
                 end)
             end
+            if AutoDragon then
+                if not ifquest then
+                    repeat
+                        task.wait()
+                    until not ifquest
+                end
+            end
             -- Ждём жертву
             local currentMob = nil
             while currentMob == nil do
                 pcall(function()
                     repeat
-                        if not AFarm or cs then break end
+                        if not AFarm or cs or bossstat then break end
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
                         for _,v in pairs(a) do
                             if workspace.Living:FindFirstChild(v) then
@@ -324,22 +340,18 @@ Main:Toggle{
                 end
             end)
             -- Пиздим жертву с его корешами
-            while #fold ~= 0 and AFarm and not cs do
+            while #fold ~= 0 and AFarm and not cs and not bossstat do
                 local v = fold[1]
                 pcall(function()
                     repeat
                         if not AFarm then break end
                         if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
                             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
-                        elseif not v.HumanoidRootPart then
-                            table.remove(fold, 1)
                         end
-                        for _, q in pairs(skillbox) do
-                            local args = {
-                                [1] = q
-                            }                
-                            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
-                        end
+                        local args = {
+                            [1] = "MOUSEBUTTON1"
+                        }                
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
                         task.wait()
                     until v.Humanoid.Health <= 0 
                 end)
@@ -400,16 +412,10 @@ Main:Toggle{
                         if not AFarmL then break end
                         if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
                             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
-                        elseif not v.HumanoidRootPart then
-                            table.remove(fold, 1)
                         end
                         local args = {
                             [1] = "MOUSEBUTTON1"
                         }                
-                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
-                        local args = {
-                            [1] = "T"
-                        }
                         game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
                         task.wait()
                     until v.Humanoid.Health <= 0
@@ -422,6 +428,7 @@ Main:Toggle{
         end
     end
 }
+
 Main:Textbox{
 	Name = "AutoFarm Distane",
 	Callback = function(text)
@@ -458,6 +465,24 @@ Main:Dropdown{
         task.wait()
     end
 } 
+local askill
+Main:Toggle{
+    Name = "AutoSkill",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        askill = state
+        while askill do
+            for _, q in pairs(skillbox) do
+                local args = {
+                    [1] = q
+                }                
+                game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+            end
+            task.wait()     
+        end
+    end
+}
 Main:Toggle{
     Name = "AutoOpen Chest",
     StartingState = false,
