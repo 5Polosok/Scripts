@@ -446,23 +446,32 @@ Main:Dropdown{
         "T", "E", "R", "Y"
 	},
 	Callback = function(item)
-        if #skillbox == 1 then
-            table.insert(skillbox, item)
-        else
-            local state = false
-            for _,v in pairs(skillbox) do
-                if v == state then
-                    state = true
-                    break
-                end
-            end
-            if not state then
-                table.insert(skillbox, item)
-            else
-                table.remove(skillbox, item)
+        local state = false
+        local skillsel = ""
+        local quant
+        for k, v in pairs(skillbox) do
+            if v == item then
+                state = true
+                quant = k
+                break
             end
         end
-        task.wait()
+        if not state then
+            table.insert(skillbox, item)
+        else
+            table.remove(skillbox, quant)
+        end
+    
+        for _,v in pairs(skillbox) do
+            print(v)
+            skillsel = skillsel..v..", "
+        end
+        GUI:Notification{
+            Title = "Chosen Skills",
+            Text = skillsel,
+            Duration = 3,
+            Callback = function() end
+        }
     end
 } 
 local askill
@@ -479,7 +488,7 @@ Main:Toggle{
                 }                
                 game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
             end
-            task.wait()     
+            task.wait(0.2)     
         end
     end
 }
