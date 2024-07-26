@@ -90,6 +90,25 @@ Plugins:Button{
         rend = not rend
     end
 }
+local lagfix
+local btnafarmlz
+Plugins:Toggle{
+    Name = "Lag-Fix AutoFarm Last Zone",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+         lagfix = state
+         while lagfix do
+            task.wait(400)
+            if lagfix then
+                firesignal(btnafarmlz.MouseButton1Click)
+                task.wait(1.5)
+                firesignal(btnafarmlz.MouseButton1Click)
+            end
+         end
+    end
+}
+
 ------------------PlayerTab
 local PlayerTab = GUI:Tab{
     Name = "Player",
@@ -272,13 +291,8 @@ misc:Toggle{
     Description = nil,
     Callback = function(state)
         aqst = state
-        if aqst then
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1014.52, 1015.95, -235.86)
-            task.wait(1)
-        end
         while aqst do
             local quest_taken = false
-            local quest_completed = false
             for _,v in pairs(game.Players.LocalPlayer.PlayerGui.UI.Menus.Quests.Questlines.QuestlinePage:GetDescendants()) do
                 if v:IsA("TextLabel") then
                     if v.Text == "Zoro's Swords" then
@@ -308,12 +322,12 @@ misc:Toggle{
                             fireproximityprompt(v.Root.ProximityPrompt)
                             task.wait()
                         until v
-                        quest_completed = true
+                        quest_taken = false
                     end
                 end)
             end
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame
-            if quest_completed then
+            if not quest_taken then
                 local args = {
                     [1] = "Zoros_Swords_Adventure"
                 }
@@ -334,6 +348,7 @@ local AFarm
 local AutoOpen
 local furth = 7
 local cs
+local ifquest = false
 local autowb
 local ifwb
 Main:Toggle{
@@ -507,7 +522,6 @@ Main:Toggle{
 
 Main:Textbox{
 	Name = "AutoFarm Distane",
-    Description = "Value 7 - 7.5 is optimal",
 	Callback = function(text)
         if tonumber(text) then
             furth = tonumber(text) 
@@ -596,3 +610,13 @@ Main:Toggle{
         end
     end
 }
+local guirac = game.CoreGui:WaitForChild("RaCc0oNHub")
+
+for _,v in pairs(guirac:GetDescendants()) do
+    if v:IsA("TextLabel") then
+        if v.Text == "AutoFarm Last Zone" then
+            btnafarmlz = v.Parent
+            break
+        end
+    end
+end
