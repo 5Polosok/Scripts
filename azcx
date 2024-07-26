@@ -11,7 +11,6 @@ local Plugins = GUI:Tab{
     Name = "Plugins",
     Icon = "rbxassetid://9087232887"
 }
-
 Plugins:Button{
     Name = "Anti-AFK",
     Description = nil,
@@ -30,6 +29,51 @@ Plugins:Button{
                     end)
                     GUI:set_Status("Anti-AFK WORKING")
                 end,
+                N = function()
+                    return false
+                end
+            }
+        }
+    end
+}
+Plugins:Button{
+    Name = "FPS Boost",
+    Description = nil,
+    Callback = function()
+        Plugins:Prompt{
+            Followup = false,
+            Title = "FPS Boost",
+            Text = "This function cannot be disabled. Enable it?",
+            Buttons = {
+                Y = function()
+                    -- Made by RIP#6666
+                    _G.Settings = {
+                        Players = {
+                            ["Ignore Me"] = true, -- Ignore your Character
+                            ["Ignore Others"] = true -- Ignore other Characters
+                        },
+                        Meshes = {
+                            Destroy = true, -- Destroy Meshes
+                            LowDetail = true -- Low detail meshes (NOT SURE IT DOES ANYTHING)
+                        },
+                        Images = {
+                            Invisible = true, -- Invisible Images
+                            LowDetail = false, -- Low detail images (NOT SURE IT DOES ANYTHING)
+                            Destroy = false, -- Destroy Images
+                        },
+                        Other = {
+                            ["No Particles"] = true, -- Disables all ParticleEmitter, Trail, Smoke, Fire and Sparkles
+                            ["No Camera Effects"] = true, -- Disables all PostEffect's (Camera/Lighting Effects)
+                            ["No Explosions"] = true, -- Makes Explosion's invisible
+                            ["No Clothes"] = true, -- Removes Clothing from the game
+                            ["Low Water Graphics"] = true, -- Removes Water Quality
+                            ["No Shadows"] = true, -- Remove Shadows
+                            ["Low Rendering"] = true, -- Lower Rendering
+                            ["Low Quality Parts"] = true -- Lower quality parts
+                        }
+                    }
+                    loadstring(game:HttpGet("https://pastebin.com/raw/e1jFCwm9"))()
+                                    end,
                 N = function()
                     return false
                 end
@@ -228,8 +272,13 @@ misc:Toggle{
     Description = nil,
     Callback = function(state)
         aqst = state
+        if aqst then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1014.52, 1015.95, -235.86)
+            task.wait(1)
+        end
         while aqst do
             local quest_taken = false
+            local quest_completed = false
             for _,v in pairs(game.Players.LocalPlayer.PlayerGui.UI.Menus.Quests.Questlines.QuestlinePage:GetDescendants()) do
                 if v:IsA("TextLabel") then
                     if v.Text == "Zoro's Swords" then
@@ -246,9 +295,9 @@ misc:Toggle{
                 game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
             end
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame
-            task.wait(2)
+            task.wait(1.5)
             fireproximityprompt(workspace.NPCS.Zoro.HumanoidRootPart.Attachment.Interaction)
-            task.wait(2)
+            task.wait(1.5)
             firesignal(game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"):FindFirstChild("DialogueGUI"):FindFirstChild("Frame"):FindFirstChild("Close").MouseButton1Click)
             for _,v in pairs(workspace:GetChildren()) do
                 pcall(function()
@@ -258,13 +307,13 @@ misc:Toggle{
                             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Root.CFrame
                             fireproximityprompt(v.Root.ProximityPrompt)
                             task.wait()
-                            quest_taken = false
                         until v
+                        quest_completed = true
                     end
                 end)
             end
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame
-            if not quest_taken then
+            if quest_completed then
                 local args = {
                     [1] = "Zoros_Swords_Adventure"
                 }
@@ -285,9 +334,8 @@ local AFarm
 local AutoOpen
 local furth = 7
 local cs
-local ifquest = false
-local AutoDragon
-local bossstat
+local autowb
+local ifwb
 Main:Toggle{
     Name = "AutoFarm Last Zone",
     StartingState = false,
@@ -295,28 +343,21 @@ Main:Toggle{
     Callback = function(state)
         AFarm = state 
         while AFarm do
-                        -- Константs
+            -- Константs
             -- AutoOpenChest
             for _,vq in pairs(workspace:GetChildren()) do
                 pcall(function()
-                    if vq:IsA("Model") and (vq:GetPivot().p - game.Players.LocalPlayer.Character:GetPivot().p).Magnitude < 500 and vq.RootPart.ProximityAttachment.Interaction then
+                    if not ifwb and AutoOpen and vq:IsA("Model") and (vq:GetPivot().p - game.Players.LocalPlayer.Character:GetPivot().p).Magnitude < 500 and vq.RootPart.ProximityAttachment.Interaction then
                         cs = true
                     end
                 end)
-            end
-            if AutoDragon then
-                if not ifquest then
-                    repeat
-                        task.wait()
-                    until not ifquest
-                end
             end
             -- Ждём жертву
             local currentMob = nil
             while currentMob == nil do
                 pcall(function()
                     repeat
-                        if not AFarm or cs or bossstat then break end
+                        if not AFarm or cs then break end
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
                         for _,v in pairs(a) do
                             if workspace.Living:FindFirstChild(v) then
@@ -340,12 +381,18 @@ Main:Toggle{
                 end
             end)
             -- Пиздим жертву с его корешами
-            while #fold ~= 0 and AFarm and not cs and not bossstat do
-                local v = fold[1]
+            while #fold ~= 0 and AFarm and not cs and not ifwb do
+                local v
+                local quant
+                for k, q in pairs(fold) do
+                    v = q
+                    quant = k
+                    break
+                end
                 pcall(function()
                     repeat
                         if not AFarm then break end
-                        if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
+                        if v.Humanoid.Health > 0 then
                             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
                         end
                         local args = {
@@ -355,7 +402,7 @@ Main:Toggle{
                         task.wait()
                     until v.Humanoid.Health <= 0 
                 end)
-                table.remove(fold, 1)
+                table.remove(fold, quant)
                 print(#fold)
                 task.wait()
             end
@@ -428,9 +475,39 @@ Main:Toggle{
         end
     end
 }
+Main:Toggle{
+    Name = "AutoFarm WB",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        autowb = state
+        while autowb do
+            if workspace.Living:FindFirstChild("Whitebeard") then
+                ifwb = true
+            end
+            if ifwb then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new()
+                pcall(function()
+                    repeat
+                        if not AFarmL then break end
+                        if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
+                        end
+                        local args = {
+                            [1] = "MOUSEBUTTON1"
+                        }                
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        task.wait()
+                    until v.Humanoid.Health <= 0
+                end)
+            end
+        end
+    end
+}
 
 Main:Textbox{
 	Name = "AutoFarm Distane",
+    Description = "Value 7 - 7.5 is optimal",
 	Callback = function(text)
         if tonumber(text) then
             furth = tonumber(text) 
@@ -443,7 +520,7 @@ Main:Dropdown{
 	StartingText = "Select...",
 	Description = nil,
 	Items = {
-        "T", "E", "R", "Y"
+        "T", "T+", "R", "R+", "E", "Y", "X"
 	},
 	Callback = function(item)
         local state = false
