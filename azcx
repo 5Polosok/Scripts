@@ -469,19 +469,18 @@ Main:Toggle{
             -- Пиздим жертву с его корешами
             while #fold ~= 0 and AFarmL do
                 local v = fold[1]
-                pcall(function()
-                    repeat
-                        if not AFarmL then break end
-                        if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
-                        end
-                        local args = {
-                            [1] = "MOUSEBUTTON1"
-                        }                
-                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
-                        task.wait()
-                    until v.Humanoid.Health <= 0
-                end)
+                repeat
+                    if not AFarmL then break end
+                    local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+                    if v.Humanoid.Health > 0 and char.HumanoidRootPart and v.HumanoidRootPart then
+                        char.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
+                    end
+                    local args = {
+                        [1] = "MOUSEBUTTON1"
+                    }                
+                    game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                    task.wait()
+                until v.Humanoid.Health <= 0
                 table.remove(fold, 1)
                 print(#fold)
                 task.wait()
