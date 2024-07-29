@@ -11,7 +11,6 @@ local Plugins = GUI:Tab{
     Name = "Plugins",
     Icon = "rbxassetid://9087232887"
 }
-
 Plugins:Button{
     Name = "Anti-AFK",
     Description = nil,
@@ -35,6 +34,78 @@ Plugins:Button{
                 end
             }
         }
+    end
+}
+Plugins:Button{
+    Name = "FPS Boost",
+    Description = nil,
+    Callback = function()
+        Plugins:Prompt{
+            Followup = false,
+            Title = "FPS Boost",
+            Text = "This function cannot be disabled. Enable it?",
+            Buttons = {
+                Y = function()
+                    -- Made by RIP#6666
+                    _G.Settings = {
+                        Players = {
+                            ["Ignore Me"] = true, -- Ignore your Character
+                            ["Ignore Others"] = true -- Ignore other Characters
+                        },
+                        Meshes = {
+                            Destroy = true, -- Destroy Meshes
+                            LowDetail = true -- Low detail meshes (NOT SURE IT DOES ANYTHING)
+                        },
+                        Images = {
+                            Invisible = true, -- Invisible Images
+                            LowDetail = false, -- Low detail images (NOT SURE IT DOES ANYTHING)
+                            Destroy = false, -- Destroy Images
+                        },
+                        Other = {
+                            ["No Particles"] = true, -- Disables all ParticleEmitter, Trail, Smoke, Fire and Sparkles
+                            ["No Camera Effects"] = true, -- Disables all PostEffect's (Camera/Lighting Effects)
+                            ["No Explosions"] = true, -- Makes Explosion's invisible
+                            ["No Clothes"] = true, -- Removes Clothing from the game
+                            ["Low Water Graphics"] = true, -- Removes Water Quality
+                            ["No Shadows"] = true, -- Remove Shadows
+                            ["Low Rendering"] = true, -- Lower Rendering
+                            ["Low Quality Parts"] = true -- Lower quality parts
+                        }
+                    }
+                    loadstring(game:HttpGet("https://pastebin.com/raw/e1jFCwm9"))()
+                                    end,
+                N = function()
+                    return false
+                end
+            }
+        }
+    end
+}
+local rend = false
+Plugins:Button{
+    Name = "3dRenderEnabling",
+    Description = "Turning on/off by pressing button",
+    Callback = function()
+        game:GetService("RunService"):Set3dRenderingEnabled(rend)
+        rend = not rend
+    end
+}
+local lagfix
+local btnafarmlz
+Plugins:Toggle{
+    Name = "Lag-Fix AutoFarm Last Zone",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+         lagfix = state
+         while lagfix do
+            task.wait(400)
+            if lagfix then
+                firesignal(btnafarmlz.MouseButton1Click)
+                task.wait(1.5)
+                firesignal(btnafarmlz.MouseButton1Click)
+            end
+         end
     end
 }
 
@@ -90,7 +161,7 @@ PlayerTab:Slider{
 }
 local part = Instance.new("Part")
 part.CFrame = CFrame.new(1966, 935, -1524)
-part.CanCollide = False
+part.CanCollide = false
 ---
 local misc = GUI:Tab{
 	Name = "Misc Functions",
@@ -129,38 +200,6 @@ if ismobile then
         end
     end)
 end
-local ItemFarm
-misc:Toggle{
-    Name = "AutoPick Items",
-    StartingState = false,
-    Description = nil,
-    Callback = function(state)
-        ItemFarm = state
-        while ItemFarm do 
-            -- Константы
-            local plyr = game.Players.LocalPlayer.Character
-            local HRT = plyr.HumanoidRootPart
-            for _,v in pairs(workspace.ItemSpawns.StandardItems:GetChildren()) do
-                if v:GetChildren()[1] ~= nil then
-                    pcall(function()
-                        plyr.HumanoidRootPart.CFrame = v:GetChildren()[1].CFrame * CFrame.new(0, 0.5, 0)
-                        repeat
-                            if not ItemFarm then break end
-                            task.wait()
-                        until v:GetChildren()[1].ProximityAttachment.Interaction
-                        task.wait(0.5)
-                        repeat
-                            if not ItemFarm then break end
-                            fireproximityprompt(v:GetChildren()[1].ProximityAttachment.Interaction)
-                            task.wait()
-                        until not v:GetChildren()[1]
-                    end)
-                end
-            end 
-            task.wait()      
-        end
-    end
-}
 local itemsell
 misc:Toggle{
     Name = "Sell Items",
@@ -202,49 +241,147 @@ misc:Toggle{
         end
     end
 }
-
+local apr
+misc:Toggle{
+    Name = "AutoPrestige",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        apr = state
+        while apr do
+            local args = {
+                [1] = game.Players.LocalPlayer.Data.Ability.Value
+            }
+            
+            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.LevelService.RF.AscendAbility:InvokeServer(unpack(args))
+            task.wait(10)     
+        end
+    end
+}
+local ast
+misc:Toggle{
+    Name = "AutoAttackStat",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        ast = state
+        while ast do
+            local args = {
+                [1] = game.Players.LocalPlayer.Data.Ability.Value,
+                [2] = {
+                    ["Special"] = 0,
+                    ["Defense"] = 0,
+                    ["Health"] = 0,
+                    ["Attack"] = 10
+                }
+            }
+            
+            game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.StatService.RF.ApplyStats:InvokeServer(unpack(args))
+            task.wait(2)     
+        end
+    end
+}
+local partzxc = Instance.new("Part")
+partzxc.CFrame = CFrame.new(1014.52, 1011.95, -235.86)
+partzxc.CanCollide = false
+local aqst
+misc:Toggle{
+    Name = "AutoFarmQuest",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        aqst = state
+        while aqst do
+            local quest_taken = false
+            for _,v in pairs(game.Players.LocalPlayer.PlayerGui.UI.Menus.Quests.Questlines.QuestlinePage:GetDescendants()) do
+                if v:IsA("TextLabel") then
+                    if v.Text == "Zoro's Swords" then
+                        quest_taken = true
+                        break
+                    end
+                end
+            end
+            if not quest_taken then
+                local args = {
+                    [1] = "Zoros_Swords_Adventure"
+                }
+                
+                game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
+            end
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame
+            task.wait(1.5)
+            fireproximityprompt(workspace.NPCS.Zoro.HumanoidRootPart.Attachment.Interaction)
+            task.wait(1.5)
+            firesignal(game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"):FindFirstChild("DialogueGUI"):FindFirstChild("Frame"):FindFirstChild("Close").MouseButton1Click)
+            for _,v in pairs(workspace:GetChildren()) do
+                pcall(function()
+                    if string.find(v.Name, "Sword") then
+                        repeat
+                            if not aqst then break end
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Root.CFrame
+                            fireproximityprompt(v.Root.ProximityPrompt)
+                            task.wait()
+                        until v
+                        quest_taken = false
+                    end
+                end)
+            end
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = partzxc.CFrame
+            if not quest_taken then
+                local args = {
+                    [1] = "Zoros_Swords_Adventure"
+                }
+                
+                game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.DialogueService.RF.CheckDialogue:InvokeServer(unpack(args))
+            end
+            task.wait(1)
+        end
+    end
+}
 local Main = GUI:Tab{
 	Name = "Main Feauters",
 	Icon = "rbxassetid://8569322835"
 }
 local a = {"Jujutsu Sorcerer", "Mantis Curse", "Flyhead", "Roppongi Curse"}
+local skillbox = {}
 local AFarm
 local AutoOpen
 local furth = 7
 local cs
+local ifquest = false
+local autowb
+local ifwb
 Main:Toggle{
     Name = "AutoFarm Last Zone",
     StartingState = false,
     Description = nil,
     Callback = function(state)
-        AFarm = state
+        AFarm = state 
         while AFarm do
-                        -- Константs
-            local plyr = game.Players.LocalPlayer.Character
-            local HRT = plyr.HumanoidRootPart
+            -- Константs
             -- AutoOpenChest
             for _,vq in pairs(workspace:GetChildren()) do
                 pcall(function()
-                    if vq:IsA("Model") and (vq:GetPivot().p - HRT:GetPivot().p).Magnitude < 500 and vq.RootPart.ProximityAttachment.Interaction then
+                    if not ifwb and AutoOpen and vq:IsA("Model") and (vq:GetPivot().p - game.Players.LocalPlayer.Character:GetPivot().p).Magnitude < 500 and vq.RootPart.ProximityAttachment.Interaction then
                         cs = true
                     end
                 end)
             end
             -- Ждём жертву
-            local currentMob 
+            local currentMob = nil
             while currentMob == nil do
                 pcall(function()
-                repeat
-                      HRT.CFrame = part.CFrame
-                     for _,v in pairs(a) do
-                            if workspace.Living:FindFirstChild(v):IsA("Model") and workspace.Living:FindFirstChild(v) ~= nil then
+                    repeat
+                        if not AFarm or cs then break end
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
+                        for _,v in pairs(a) do
+                            if workspace.Living:FindFirstChild(v) then
                                 currentMob = workspace.Living:FindFirstChild(v)
                                 break
                             end
                         end
-                    end
-                task.wait()
-                until currentMob == nil
+                        task.wait()
+                    until currentMob ~= nil
                 end)
                 task.wait()
             end
@@ -259,42 +396,190 @@ Main:Toggle{
                 end
             end)
             -- Пиздим жертву с его корешами
-            while #fold ~= 0 and AFarm and not cs do
-                local v = fold[1]
+            while #fold ~= 0 and AFarm and not cs and not ifwb do
+                local v
+                local quant
+                for k, q in pairs(fold) do
+                    v = q
+                    quant = k
+                    break
+                end
                 pcall(function()
                     repeat
                         if not AFarm then break end
-                        local HRT2 = game.Players.LocalPlayer.Character.HumanoidRootPart
-                        if v.Humanoid.Health > 0 and HRT2 and v.HumanoidRootPart then
-                            HRT2.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
-                        elseif not v.HumanoidRootPart then
-                            table.remove(fold, 1)
+                        if v.Humanoid.Health > 0 then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
                         end
                         local args = {
                             [1] = "MOUSEBUTTON1"
                         }                
                         game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
-                        local args = {
-                            [1] = "T"
-                        }
-                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
                         task.wait()
                     until v.Humanoid.Health <= 0 
                 end)
-                table.remove(fold, 1)
+                table.remove(fold, quant)
                 print(#fold)
                 task.wait()
             end
         end
     end
 }
-Main:Slider{
-	Name = "Slider",
-	Default = 7,
-	Min = 1,
-	Max = 20,
+local part2 = Instance.new("Part")
+part2.CFrame = CFrame.new(2587.69, 918.56, 5559.93)
+part2.CanCollide = false
+local b = {"Fleeing Prisoner"}
+local AFarmL 
+Main:Toggle{
+    Name = "AutoFarm Level",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        AFarmL = state
+        while AFarmL  do
+            -- Ждём жертву
+            local currentMob = nil
+            while currentMob == nil do
+                pcall(function()
+                    repeat
+                        if not AFarmL then break end
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part2.CFrame
+                        for _,v in pairs(b) do
+                            if workspace.Living:FindFirstChild(v) then
+                                currentMob = workspace.Living:FindFirstChild(v)
+                                break
+                            end
+                        end
+                        task.wait()
+                    until currentMob ~= nil
+                end)
+                task.wait()
+            end
+
+            -- Вычисляем корешей жертвы
+            local fold = {}
+            table.insert(fold, currentMob)
+            pcall(function()
+                for _,k in pairs(workspace.Living:GetChildren()) do
+                    if (k:GetPivot().p - currentMob:GetPivot().p).Magnitude < 20 then
+                        table.insert(fold, k)
+                    end
+                end
+            end)
+
+            -- Пиздим жертву с его корешами
+            while #fold ~= 0 and AFarmL do
+                local v = fold[1]
+                repeat
+                    if not AFarmL then break end
+                    local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+                    if v.Humanoid.Health > 0 and char.HumanoidRootPart and v.HumanoidRootPart then
+                        char.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
+                    end
+                    local args = {
+                        [1] = "MOUSEBUTTON1"
+                    }                
+                    game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                    task.wait()
+                until v.Humanoid.Health <= 0
+                table.remove(fold, 1)
+                print(#fold)
+                task.wait()
+            end
+            task.wait()
+        end
+    end
+}
+Main:Toggle{
+    Name = "AutoFarm WB",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        autowb = state
+        while autowb do
+            if workspace.Living:FindFirstChild("Whitebeard") then
+                ifwb = true
+            end
+            if ifwb then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new()
+                pcall(function()
+                    repeat
+                        if not AFarmL then break end
+                        if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
+                        end
+                        local args = {
+                            [1] = "MOUSEBUTTON1"
+                        }                
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        task.wait()
+                    until v.Humanoid.Health <= 0
+                end)
+            end
+        end
+    end
+}
+
+Main:Textbox{
+	Name = "AutoFarm Distane",
+	Callback = function(text)
+        if tonumber(text) then
+            furth = tonumber(text) 
+        end
+    end
+}
+
+Main:Dropdown{
+	Name = "Skill Usage",
+	StartingText = "Select...",
+	Description = nil,
+	Items = {
+        "T", "T+", "R", "R+", "E", "Y", "X", "V"
+	},
 	Callback = function(item)
-        furth = item
+        local state = false
+        local skillsel = ""
+        local quant
+        for k, v in pairs(skillbox) do
+            if v == item then
+                state = true
+                quant = k
+                break
+            end
+        end
+        if not state then
+            table.insert(skillbox, item)
+        else
+            table.remove(skillbox, quant)
+        end
+    
+        for _,v in pairs(skillbox) do
+            print(v)
+            skillsel = skillsel..v..", "
+        end
+        GUI:Notification{
+            Title = "Chosen Skills",
+            Text = skillsel,
+            Duration = 3,
+            Callback = function() end
+        }
+    end
+} 
+local askill
+Main:Toggle{
+    Name = "AutoSkill",
+    StartingState = false,
+    Description = nil,
+    Callback = function(state)
+        askill = state
+        while askill do
+            for _, q in pairs(skillbox) do
+                local args = {
+                    [1] = q
+                }                
+                game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+            end
+            task.wait(0.2)     
+        end
     end
 }
 Main:Toggle{
@@ -324,3 +609,14 @@ Main:Toggle{
         end
     end
 }
+local guirac = game.CoreGui:WaitForChild("RaCc0oNHub")
+
+for _,v in pairs(guirac:GetDescendants()) do
+    if v:IsA("TextLabel") then
+        if v.Text == "AutoFarm Last Zone" then
+            btnafarmlz = v.Parent
+            break
+        end
+    end
+end
+print(btnafarmlz.ClassName)
