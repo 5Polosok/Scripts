@@ -533,7 +533,7 @@ Main:Dropdown{
 	StartingText = "Select...",
 	Description = nil,
 	Items = {
-        "T", "T+", "R", "R+", "E", "Y", "X", "V", "B"
+        "T", "T+", "R", "R+", "E", "Y", "X", "V", "B", "Z"
 	},
 	Callback = function(item)
         local state = false
