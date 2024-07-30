@@ -238,7 +238,7 @@ misc:Toggle{
 
 
             game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.ShopService.RE.Signal:FireServer(unpack(args))
-            task.wait(10)      
+            task.wait(20)      
         end
     end
 }
