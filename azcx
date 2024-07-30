@@ -357,7 +357,7 @@ local TPDelay = 0
 Main:Toggle{
     Name = "AutoFarm Last Zone",
     StartingState = false,
-    Description = "Default value - 7",
+    Description = nil,
     Callback = function(state)
         AFarm = state 
         while AFarm do
@@ -507,6 +507,7 @@ Main:Toggle{
 
 Main:Textbox{
 	Name = "AutoFarm Distane",
+	Description = "Default value - 7",
 	Callback = function(text)
         if tonumber(text) then
             furth = tonumber(text) 
