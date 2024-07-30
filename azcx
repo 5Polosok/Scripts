@@ -168,6 +168,7 @@ local misc = GUI:Tab{
 	Icon = "rbxassetid://8569322835"
 }
 local ismobile = game:GetService("UserInputService").TouchEnabled
+local isenabled = true
 if ismobile then
     local RaCc0oNScrGUI = Instance.new("ScreenGui")
     local RaCc0oNImg = Instance.new("ImageButton")
@@ -349,8 +350,10 @@ local AutoOpen
 local furth = 7
 local cs
 local ifquest = false
-local autowb
-local ifwb
+-- ONE PIECE IS REAL
+-- local autowb
+-- local ifwb
+local TPDelay = 0
 Main:Toggle{
     Name = "AutoFarm Last Zone",
     StartingState = false,
@@ -358,7 +361,6 @@ Main:Toggle{
     Callback = function(state)
         AFarm = state 
         while AFarm do
-            -- Константs
             -- AutoOpenChest
             for _,vq in pairs(workspace:GetChildren()) do
                 pcall(function()
@@ -367,34 +369,40 @@ Main:Toggle{
                     end
                 end)
             end
+
             -- Ждём жертву
             local currentMob = nil
             while currentMob == nil do
-                pcall(function()
-                    repeat
-                        if not AFarm or cs then break end
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
-                        for _,v in pairs(a) do
-                            if workspace.Living:FindFirstChild(v) then
-                                currentMob = workspace.Living:FindFirstChild(v)
-                                break
-                            end
+                repeat
+                    if not AFarm or cs then break end
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
+                    for _,v in pairs(a) do
+                        if workspace.Living:FindFirstChild(v) then
+                            currentMob = workspace.Living:FindFirstChild(v)
+                            break
                         end
-                        task.wait()
-                    until currentMob ~= nil
-                end)
+                    end
+                    task.wait()
+                until currentMob ~= nil
                 task.wait()
             end
+
             -- Вычисляем корешей жертвы
             local fold = {}
             table.insert(fold, currentMob)
-            pcall(function()
-                for _,k in pairs(workspace.Living:GetChildren()) do
-                    if (k:GetPivot().p - currentMob:GetPivot().p).Magnitude < 20 then
-                        table.insert(fold, k)
+            for _,k in pairs(workspace.Living:GetChildren()) do
+                local val = false
+                for _, q in pairs(a) do
+                    if tostring(k) == q then
+                        val = true
+                        break
                     end
                 end
-            end)
+                if (k:GetPivot().p - currentMob:GetPivot().p).Magnitude < 20 and val then
+                    table.insert(fold, k)
+                end
+            end
+
             -- Пиздим жертву с его корешами
             while #fold ~= 0 and AFarm and not cs and not ifwb do
                 local v
@@ -407,15 +415,16 @@ Main:Toggle{
                 pcall(function()
                     repeat
                         if not AFarm then break end
+                        local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
                         if v.Humanoid.Health > 0 then
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
+                            char.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
                         end
                         local args = {
                             [1] = "MOUSEBUTTON1"
                         }                
                         game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
-                        task.wait()
-                    until v.Humanoid.Health <= 0 
+                        task.wait(TPDelay)
+                    until not v.Humanoid or v.Humanoid.Health <= 0
                 end)
                 table.remove(fold, quant)
                 print(#fold)
@@ -439,7 +448,6 @@ Main:Toggle{
             -- Ждём жертву
             local currentMob = nil
             while currentMob == nil do
-                pcall(function()
                     repeat
                         if not AFarmL then break end
                         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part2.CFrame
@@ -451,36 +459,42 @@ Main:Toggle{
                         end
                         task.wait()
                     until currentMob ~= nil
-                end)
                 task.wait()
             end
 
             -- Вычисляем корешей жертвы
             local fold = {}
             table.insert(fold, currentMob)
-            pcall(function()
-                for _,k in pairs(workspace.Living:GetChildren()) do
-                    if (k:GetPivot().p - currentMob:GetPivot().p).Magnitude < 20 then
-                        table.insert(fold, k)
+            for _,k in pairs(workspace.Living:GetChildren()) do
+                local val = false
+                for _, q in pairs(b) do
+                    if tostring(k) == q then
+                        val = true
+                        break
                     end
                 end
-            end)
+                if (k:GetPivot().p - currentMob:GetPivot().p).Magnitude < 20 and val then
+                    table.insert(fold, k)
+                end
+            end
 
             -- Пиздим жертву с его корешами
             while #fold ~= 0 and AFarmL do
                 local v = fold[1]
-                repeat
-                    if not AFarmL then break end
-                    local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
-                    if v.Humanoid.Health > 0 and char.HumanoidRootPart and v.HumanoidRootPart then
-                        char.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
-                    end
-                    local args = {
-                        [1] = "MOUSEBUTTON1"
-                    }                
-                    game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
-                    task.wait()
-                until v.Humanoid.Health <= 0
+                pcall(function()
+                    repeat
+                        if not AFarmL then break end
+                        local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+                        if v.Humanoid.Health > 0 then
+                            char.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
+                        end
+                        local args = {
+                            [1] = "MOUSEBUTTON1"
+                        }                
+                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
+                        task.wait(TPDelay)
+                    until v.Humanoid.Health <= 0
+                end)
                 table.remove(fold, 1)
                 print(#fold)
                 task.wait()
@@ -489,35 +503,7 @@ Main:Toggle{
         end
     end
 }
-Main:Toggle{
-    Name = "AutoFarm WB",
-    StartingState = false,
-    Description = nil,
-    Callback = function(state)
-        autowb = state
-        while autowb do
-            if workspace.Living:FindFirstChild("Whitebeard") then
-                ifwb = true
-            end
-            if ifwb then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new()
-                pcall(function()
-                    repeat
-                        if not AFarmL then break end
-                        if v.Humanoid.Health > 0 and game.Players.LocalPlayer.Character.HumanoidRootPart and v.HumanoidRootPart then
-                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v:WaitForChild("HumanoidRootPart").CFrame * CFrame.new(0, 0, furth)
-                        end
-                        local args = {
-                            [1] = "MOUSEBUTTON1"
-                        }                
-                        game:GetService("ReplicatedStorage").ReplicatedModules.KnitPackage.Knit.Services.MoveInputService.RF.FireInput:InvokeServer(unpack(args))
-                        task.wait()
-                    until v.Humanoid.Health <= 0
-                end)
-            end
-        end
-    end
-}
+
 
 Main:Textbox{
 	Name = "AutoFarm Distane",
@@ -527,7 +513,14 @@ Main:Textbox{
         end
     end
 }
-
+Main:Textbox{
+	Name = "TP delay",
+	Callback = function(text)
+        if tonumber(text) then
+            TPDelay = tonumber(text) 
+        end
+    end
+}
 Main:Dropdown{
 	Name = "Skill Usage",
 	StartingText = "Select...",
@@ -590,7 +583,6 @@ Main:Toggle{
         AutoOpen = state
         while AutoOpen do
             local plyr = game.Players.LocalPlayer.Character
-            local HRT = plyr:WaitForChild("HumanoidRootPart")
             if cs then
                 for _,v in pairs(workspace:GetChildren()) do
                     if v:IsA("Model") then
@@ -610,7 +602,6 @@ Main:Toggle{
     end
 }
 local guirac = game.CoreGui:WaitForChild("RaCc0oNHub")
-
 for _,v in pairs(guirac:GetDescendants()) do
     if v:IsA("TextLabel") then
         if v.Text == "AutoFarm Last Zone" then
@@ -619,4 +610,3 @@ for _,v in pairs(guirac:GetDescendants()) do
         end
     end
 end
-print(btnafarmlz.ClassName)
