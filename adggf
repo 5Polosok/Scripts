@@ -1,3 +1,4 @@
+--some constants
 local vipnotclaimed = 1736876909
 local freegifts1notclaimed = 1737384993
 local freepottsnotclaimed = 1736876920
@@ -6,9 +7,12 @@ local timerews = {
     ["FreePotions1"] = 1736876920,
     ["FreeGifts1"] = 1737384993,
 }
-getgenv().current_zone_max_unlocked = ""
 local minigame = false
 local claimchest = false
+
+
+--checking zone functi
+getgenv().current_zone_max_unlocked = ""
 local check_current_zone = function()
     if minigame then
         getgenv().current_zone_max_unlocked = "Pyramid Minigame"
@@ -16,16 +20,9 @@ local check_current_zone = function()
         getgenv().current_zone_max_unlocked = "VIP Digsite"
     end
 end
-game:GetService("Players").LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("Main"):WaitForChild("EggHatch"):Destroy()
+if game:GetService("Players").LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("Main"):FindFirstChild("EggHatch") then game:GetService("Players").LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("Main"):FindFirstChild("EggHatch"):Destroy() end
 check_current_zone()
-local args = {
-    [1] = workspace:WaitForChild("BlockRegions")[getgenv().current_zone_max_unlocked]:WaitForChild("Teleport")
-}
 
-game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Teleport"):WaitForChild("TeleportClient"):FireServer(unpack(args))
--- Checking Egg Cost
---dickaxe
--- Checking Egg Cost ending
 
 --Anti AFK
 local antiafk = function()
@@ -36,35 +33,35 @@ local antiafk = function()
         vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
     end)
 end
-local yeldchange = function() print("initialize") end
+local co1 = coroutine.create(antiafk)
+
 -- AutoDig on player current zone
+local yeldchange = function() print("Initialize AutoDIg") end
 local AutoDig = function ()
-    while task.wait(5) do
-        if getgenv().current_zone_max_unlocked == "VIP Digsite" then
+    if getgenv().current_zone_max_unlocked == "VIP Digsite" then
+        local args = {
+            [1] = workspace:WaitForChild("BlockRegions")[getgenv().current_zone_max_unlocked]:WaitForChild("Teleport")
+        }
+            
+        game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Teleport"):WaitForChild("TeleportClient"):FireServer(unpack(args))
+        wait(2)
+        while task.wait(0.5) do
+            yeldchange()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Eggs["Basic Egg"].EggPlatform.EggName.CFrame + Vector3.new(0,3,0)
             local args = {
-                [1] = workspace:WaitForChild("BlockRegions")[getgenv().current_zone_max_unlocked]:WaitForChild("Teleport")
+                [1] = workspace:WaitForChild("Eggs")["Basic Egg"],
+                [2] = tonumber(game.Players.LocalPlayer.upgrades.EggsMax.Value)
             }
-            
-            game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Teleport"):WaitForChild("TeleportClient"):FireServer(unpack(args))
-            wait(2)
-            
-            while task.wait(0.5) do
-                yeldchange()
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Eggs["Basic Egg"].EggPlatform.EggName.CFrame + Vector3.new(0,3,0)
-                local args = {
-                    [1] = workspace:WaitForChild("Eggs")["Basic Egg"],
-                    [2] = tonumber(game.Players.LocalPlayer.upgrades.EggsMax.Value)
-                }
-                game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Eggs"):WaitForChild("Hatch"):FireServer(unpack(args))  
-            end
+            game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Eggs"):WaitForChild("Hatch"):FireServer(unpack(args))  
         end
     end
 end
-local co3 = coroutine.create(AutoDig)
+local co2 = coroutine.create(AutoDig)
 yeldchange = function()
-    if claimchest or minigame then coroutine.yield(co3) else coroutine.resume(co3) end
+    if claimchest or minigame then coroutine.yield(co2) else coroutine.resume(co2) end
 end
--- AutoCollect
+
+-- AutoCollect Drops
 local AutoCollectState = true
 local AutoCollect = function()
     while AutoCollectState do
@@ -79,7 +76,10 @@ local AutoCollect = function()
         task.wait(.5)
     end
 end
+local co3 = coroutine.create(AutoCollect)
+
 -- Auto Pet Dig
+local yeldpetdig = function() print('initialized Petdig') end
 local PetDig = function()
     while task.wait() do
         check_current_zone()
@@ -87,6 +87,7 @@ local PetDig = function()
         local tbl2 = {}
         local top2
         local minimum_y = -10000
+        yeldpetdig()
         for _,v in pairs(game.workspace.BlockRegions[getgenv().current_zone_max_unlocked].Global:GetChildren()) do
             pcall(function()
                 if tonumber(v.PrimaryPart.Position.Y) > minimum_y then
@@ -133,6 +134,12 @@ local PetDig = function()
         task.wait()
     end
 end
+local co4 = coroutine.create(PetDig)
+yeldpetdig = function()
+    if minigame then coroutine.yield(co4) else coroutine.resume(co4) end
+end
+
+--AutoCollectChest
 local AutoCollectChest = function()
     while wait(10) do
         for k ,v in pairs(game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Data"):WaitForChild("GetProfileData"):InvokeServer()["TimedRewards"]) do
@@ -146,17 +153,91 @@ local AutoCollectChest = function()
         end
     end
 end
--- local autominigame = function()
---     if 
--- end
-
-local co1 = coroutine.create(AutoCollect)
-local co4 = coroutine.create(PetDig)
 local co5 = coroutine.create(AutoCollectChest)
-local co6 = coroutine.create(antiafk)
 
+--AutoMiniGame
+local autominigame = function()
+    while task.wait(5) do
+        local ifKeyPyr = false
+        local current_count
+        for k ,v in pairs(game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Data"):WaitForChild("GetProfileData"):InvokeServer()["Inventory"]) do
+            if v["Name"] == "Pyramid Key" then
+                ifKeyPyr = true
+                current_count = v["Count"]
+                break
+            end
+        end
+
+        if current_count > 0 and ifKeyPyr and not claimchest and not game:GetService("Workspace").BlockRegions[getgenv().current_zone_max_unlocked].Player:FindFirstChild(game.Players.LocalPlayer.Name) then
+            minigame = true
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Minigames.Pyramid.CFrame
+            task.wait(2)
+            repeat
+                local tbl = {}
+                local tbl2 = {}
+                local top2
+                local minimum_y = -10000
+                for _,v in pairs(game:GetService("Workspace").BlockRegions[getgenv().current_zone_max_unlocked].Player[game:GetService("Players").LocalPlayer.Name]:GetChildren()) do
+                    pcall(function()
+                        if tonumber(v.PrimaryPart.Position.Y) > minimum_y then
+                            top2 = minimum_y
+                            minimum_y = tonumber(v.PrimaryPart.Position.Y)
+                        end
+                    end)    
+                end
+                for _,v in pairs(game:GetService("Workspace").BlockRegions[getgenv().current_zone_max_unlocked].Player[game:GetService("Players").LocalPlayer.Name]:GetChildren()) do
+                    pcall(function()
+                        if tonumber(v.PrimaryPart.Position.Y) == minimum_y and not v:FindFirstChild("Broken") then
+                            table.insert(tbl, v)
+                        end    
+                    end)
+                    if #tbl == tonumber(game.Players.LocalPlayer.upgrades.PetsMax.Value) then break end
+                end
+                if #tbl < tonumber(game.Players.LocalPlayer.upgrades.PetsMax.Value) then
+                    for _,v in pairs(game:GetService("Workspace").BlockRegions[getgenv().current_zone_max_unlocked].Player[game:GetService("Players").LocalPlayer.Name]:GetChildren()) do
+                        pcall(function()
+                            if tonumber(v.PrimaryPart.Position.Y) == top2 and not v:FindFirstChild("Broken") then
+                                table.insert(tbl, v)
+                            end
+                        end)
+                        if #tbl == tonumber(game.Players.LocalPlayer.upgrades.PetsMax.Value) then break end
+                    end
+                end
+                for _,v in pairs(game.workspace.PetsMasterFolder[game.Players.LocalPlayer.Name]:GetChildren()) do
+                    table.insert(tbl2, v)
+                end
+                local a = 1
+                local b = 1
+                repeat
+                    local args = {
+                        [1] = tbl[a],
+                        [2] = tbl2[b]
+                    }
+                    game:GetService("ReplicatedStorage").Events.Blocks.Damage:FireServer(unpack(args))
+                    a += 1
+                    b += 1
+                    if #tbl <= a then break end
+                    if b == #tbl2 then b = 1 end
+                    task.wait()
+                until #tbl + 1 <= a
+                task.wait()
+            until not game:GetService("Workspace").BlockRegions[getgenv().current_zone_max_unlocked].Player:FindFirstChild(game.Players.LocalPlayer.Name)
+            minigame = false
+        elseif game:GetService("Workspace").BlockRegions[getgenv().current_zone_max_unlocked].Player:FindFirstChild(game.Players.LocalPlayer.Name) then
+            local args = {
+                [1] = workspace:WaitForChild("BlockRegions")[getgenv().current_zone_max_unlocked]:WaitForChild("Teleport")
+            }
+                
+            game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Teleport"):WaitForChild("TeleportClient"):FireServer(unpack(args))
+        end
+    end
+end
+local co6 = coroutine.create(autominigame)
+
+-- Coroutines resume
 coroutine.resume(co1)
-coroutine.resume(co4)
-coroutine.resume(co6)
+coroutine.resume(co2)
 coroutine.resume(co3)
+coroutine.resume(co4)
 coroutine.resume(co5)
+coroutine.resume(co6)
