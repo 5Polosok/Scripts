@@ -157,7 +157,7 @@ local co5 = coroutine.create(AutoCollectChest)
 
 --AutoMiniGame
 local autominigame = function()
-    while task.wait(5) and _G.AutoPyarmidMinigame do
+    while task.wait(5) and _G.AutoPyramidMinigame do
         local ifKeyPyr = false
         local current_count
         for k ,v in pairs(game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Data"):WaitForChild("GetProfileData"):InvokeServer()["Inventory"]) do
