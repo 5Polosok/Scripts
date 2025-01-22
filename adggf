@@ -1,47 +1,28 @@
-local zones = {
-    [1] = "Forest Digsite",
-    [2] = "Dark Forest Digsite",
-    [3] = "Pyramids Digsite",
-    [4] = "Beach Digsite",
-    [5] = "Jungle Digsite",
-    [6] = "Volcano Digsite",
-    [7] = "Crystal Caves Digsite",
-    [8] = "Pirate Cove Digsite",
-    [9] = "Farm Digsite",
-    [10] = "Kingdom Digsite",
-    [11] = "Magical Digsite",
-    [12] = "Enchanted Digsite"
+local vipnotclaimed = 1736876909
+local freegifts1notclaimed = 1737384993
+local freepottsnotclaimed = 1736876920
+local timerews = {
+    ["VIPRewards"] = 1736876909,
+    ["FreePotions1"] = 1736876920,
+    ["FreeGifts1"] = 1737384993,
 }
-
-local eggs_open = {
-    [1] = "Basic Egg",
-    [2] = "Forest Egg",
-    [3] = "Egyptian Egg",
-    [4] = "Beach Egg",
-    [5] = "Jungle Egg",
-    [6] = "Molten Egg",
-    [7] = "Crystal Egg",
-    [8] = "Pirate Egg",
-    [9] = "Hay Egg",
-    [10] = "Crowned Egg",
-    [11] = "Witch Egg",
-    [12] = "Magical Egg"
-}
-
 getgenv().current_zone_max_unlocked = ""
-getgenv().current_zone_number = 0
-
+local minigame = false
+local claimchest = false
 local check_current_zone = function()
-    getgenv().current_zone_max_unlocked = "VIP Digsite"
-    getgenv().current_zone_number = 12
+    if minigame then
+        getgenv().current_zone_max_unlocked = "Pyramid Minigame"
+    else
+        getgenv().current_zone_max_unlocked = "VIP Digsite"
+    end
 end
+game:GetService("Players").LocalPlayer:WaitForChild("PlayerScripts"):WaitForChild("Main"):WaitForChild("EggHatch"):Destroy()
 check_current_zone()
 local args = {
     [1] = workspace:WaitForChild("BlockRegions")[getgenv().current_zone_max_unlocked]:WaitForChild("Teleport")
 }
 
 game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Teleport"):WaitForChild("TeleportClient"):FireServer(unpack(args))
-
 -- Checking Egg Cost
 --dickaxe
 -- Checking Egg Cost ending
@@ -55,29 +36,34 @@ local antiafk = function()
         vu:Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
     end)
 end
-
---End Anti AFK
+local yeldchange = function() print("initialize") end
 -- AutoDig on player current zone
 local AutoDig = function ()
-    if getgenv().current_zone_max_unlocked == "VIP Digsite" then
-        local args = {
-            [1] = workspace:WaitForChild("BlockRegions")[getgenv().current_zone_max_unlocked]:WaitForChild("Teleport")
-        }
-        
-        game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Teleport"):WaitForChild("TeleportClient"):FireServer(unpack(args))
-        wait(2)
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Eggs["Basic Egg"].EggPos.CFrame
-        while task.wait() do
+    while task.wait(5) do
+        if getgenv().current_zone_max_unlocked == "VIP Digsite" then
             local args = {
-                [1] = workspace:WaitForChild("Eggs")["Basic Egg"],
-                [2] = tonumber(game.Players.LocalPlayer.upgrades.EggsMax.Value)
+                [1] = workspace:WaitForChild("BlockRegions")[getgenv().current_zone_max_unlocked]:WaitForChild("Teleport")
             }
-            game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Eggs"):WaitForChild("Hatch"):FireServer(unpack(args))  
+            
+            game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Teleport"):WaitForChild("TeleportClient"):FireServer(unpack(args))
+            wait(2)
+            
+            while task.wait(0.5) do
+                yeldchange()
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Eggs["Basic Egg"].EggPlatform.EggName.CFrame + Vector3.new(0,3,0)
+                local args = {
+                    [1] = workspace:WaitForChild("Eggs")["Basic Egg"],
+                    [2] = tonumber(game.Players.LocalPlayer.upgrades.EggsMax.Value)
+                }
+                game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Eggs"):WaitForChild("Hatch"):FireServer(unpack(args))  
+            end
         end
     end
 end
 local co3 = coroutine.create(AutoDig)
-
+yeldchange = function()
+    if claimchest or minigame then coroutine.yield(co3) else coroutine.resume(co3) end
+end
 -- AutoCollect
 local AutoCollectState = true
 local AutoCollect = function()
@@ -147,17 +133,30 @@ local PetDig = function()
         task.wait()
     end
 end
-
+local AutoCollectChest = function()
+    while wait(10) do
+        for k ,v in pairs(game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Data"):WaitForChild("GetProfileData"):InvokeServer()["TimedRewards"]) do
+            if timerews[k] == v then
+                claimchest = true
+                repeat task.wait(3)
+                    game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").TimedRewards[k].Hitbox.CFrame
+                until game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("Data"):WaitForChild("GetProfileData"):InvokeServer()["TimedRewards"][k] ~= timerews[k]
+                claimchest = false
+            end
+        end
+    end
+end
 -- local autominigame = function()
 --     if 
 -- end
 
-
 local co1 = coroutine.create(AutoCollect)
 local co4 = coroutine.create(PetDig)
+local co5 = coroutine.create(AutoCollectChest)
 local co6 = coroutine.create(antiafk)
 
 coroutine.resume(co1)
 coroutine.resume(co4)
 coroutine.resume(co6)
 coroutine.resume(co3)
+coroutine.resume(co5)
