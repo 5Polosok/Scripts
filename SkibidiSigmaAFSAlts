@@ -1,0 +1,37 @@
+repeat task.wait() until game:IsLoaded()
+local codes = {"RELEASE", "THANKSFOR20KLIKES", "THANKSFOR5KLIKES", "SORRY4SHUTDOWN", "15KCCU", "TRAILER", "THANKSFOR20K", "ILUVAFS"}
+for _,v in pairs(codes) do
+    local args = {
+	    "RedeemCode",
+	    v
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
+end
+task.wait(1)
+
+local rarities_to_autosell = {"Rare", "Epic"}
+for _,v in pairs(rarities_to_autosell) do
+    local args = {
+        "ToggleAutoSell",
+        v
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("LobbyRemotes"):WaitForChild("SummonRemote"):FireServer(unpack(args))
+end 
+task.wait(1)
+
+game.Players.LocalPlayer.PlayerGui.SummoningBanner:Destroy()
+game.Players.LocalPlayer.PlayerGui.MainUI.SummonFrame:Destroy()
+game.Players.LocalPlayer.PlayerGui.MainUI.SummonInfoFrame:Destroy()
+game:GetService("Workspace").SummonCutscenePlace:Destroy()
+local amount_of_summons = 13
+while amount_of_summons ~= 0 do
+    task.wait(.5)
+    local args = {
+        "SummonTower",
+        "Standard",
+        10
+    }
+    game:GetService("ReplicatedStorage"):WaitForChild("LobbyRemotes"):WaitForChild("SummonRemote"):FireServer(unpack(args))
+    amount_of_summons -= 1
+end
+
