@@ -1,0 +1,14 @@
+if not getgenv().TpToEventStatement then return end
+repeat task.wait() until game:IsLoaded()
+while #game:GetService("Workspace").Characters:GetChildren() ~= getgenv().AmountOfAccounts do
+    task.wait(1)
+    print("Waiting till other alts join")
+end
+for _,v in pairs(game:GetService("Workspace"):FindFirstChild("Characters"):GetDescendants()) do
+    if v:IsA("Model") and v.Name == 'HumanoidRootPart' and #game:GetService("Workspace").Characters:GetChildren() = AmountOfAccounts then
+        task.wait(2)
+        pcall(function()
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-10, 256.6, -112)
+        end)
+    end
+end
