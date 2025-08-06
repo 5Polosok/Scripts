@@ -1,6 +1,8 @@
 --Redeem codes from table
 local RedeemCodesFunction = function()
-	for _,v in pairs(codes) do
+	local localcodes = {"FORGOT40KLIKES", "THANKSFOR50KLIKES", "UPDATEONE", "BONIMARU", "MBFORDELAY", "15MVISITS", "100KBLUEAPP", "SORRYFORTHESHUTDOWN", "THANKSFORALLTHESUPPORT", "UPDATEHALF", "TOBITO",  "RELEASE", "THANKSFOR20KLIKES", "THANKSFOR5KLIKES", "SORRY4SHUTDOWN", "15KCCU", "TRAILER", "THANKSFOR20K", "ILUVAFS"}
+	if not getgenv().skibidicodes then getgenv().skibidicodes = localcodes end
+	for _,v in pairs(getgenv().skibidicodes) do
 		local args = {
 			"RedeemCode",
 			v
