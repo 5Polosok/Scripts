@@ -12,10 +12,8 @@ while task.wait(1) do
                 game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-10, 256.6, -112)
             end)
             if suc then 
-                print("Teleported Successfully!")
-                tp_state = true 
+                print("Teleported to event Successfully!")
             end
         end
     end
-    if tp_state then break end
 end
