@@ -2,7 +2,7 @@
 local RedeemCodesFunction = function()
 	local localcodes = {"FORGOT40KLIKES", "THANKSFOR50KLIKES", "UPDATEONE", "BONIMARU", "MBFORDELAY", "15MVISITS", "100KBLUEAPP", "SORRYFORTHESHUTDOWN", "THANKSFORALLTHESUPPORT", "UPDATEHALF", "TOBITO",  "RELEASE", "THANKSFOR20KLIKES", "THANKSFOR5KLIKES", "SORRY4SHUTDOWN", "15KCCU", "TRAILER", "THANKSFOR20K", "ILUVAFS"}
 	if not getgenv().skibidicodes then getgenv().skibidicodes = localcodes end
-	for _,v in pairs(getgenv().skibidicodes) do
+	for _,v in pairs(getgenv().skibidicodes) do 
 		local args = {
 			"RedeemCode",
 			v
@@ -10,7 +10,7 @@ local RedeemCodesFunction = function()
 		local suc, fail = pcall(function()
 			game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("RemoteFunction"):InvokeServer(unpack(args))
 		end)
-		if suc then print("Successfully redeemed code: "..v) else print("Error while redeeming code: "..fail)
+		if suc then print("Successfully redeemed code: "..v) else print("Error while redeeming code: "..fail) end
 	end
 end
 --Collect Daily reward
@@ -62,10 +62,10 @@ task.spawn(function()
     end
     task.wait(3)
     
-    if Players.LocalPlayer then
+    if game:GetService("Players").LocalPlayer then
 		main()
     else
-        Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
+        game:GetService("Players"):GetPropertyChangedSignal("LocalPlayer"):Wait()
         task.wait(1)
         main()
     end
