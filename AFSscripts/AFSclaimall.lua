@@ -15,7 +15,7 @@ if getgenv().CollectDaily then
 	game:GetService("ReplicatedStorage"):WaitForChild("LobbyRemotes"):WaitForChild("DailyRewards"):FireServer()
 end
 --Spin fortune wheel
-if getgenv().SpinWheel then
+if getgenv().BuyRRS then
 	local args = {
 		true
 	}
