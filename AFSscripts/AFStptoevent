@@ -1,7 +1,6 @@
 getgenv().TpToEventStatement = true
 getgenv().AmountOfAccounts = 4
-if not getgenv().TpToEventStatement then return end
-
+if not getgenv().TpToEventStatement or game.PlaceId ~= 16946008847 then return end
 repeat task.wait() until game:IsLoaded()
 
 -- Ожидание загрузки всех аккаунтов
