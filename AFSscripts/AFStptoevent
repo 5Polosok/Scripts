@@ -6,7 +6,7 @@ if not getgenv().TpToEventStatement then return end
 repeat task.wait() until game:IsLoaded()
 
 -- Ожидание загрузки всех аккаунтов
-while #game:GetService("Workspace").Characters:GetChildren() ~= getgenv().AmountOfAccounts do
+while #game:GetService("Players"):GetChildren() ~= getgenv().AmountOfAccounts do
     task.wait(1)
     print("Waiting till other alts join")
 end
