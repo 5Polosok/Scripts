@@ -1,6 +1,5 @@
 getgenv().TpToEventStatement = true
 getgenv().AmountOfAccounts = 4
-if game.PlaceId ~= 16946008847 then return end
 if not getgenv().TpToEventStatement then return end
 
 repeat task.wait() until game:IsLoaded()
