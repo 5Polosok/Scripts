@@ -18,7 +18,13 @@ local function activatePortal()
     
     -- Телепортация к порталу
     humanoidRootPart.CFrame = CFrame.new(-10, 256.6, -112)
-    
+    task.wait(1)
+    if game:GetService("Players").LocalPlayer.Name == "edik899" then
+        local args = {
+        	"PlayBlackCloverEvent"
+        }
+        game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+    end
     -- Поиск ProximityPrompt у портала
     for _, descendant in pairs(workspace:GetDescendants()) do
         if descendant:IsA("ProximityPrompt") and (descendant.Parent.Position - humanoidRootPart.Position).Magnitude < 10 then
