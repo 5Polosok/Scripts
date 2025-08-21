@@ -47,6 +47,15 @@ local function activatePortal()
         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
         print("Activated portal with all players present!")
         return true
+    elseif game:GetService("Players").LocalPlayer.Name ~= "edik899" then
+        -- Для остальных аккаунтов используем fireproximityprompt
+        for _, descendant in pairs(workspace:GetDescendants()) do
+            if descendant:IsA("ProximityPrompt") and (descendant.Parent.Position - humanoidRootPart.Position).Magnitude < 10 then
+                fireproximityprompt(descendant)
+                print("ProximityPrompt activated for", game:GetService("Players").LocalPlayer.Name)
+                return true
+            end
+        end
     else
         print("Not enough players near portal ("..playersNearPortal.."/"..AmountOfAccounts..")")
         return false
@@ -57,7 +66,7 @@ while task.wait(1) do
     if #game:GetService("Workspace").Characters:GetChildren() == AmountOfAccounts then
         local success = activatePortal()
         if success then
-            print("Portal activation successful!")
+            print("Portal activation successful for", game:GetService("Players").LocalPlayer.Name)
             break -- Выход из цикла после успешной активации
         else
             print("Failed to activate portal, retrying...")
