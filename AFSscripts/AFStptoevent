@@ -9,6 +9,22 @@ while #game:GetService("Players"):GetPlayers() ~= getgenv().AmountOfAccounts do
     print("Waiting till other alts join")
 end
 
+local function countPlayersNearPortal()
+    local portalPosition = Vector3.new(-10, 256.6, -112)
+    local playersNearPortal = 0
+    
+    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (player.Character.HumanoidRootPart.Position - portalPosition).Magnitude
+            if distance < 20 then -- Расстояние 20 юнитов от портала
+                playersNearPortal = playersNearPortal + 1
+            end
+        end
+    end
+    
+    return playersNearPortal
+end
+
 local function activatePortal()
     local character = game:GetService("Players").LocalPlayer.Character
     if not character then return false end
@@ -19,22 +35,22 @@ local function activatePortal()
     -- Телепортация к порталу
     humanoidRootPart.CFrame = CFrame.new(-10, 256.6, -112)
     task.wait(1)
-    if game:GetService("Players").LocalPlayer.Name == "edik899" then
+    
+    -- Проверка количества игроков у портала
+    local playersNearPortal = countPlayersNearPortal()
+    print("Players near portal:", playersNearPortal)
+    
+    if game:GetService("Players").LocalPlayer.Name == "edik899" and playersNearPortal >= AmountOfAccounts then
         local args = {
-        	"PlayBlackCloverEvent"
+            "PlayBlackCloverEvent"
         }
         game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+        print("Activated portal with all players present!")
+        return true
+    else
+        print("Not enough players near portal ("..playersNearPortal.."/"..AmountOfAccounts..")")
+        return false
     end
-    -- Поиск ProximityPrompt у портала
-    for _, descendant in pairs(workspace:GetDescendants()) do
-        if descendant:IsA("ProximityPrompt") and (descendant.Parent.Position - humanoidRootPart.Position).Magnitude < 10 then
-            fireproximityprompt(descendant)
-            print("ProximityPrompt activated!")
-            return true
-        end
-    end
-    
-    return false
 end
 
 while task.wait(1) do
